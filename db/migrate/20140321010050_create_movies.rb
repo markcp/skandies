@@ -3,12 +3,12 @@ class CreateMovies < ActiveRecord::Migration
     create_table :movies do |t|
       t.string :title
       t.string :title_index
-      t.string :year
+      t.string :year_id
       t.string :director_display
       t.string :screenwriter_display
 
       t.timestamps
     end
-    add_index :movies, [:year, :title_index]
+    add_index :movies, [:year_id, :title_index]
   end
 end

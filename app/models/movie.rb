@@ -1,10 +1,10 @@
 class Movie < ActiveRecord::Base
+  belongs_to :year
   has_many :credits
+  has_many :votes
 
   validates :title, presence: true
-  validates :year, presence: true, numericality: {
-    greater_than: 1994 , less_than: 2050
-  }
+  validates :year_id, presence: true
   validates :title_index, presence: true
 
   before_validation :compute_title_index

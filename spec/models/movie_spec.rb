@@ -1,7 +1,8 @@
 require 'spec_helper'
 
 describe Movie do
-  before { @movie = Movie.new(title: "The Past", year: "2013",
+  let(:year) { FactoryGirl.create(:year) }
+  before { @movie = year.movies.new(title: "The Past",
                               director_display: "Asghar Farhadi",
                               screenwriter_display: "Asghar Farhadi") }
 
@@ -9,10 +10,13 @@ describe Movie do
 
   it { should respond_to(:title) }
   it { should respond_to(:title_index) }
+  it { should respond_to(:year_id) }
   it { should respond_to(:year) }
   it { should respond_to(:director_display) }
   it { should respond_to(:screenwriter_display) }
   it { should respond_to(:credits) }
+
+  its(:year) { should eq year }
 
   it { should be_valid }
 
@@ -21,18 +25,8 @@ describe Movie do
     it { should_not be_valid }
   end
 
-  describe "when year is not present" do
-    before { @movie.year = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when year is too early" do
-    before { @movie.year = "1990" }
-    it { should_not be_valid }
-  end
-
-  describe "when year is too late" do
-    before { @movie.year = "2050"}
+  describe "when year_id is not present" do
+    before { @movie.year_id = " " }
     it { should_not be_valid }
   end
 
