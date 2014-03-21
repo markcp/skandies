@@ -11,10 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321010050) do
+ActiveRecord::Schema.define(version: 20140321151457) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "credits", force: true do |t|
+    t.integer  "person_id"
+    t.integer  "movie_id"
+    t.integer  "job_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "credits", ["job_id"], name: "index_credits_on_job_id", using: :btree
+  add_index "credits", ["movie_id"], name: "index_credits_on_movie_id", using: :btree
+  add_index "credits", ["person_id"], name: "index_credits_on_person_id", using: :btree
+
+  create_table "jobs", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "movies", force: true do |t|
     t.string   "title"
@@ -22,6 +40,14 @@ ActiveRecord::Schema.define(version: 20140321010050) do
     t.string   "year"
     t.string   "director_display"
     t.string   "screenwriter_display"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "people", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "gender"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

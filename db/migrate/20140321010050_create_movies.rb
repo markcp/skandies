@@ -9,5 +9,6 @@ class CreateMovies < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :movies, [:year, :title_index]
   end
 end

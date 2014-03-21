@@ -12,6 +12,7 @@ describe Movie do
   it { should respond_to(:year) }
   it { should respond_to(:director_display) }
   it { should respond_to(:screenwriter_display) }
+  it { should respond_to(:credits) }
 
   it { should be_valid }
 

@@ -1,4 +1,6 @@
 class Movie < ActiveRecord::Base
+  has_many :credits
+
   validates :title, presence: true
   validates :year, presence: true, numericality: {
     greater_than: 1994 , less_than: 2050
