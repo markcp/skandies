@@ -9,6 +9,8 @@ describe Year do
   it { should respond_to(:open_voting) }
   it { should respond_to(:close_voting) }
   it { should respond_to(:display_results) }
+  it { should respond_to(:movies) }
+  it { should respond_to(:ballots) }
 
   it { should be_valid }
 

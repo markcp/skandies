@@ -15,6 +15,8 @@ describe Movie do
   it { should respond_to(:director_display) }
   it { should respond_to(:screenwriter_display) }
   it { should respond_to(:credits) }
+  it { should respond_to(:votes) }
+  it { should respond_to(:ratings) }
 
   its(:year) { should eq year }
 

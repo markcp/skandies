@@ -15,6 +15,7 @@ describe Credit do
   it { should respond_to(:movie) }
   it { should respond_to(:job_id) }
   it { should respond_to(:job) }
+  it { should respond_to(:votes) }
 
   its(:person) { should eq person }
   its(:movie) { should eq movie }
