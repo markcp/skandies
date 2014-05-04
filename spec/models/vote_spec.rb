@@ -29,7 +29,7 @@ describe Vote do
   describe "when voting for a scene" do
     before do
       @vote.credit_id = nil
-      @vote.movie_id = nil
+      @vote.movie_id = movie.id
       @vote.value = "Scene value"
     end
     it { should be_valid }

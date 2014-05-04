@@ -5,18 +5,22 @@ class Vote < ActiveRecord::Base
   belongs_to :credit
   belongs_to :movie
 
-  validate :one_value_only
+  validate :correct_voting_object
   validates :ballot_id, presence: true
   validates :category_id, presence: true
   validates :points, presence: true
 
-  def one_value_only
-    value_array = [self.credit_id, self.movie_id, self.value].compact.delete_if { |v| v.blank? }
-
-    if value_array.size > 1
-      errors.add(:value, "More than one value provided." + value_array.to_s)
-    elsif value_array.size < 1
-      errors.add(:value, "Must have a value.")
+  def correct_voting_object
+    if !self.credit_id.blank? && self.movie_id.blank? && self.value.blank? # credit vote (acting)
+      return true
+    elsif self.credit_id.blank? && !self.movie_id.blank? && self.value.blank? # movie vote (picture, director or screenplay)
+      return true
+    elsif self.credit_id.blank? && !self.movie_id.blank? && !self.value.blank? # scene vote
+      return true
+    elsif self.credit_id.blank? && self.movie_id.blank? && self.value.blank?
+      errors.add(:value, "Must have a voting object.")
+    else
+      errors.add(:value, "Incorrect voting object.")
     end
   end
 end
