@@ -3,7 +3,7 @@ class CreateRatings < ActiveRecord::Migration
     create_table :ratings do |t|
       t.integer :ballot_id
       t.integer :movie_id
-      t.string :value
+      t.decimal :value, precision: 2, scale: 1
 
       t.timestamps
     end

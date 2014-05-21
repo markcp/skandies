@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
 
   create_table "ballots", force: true do |t|
     t.integer  "user_id"
-    t.string   "year_id"
+    t.integer  "year_id"
     t.boolean  "complete",   default: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
   create_table "movies", force: true do |t|
     t.string   "title"
     t.string   "title_index"
-    t.string   "year_id"
+    t.integer  "year_id"
     t.string   "director_display"
     t.string   "screenwriter_display"
     t.datetime "created_at"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "gender"
+    t.boolean  "last_name_first", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -74,7 +75,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
   create_table "ratings", force: true do |t|
     t.integer  "ballot_id"
     t.integer  "movie_id"
-    t.string   "value"
+    t.decimal  "value",      precision: 2, scale: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -96,6 +97,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.boolean  "admin",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -108,6 +110,7 @@ ActiveRecord::Schema.define(version: 20140321195326) do
     t.integer  "category_id"
     t.integer  "credit_id"
     t.integer  "movie_id"
+    t.string   "value"
     t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -116,6 +119,8 @@ ActiveRecord::Schema.define(version: 20140321195326) do
   add_index "votes", ["ballot_id", "category_id"], name: "index_votes_on_ballot_id_and_category_id", using: :btree
   add_index "votes", ["category_id"], name: "index_votes_on_category_id", using: :btree
   add_index "votes", ["credit_id"], name: "index_votes_on_credit_id", using: :btree
+  add_index "votes", ["movie_id"], name: "index_votes_on_movie_id", using: :btree
+  add_index "votes", ["value"], name: "index_votes_on_value", using: :btree
 
   create_table "years", force: true do |t|
     t.string   "name"
