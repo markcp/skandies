@@ -24,6 +24,11 @@ FactoryGirl.define do
     job
   end
 
+  factory :scene do
+    movie
+    title "A stirring scene"
+  end
+
   factory :user do
     first_name "Example"
     last_name "User"

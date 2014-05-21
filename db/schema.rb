@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140321195326) do
+ActiveRecord::Schema.define(version: 20140521200053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -83,6 +83,13 @@ ActiveRecord::Schema.define(version: 20140321195326) do
   add_index "ratings", ["ballot_id"], name: "index_ratings_on_ballot_id", using: :btree
   add_index "ratings", ["movie_id"], name: "index_ratings_on_movie_id", using: :btree
 
+  create_table "scenes", force: true do |t|
+    t.string   "title"
+    t.integer  "movie_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "top_ten_entries", force: true do |t|
     t.integer  "ballot_id"
     t.string   "value"
@@ -110,17 +117,16 @@ ActiveRecord::Schema.define(version: 20140321195326) do
     t.integer  "category_id"
     t.integer  "credit_id"
     t.integer  "movie_id"
-    t.string   "value"
     t.integer  "points"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "scene_id"
   end
 
   add_index "votes", ["ballot_id", "category_id"], name: "index_votes_on_ballot_id_and_category_id", using: :btree
   add_index "votes", ["category_id"], name: "index_votes_on_category_id", using: :btree
   add_index "votes", ["credit_id"], name: "index_votes_on_credit_id", using: :btree
   add_index "votes", ["movie_id"], name: "index_votes_on_movie_id", using: :btree
-  add_index "votes", ["value"], name: "index_votes_on_value", using: :btree
 
   create_table "years", force: true do |t|
     t.string   "name"

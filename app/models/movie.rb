@@ -3,6 +3,7 @@ class Movie < ActiveRecord::Base
   has_many :credits
   has_many :votes
   has_many :ratings
+  has_many :scenes
 
   validates :title, presence: true
   validates :year_id, presence: true

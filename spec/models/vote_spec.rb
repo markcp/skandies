@@ -4,6 +4,7 @@ describe Vote do
   let(:ballot) { FactoryGirl.create(:ballot) }
   let(:category) { FactoryGirl.create(:category) }
   let(:credit) { FactoryGirl.create(:credit) }
+  let(:scene) { FactoryGirl.create(:scene) }
   let(:movie) { FactoryGirl.create(:movie) }
   before{ @vote = ballot.votes.build(category: category, credit: credit, points: 10) }
 
@@ -17,7 +18,8 @@ describe Vote do
   it { should respond_to(:credit) }
   it { should respond_to(:movie_id) }
   it { should respond_to(:movie) }
-  it { should respond_to(:value) }
+  it { should respond_to(:scene_id) }
+  it { should respond_to(:scene) }
   it { should respond_to(:points) }
 
   its(:ballot) { should eq ballot }
@@ -29,8 +31,7 @@ describe Vote do
   describe "when voting for a scene" do
     before do
       @vote.credit_id = nil
-      @vote.movie_id = movie.id
-      @vote.value = "Scene value"
+      @vote.scene_id = scene.id
     end
     it { should be_valid }
   end
@@ -39,7 +40,6 @@ describe Vote do
     before do
       @vote.credit_id = nil
       @vote.movie_id = movie.id
-      @vote.value = " "
     end
     it { should be_valid }
     its(:movie) { should eq movie }
@@ -55,11 +55,11 @@ describe Vote do
     it { should_not be_valid }
   end
 
-  describe "when credit_id, movie_id, and value are not present" do
+  describe "when credit_id, movie_id, and scene_id are not present" do
     before do
       @vote.credit_id = nil
       @vote.movie_id = nil
-      @vote.value = " "
+      @vote.scene_id = nil
     end
     it { should_not be_valid }
   end
