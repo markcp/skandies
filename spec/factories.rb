@@ -22,6 +22,7 @@ FactoryGirl.define do
     movie
     person
     job
+    year
   end
 
   factory :scene do
