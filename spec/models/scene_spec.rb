@@ -13,6 +13,8 @@ describe Scene do
   it { should respond_to(:title) }
   it { should respond_to(:year_id) }
   it { should respond_to(:year) }
+  it { should respond_to(:points) }
+  it { should respond_to(:votes) }
 
   its(:movie) { should eq movie }
   its(:year) { should eq year }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522010516) do
+ActiveRecord::Schema.define(version: 20140522011305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,7 +103,11 @@ ActiveRecord::Schema.define(version: 20140522010516) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "year_id"
+    t.integer  "points"
+    t.integer  "votes"
   end
+
+  add_index "scenes", ["year_id", "points", "votes"], name: "index_scenes_on_year_id_and_points_and_votes", using: :btree
 
   create_table "top_ten_entries", force: true do |t|
     t.integer  "ballot_id"
