@@ -91,9 +91,9 @@ describe Movie do
     let!(:picture_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 10) }
     let!(:picture_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 5) }
     let!(:director_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 10) }
-    let!(:director_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 5) }
+    let!(:director_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 15) }
     let!(:screenplay_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 10) }
-    let!(:screenplay_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 5) }
+    let!(:screenplay_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 10) }
 
     it "should compute the correct number of best picture points" do
       movie_with_votes.compute_points(picture_category).should eq(15)
@@ -104,7 +104,7 @@ describe Movie do
     end
 
     it "should compute the correct number of best director points" do
-      movie_with_votes.compute_points(director_category).should eq(15)
+      movie_with_votes.compute_points(director_category).should eq(25)
     end
 
     it "should return 0 if movie has no best director votes" do
@@ -112,7 +112,7 @@ describe Movie do
     end
 
     it "should compute the correct number of best screenwriter points" do
-      movie_with_votes.compute_points(screenplay_category).should eq(15)
+      movie_with_votes.compute_points(screenplay_category).should eq(20)
     end
 
     it "should return 0 if movie has no best screenplay votes" do

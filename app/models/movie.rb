@@ -29,7 +29,6 @@ class Movie < ActiveRecord::Base
   end
 
   def compute_votes(category)
-    category = Category.where( name: "Picture" ).first
-    picture_votes = self.votes.where( category: category ).count
+    self.votes.where( category: category ).count
   end
 end
