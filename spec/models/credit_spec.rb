@@ -6,7 +6,9 @@ describe Credit do
   let(:person) { FactoryGirl.create(:person) }
   let(:job) { FactoryGirl.create(:job) }
   let(:year) { FactoryGirl.create(:year) }
-  before { @credit = movie.credits.build( person: person, job: job, year: year) }
+  let(:category) { FactoryGirl.create(:category) }
+  before { @credit = movie.credits.build( person: person, job: job, year: year,
+                                          category: category) }
 
   subject { @credit }
 
@@ -19,11 +21,16 @@ describe Credit do
   it { should respond_to(:year_id) }
   it { should respond_to(:year) }
   it { should respond_to(:votes) }
+  it { should respond_to(:results_category_id) }
+  it { should respond_to(:category) }
+  it { should respond_to(:points) }
+  it { should respond_to(:votes) }
 
   its(:person) { should eq person }
   its(:movie) { should eq movie }
   its(:job) { should eq job }
   its(:year) { should eq year }
+  its(:results_category_id) { should eq category.id }
 
   it { should be_valid }
 
