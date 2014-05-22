@@ -19,9 +19,9 @@ class Vote < ActiveRecord::Base
     elsif self.credit_id.blank? && self.movie_id.blank? && !self.scene_id.blank? # scene vote
       return true
     elsif self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank?
-      errors.add(:value, "Must have a voting object.")
+      errors.add(:credit_id, "Must have a voting object.")
     else
-      errors.add(:value, "Incorrect voting object.")
+      errors.add(:credit_id, "Incorrect voting object.")
     end
   end
 end

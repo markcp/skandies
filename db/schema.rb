@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
 
   create_table "ballots", force: true do |t|
     t.integer  "user_id"
-    t.string   "year_id"
+    t.integer  "year_id"
     t.boolean  "complete",                                      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -71,17 +71,11 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   create_table "movies", force: true do |t|
     t.string   "title"
     t.string   "title_index"
-    t.string   "year_id"
+    t.integer  "year_id"
     t.string   "director_display"
     t.string   "screenwriter_display"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "picture_points"
-    t.integer  "picture_votes"
-    t.integer  "director_points"
-    t.integer  "director_votes"
-    t.integer  "screenplay_points"
-    t.integer  "screenplay_votes"
     t.integer  "nbr_ratings"
     t.decimal  "average_rating",        precision: 3, scale: 2
     t.integer  "four_ratings"
@@ -93,6 +87,12 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.integer  "one_ratings"
     t.integer  "zero_ratings"
     t.decimal  "standard_dev",          precision: 3, scale: 2
+    t.integer  "picture_points"
+    t.integer  "picture_votes"
+    t.integer  "director_points"
+    t.integer  "director_votes"
+    t.integer  "screenplay_points"
+    t.integer  "screenplay_votes"
   end
 
   add_index "movies", ["year_id", "average_rating"], name: "index_movies_on_year_id_and_average_rating", using: :btree
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   create_table "ratings", force: true do |t|
     t.integer  "ballot_id"
     t.integer  "movie_id"
-    t.string   "value"
+    t.decimal  "value",      precision: 2, scale: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -147,6 +147,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.string   "first_name"
     t.string   "last_name"
     t.string   "email"
+    t.boolean  "admin",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

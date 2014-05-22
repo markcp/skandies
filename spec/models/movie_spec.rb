@@ -80,4 +80,43 @@ describe Movie do
       expect(@movie.title_index).to eq("Upstream Color")
     end
   end
+
+  describe "#compute_points" do
+
+    let(:movie_with_votes) { FactoryGirl.create(:movie, title: "Movie 1") }
+    let(:movie_without_votes) { FactoryGirl.create(:movie, title: "Movie 2")}
+    let!(:picture_category) { FactoryGirl.create(:category, name: "Picture") }
+    let!(:director_category) { FactoryGirl.create(:category, name: "Director") }
+    let!(:screenplay_category) { FactoryGirl.create(:category, name: "Screenplay")}
+    let!(:picture_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 10) }
+    let!(:picture_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 5) }
+    let!(:director_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 10) }
+    let!(:director_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 5) }
+    let!(:screenplay_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 10) }
+    let!(:screenplay_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 5) }
+
+    it "should compute the correct number of best picture points" do
+      movie_with_votes.compute_points(picture_category).should eq(15)
+    end
+
+    it "should return 0 if movie has no best picture votes" do
+      movie_without_votes.compute_points(picture_category).should eq(0)
+    end
+
+    it "should compute the correct number of best director points" do
+      movie_with_votes.compute_points(director_category).should eq(15)
+    end
+
+    it "should return 0 if movie has no best director votes" do
+      movie_without_votes.compute_points(director_category).should eq(0)
+    end
+
+    it "should compute the correct number of best screenwriter points" do
+      movie_with_votes.compute_points(screenplay_category).should eq(15)
+    end
+
+    it "should return 0 if movie has no best screenplay votes" do
+      movie_without_votes.compute_points(screenplay_category).should eq(0)
+    end
+  end
 end
