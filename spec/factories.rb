@@ -1,4 +1,5 @@
 FactoryGirl.define do
+
   factory :year do
     name "2013"
   end
@@ -31,10 +32,14 @@ FactoryGirl.define do
     year
   end
 
-  factory :user do
+  sequence :email do |n|
+    "test#{n}@example.com"
+  end
+
+  factory :user do |f|
     first_name "Example"
     last_name "User"
-    email "user@example.com"
+    email
   end
 
   factory :ballot do
