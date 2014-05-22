@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522011305) do
+ActiveRecord::Schema.define(version: 20140522013342) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,13 +19,25 @@ ActiveRecord::Schema.define(version: 20140522011305) do
   create_table "ballots", force: true do |t|
     t.integer  "user_id"
     t.string   "year_id"
-    t.boolean  "complete",   default: false
+    t.boolean  "complete",                                      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "nbr_ratings"
+    t.decimal  "average_rating",        precision: 3, scale: 2
+    t.integer  "four_ratings"
+    t.integer  "three_pt_five_ratings"
+    t.integer  "three_ratings"
+    t.integer  "two_pt_five_ratings"
+    t.integer  "two_ratings"
+    t.integer  "one_pt_five_ratings"
+    t.integer  "one_ratings"
+    t.integer  "zero_ratings"
+    t.integer  "selectivity_index"
   end
 
   add_index "ballots", ["user_id", "complete"], name: "index_ballots_on_user_id_and_complete", using: :btree
   add_index "ballots", ["year_id", "complete"], name: "index_ballots_on_year_id_and_complete", using: :btree
+  add_index "ballots", ["year_id", "nbr_ratings"], name: "index_ballots_on_year_id_and_nbr_ratings", using: :btree
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -70,8 +82,20 @@ ActiveRecord::Schema.define(version: 20140522011305) do
     t.integer  "director_votes"
     t.integer  "screenplay_points"
     t.integer  "screenplay_votes"
+    t.integer  "nbr_ratings"
+    t.decimal  "average_rating",        precision: 3, scale: 2
+    t.integer  "four_ratings"
+    t.integer  "three_pt_five_ratings"
+    t.integer  "three_ratings"
+    t.integer  "two_pt_five_ratings"
+    t.integer  "two_ratings"
+    t.integer  "one_pt_five_ratings"
+    t.integer  "one_ratings"
+    t.integer  "zero_ratings"
+    t.decimal  "standard_dev",          precision: 3, scale: 2
   end
 
+  add_index "movies", ["year_id", "average_rating"], name: "index_movies_on_year_id_and_average_rating", using: :btree
   add_index "movies", ["year_id", "director_points", "director_votes"], name: "index_movies_on_director_results_fields", using: :btree
   add_index "movies", ["year_id", "picture_points", "picture_votes"], name: "index_movies_on_picture_results_fields", using: :btree
   add_index "movies", ["year_id", "screenplay_points", "screenplay_votes"], name: "index_movies_on_screenplay_results_fields", using: :btree

@@ -22,7 +22,17 @@ describe Movie do
   it { should respond_to(:director_points) }
   it { should respond_to(:director_votes) }
   it { should respond_to(:screenplay_points) }
-  it { should respond_to(:screenplay_votes) }
+  it { should respond_to(:nbr_ratings) }
+  it { should respond_to(:average_rating) }
+  it { should respond_to(:four_ratings) }
+  it { should respond_to(:three_pt_five_ratings) }
+  it { should respond_to(:three_ratings) }
+  it { should respond_to(:two_pt_five_ratings) }
+  it { should respond_to(:two_ratings) }
+  it { should respond_to(:one_pt_five_ratings) }
+  it { should respond_to(:one_ratings) }
+  it { should respond_to(:zero_ratings) }
+  it { should respond_to(:standard_dev) }
 
   its(:year) { should eq year }
 

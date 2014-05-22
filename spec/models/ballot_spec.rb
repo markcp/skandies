@@ -13,6 +13,17 @@ describe Ballot do
   it { should respond_to(:year_id) }
   it { should respond_to(:year) }
   it { should respond_to(:complete)}
+  it { should respond_to(:nbr_ratings) }
+  it { should respond_to(:average_rating) }
+  it { should respond_to(:four_ratings) }
+  it { should respond_to(:three_pt_five_ratings) }
+  it { should respond_to(:three_ratings) }
+  it { should respond_to(:two_pt_five_ratings) }
+  it { should respond_to(:two_ratings) }
+  it { should respond_to(:one_pt_five_ratings) }
+  it { should respond_to(:one_ratings) }
+  it { should respond_to(:zero_ratings) }
+  it { should respond_to(:selectivity_index) }
 
   its(:user) { should eq user }
   its(:year) { should eq year }
