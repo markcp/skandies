@@ -21,11 +21,11 @@ class Movie < ActiveRecord::Base
   end
 
   def compute_points(category)
-    picture_points = 0
+    points = 0
     self.votes.where( category: category ).each do |v|
-      picture_points = picture_points + v.points
+      points = points + v.points
     end
-    picture_points
+    points
   end
 
   def compute_votes(category)
