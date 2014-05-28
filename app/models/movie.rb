@@ -31,4 +31,35 @@ class Movie < ActiveRecord::Base
   def compute_votes(category)
     self.votes.where( category: category ).count
   end
+
+  def compute_total_nbr_ratings
+    ratings.count
+  end
+
+  def compute_average_rating
+    if ratings.count > 0
+      points = 0
+      ratings.each do |r|
+        points = points + r.value
+      end
+      average = (points / ratings.count).round(2)
+    end
+  end
+
+  def compute_nbr_ratings(value)
+    nbr_ratings = ratings.where(value: value).count
+    if nbr_ratings
+      nbr_ratings
+    else
+      0
+    end
+  end
+
+  def compute_standard_dev
+    values = ratings.map { |r| r.value }
+    sum = values.inject(0){ |accum, i| accum + i }
+    mean = sum / values.length.to_f
+    sample_variance = values.inject(0){ |accum, i| accum + (i - mean) ** 2 } / (values.length - 1).to_f
+    standard_dev = Math.sqrt(sample_variance).round(2)
+  end
 end

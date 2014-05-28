@@ -54,13 +54,13 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.integer  "year_id"
     t.integer  "results_category_id"
     t.integer  "points"
-    t.integer  "votes"
+    t.integer  "nbr_votes"
   end
 
   add_index "credits", ["job_id"], name: "index_credits_on_job_id", using: :btree
   add_index "credits", ["movie_id"], name: "index_credits_on_movie_id", using: :btree
   add_index "credits", ["person_id"], name: "index_credits_on_person_id", using: :btree
-  add_index "credits", ["year_id", "results_category_id", "points", "votes"], name: "index_credits_on_results_fields", using: :btree
+  add_index "credits", ["year_id", "results_category_id", "points", "nbr_votes"], name: "index_credits_on_results_fields", using: :btree
 
   create_table "jobs", force: true do |t|
     t.string   "name"
@@ -76,6 +76,12 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.string   "screenwriter_display"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "picture_points"
+    t.integer  "picture_votes"
+    t.integer  "director_points"
+    t.integer  "director_votes"
+    t.integer  "screenplay_points"
+    t.integer  "screenplay_votes"
     t.integer  "nbr_ratings"
     t.decimal  "average_rating",        precision: 3, scale: 2
     t.integer  "four_ratings"
@@ -87,12 +93,6 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.integer  "one_ratings"
     t.integer  "zero_ratings"
     t.decimal  "standard_dev",          precision: 3, scale: 2
-    t.integer  "picture_points"
-    t.integer  "picture_votes"
-    t.integer  "director_points"
-    t.integer  "director_votes"
-    t.integer  "screenplay_points"
-    t.integer  "screenplay_votes"
   end
 
   add_index "movies", ["year_id", "average_rating"], name: "index_movies_on_year_id_and_average_rating", using: :btree
@@ -128,10 +128,10 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.datetime "updated_at"
     t.integer  "year_id"
     t.integer  "points"
-    t.integer  "votes"
+    t.integer  "nbr_votes"
   end
 
-  add_index "scenes", ["year_id", "points", "votes"], name: "index_scenes_on_year_id_and_points_and_votes", using: :btree
+  add_index "scenes", ["year_id", "points", "nbr_votes"], name: "index_scenes_on_year_id_and_points_and_nbr_votes", using: :btree
 
   create_table "top_ten_entries", force: true do |t|
     t.integer  "ballot_id"

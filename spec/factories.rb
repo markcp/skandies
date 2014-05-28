@@ -63,6 +63,12 @@ FactoryGirl.define do
     points 10
   end
 
+  factory :rating do
+    ballot
+    movie
+    value 1.0
+  end
+
   factory :best_picture_vote, class: Vote do
     ballot
     category

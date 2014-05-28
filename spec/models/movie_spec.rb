@@ -82,41 +82,89 @@ describe Movie do
   end
 
   describe "#compute_points" do
-
     let(:movie_with_votes) { FactoryGirl.create(:movie, title: "Movie 1") }
     let(:movie_without_votes) { FactoryGirl.create(:movie, title: "Movie 2")}
-    let!(:picture_category) { FactoryGirl.create(:category, name: "Picture") }
-    let!(:director_category) { FactoryGirl.create(:category, name: "Director") }
-    let!(:screenplay_category) { FactoryGirl.create(:category, name: "Screenplay")}
-    let!(:picture_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 10) }
-    let!(:picture_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 5) }
-    let!(:director_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 10) }
-    let!(:director_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 15) }
-    let!(:screenplay_vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 10) }
-    let!(:screenplay_vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: screenplay_category, points: 10) }
+    let!(:category) { FactoryGirl.create(:category, name: "Picture") }
+    let!(:vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 10) }
+    let!(:vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 5) }
 
-    it "should compute the correct number of best picture points" do
-      movie_with_votes.compute_points(picture_category).should eq(15)
+    it "should return the sum of points in a category" do
+      movie_with_votes.compute_points(category).should eq(15)
     end
 
-    it "should return 0 if movie has no best picture votes" do
-      movie_without_votes.compute_points(picture_category).should eq(0)
+    it "should return 0 if movie has no votes in the category" do
+      movie_without_votes.compute_points(category).should eq(0)
+    end
+  end
+
+  describe "#compute_votes" do
+    let(:movie_with_votes) { FactoryGirl.create(:movie, title: "Movie 1") }
+    let(:movie_without_votes) { FactoryGirl.create(:movie, title: "Movie 2")}
+    let!(:category) { FactoryGirl.create(:category, name: "Picture") }
+    let!(:vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 10) }
+    let!(:vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 5) }
+
+    it "should return the number of votes in a category" do
+      movie_with_votes.compute_votes(category).should eq(2)
     end
 
-    it "should compute the correct number of best director points" do
-      movie_with_votes.compute_points(director_category).should eq(25)
+    it "should return 0 if movie has no votes in the category" do
+      movie_without_votes.compute_votes(category).should eq(0)
+    end
+  end
+
+  describe "#compute_average_rating" do
+    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1")}
+    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie with no ratings")}
+    let!(:b1) { FactoryGirl.create(:ballot) }
+    let!(:b2) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
+    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+
+    it "should compute the correct average rating" do
+      movie.compute_average_rating.should eq(2.25)
     end
 
-    it "should return 0 if movie has no best director votes" do
-      movie_without_votes.compute_points(director_category).should eq(0)
+    it "should give movies with zero ratings a nil average rating" do
+      movie_with_no_ratings.compute_average_rating.should eq(nil)
+    end
+  end
+
+  describe "#compute_nbr_ratings(value)" do
+    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1:")}
+    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie 2")}
+    let!(:b1) { FactoryGirl.create(:ballot) }
+    let!(:b2) { FactoryGirl.create(:ballot) }
+    let!(:b3) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
+    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+    let!(:r3) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+
+    it "should compute the correct number of ratings" do
+      movie.compute_nbr_ratings(2.5).should eq(2)
     end
 
-    it "should compute the correct number of best screenwriter points" do
-      movie_with_votes.compute_points(screenplay_category).should eq(20)
+    it "should handle movies with zero ratings" do
+      movie_with_no_ratings.compute_nbr_ratings(2.5).should eq(0)
+    end
+  end
+
+  describe "compute_standard_dev" do
+    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1:")}
+    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie 2")}
+    let!(:b1) { FactoryGirl.create(:ballot) }
+    let!(:b2) { FactoryGirl.create(:ballot) }
+    let!(:b3) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
+    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+    let!(:r3) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+
+    it "should compute the correct standard dev" do
+      movie.compute_standard_dev.should eq(0.29)
     end
 
-    it "should return 0 if movie has no best screenplay votes" do
-      movie_without_votes.compute_points(screenplay_category).should eq(0)
+    it "should handle movies with zero ratings" do
+      movie_with_no_ratings.standard_dev.should eq(nil)
     end
   end
 end

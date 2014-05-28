@@ -48,4 +48,31 @@ describe Year do
     @year.save
     expect(@year.display_results).to eq("2001-01-01 00:00:00")
   end
+
+  describe "#ranked_movies_hash" do
+    let!(:year) { FactoryGirl.create(:year) }
+    let!(:tied_movie1) { FactoryGirl.create(:movie, year: year, nbr_ratings: 5, average_rating: 2.00) }
+    let!(:movie1) { FactoryGirl.create(:movie, year: year, nbr_ratings: 5, average_rating: 3.00) }
+    let!(:movie2) { FactoryGirl.create(:movie, year: year, nbr_ratings: 5, average_rating: 1.00) }
+    let!(:tied_movie2) { FactoryGirl.create(:movie, year: year, nbr_ratings: 5, average_rating: 2.00) }
+    let!(:movie_with_too_few_votes) { FactoryGirl.create(:movie, year: year, nbr_ratings: 4, average_rating: 2.00) }
+    let!(:ranked_movies_hash) { year.ranked_movies_hash }
+
+    it "should rank movies correctly" do
+      ranked_movies_hash[movie1.id].should eq(1)
+    end
+
+    it "should handle tied movies" do
+      ranked_movies_hash[tied_movie1.id].should eq(2.5)
+      ranked_movies_hash[tied_movie2.id].should eq(2.5)
+    end
+
+    it "should skip tied ranks correctly" do
+      ranked_movies_hash[movie2.id].should eq(nil)
+    end
+
+    it "should not rank movies with fewer than 5 votes" do
+      ranked_movies_hash[movie_with_too_few_votes.id].should eq(nil)
+    end
+  end
 end

@@ -49,4 +49,51 @@ describe Ballot do
     @ballot.save
     expect(@ballot.complete).to eq(false)
   end
+
+  describe "#compute_total_nbr_ratings" do
+    let!(:ballot) { FactoryGirl.create(:ballot)}
+    let!(:ballot_with_no_ratings) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, ballot: ballot) }
+    let!(:r2) { FactoryGirl.create(:rating, ballot: ballot) }
+
+    it "should compute the correct number of ratings" do
+      ballot.compute_total_nbr_ratings.should eq(2)
+    end
+
+    it "should handle ballots with zero ratings" do
+      ballot_with_no_ratings.compute_total_nbr_ratings.should eq(0)
+    end
+  end
+
+  describe "#compute_average_rating" do
+    let!(:ballot) { FactoryGirl.create(:ballot)}
+    let!(:ballot_with_no_ratings) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, ballot: ballot, value: 2.0) }
+    let!(:r2) { FactoryGirl.create(:rating, ballot: ballot, value: 2.5) }
+
+    it "should compute the correct number of ratings" do
+      ballot.compute_average_rating.should eq(2.25)
+    end
+
+    it "should handle ballots with zero ratings" do
+      ballot_with_no_ratings.compute_average_rating.should eq(nil)
+    end
+  end
+
+  describe "#compute_nbr_ratings(value)" do
+    let!(:ballot) { FactoryGirl.create(:ballot)}
+    let!(:ballot_with_no_ratings) { FactoryGirl.create(:ballot) }
+    let!(:r1) { FactoryGirl.create(:rating, ballot: ballot, value: 2.0) }
+    let!(:r2) { FactoryGirl.create(:rating, ballot: ballot, value: 2.5) }
+    let!(:r3) { FactoryGirl.create(:rating, ballot: ballot, value: 2.5) }
+
+    it "should compute the correct number of ratings" do
+      ballot.compute_nbr_ratings(2.5).should eq(2)
+    end
+
+    it "should handle ballots with zero ratings" do
+      ballot_with_no_ratings.compute_nbr_ratings(2.5).should eq(0)
+    end
+  end
+
 end

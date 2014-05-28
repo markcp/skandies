@@ -35,4 +35,36 @@ describe Scene do
     before { @scene.year_id = nil }
     it { should_not be_valid }
   end
+
+  describe "#compute_points_results" do
+    let(:scene_with_votes) { FactoryGirl.create(:scene, title: "Scene 1") }
+    let(:scene_without_votes) { FactoryGirl.create(:scene, title: "Scene 2")}
+    let!(:category) { FactoryGirl.create(:category, name: "Scene") }
+    let!(:vote_1) { FactoryGirl.create(:vote, scene: scene_with_votes, credit: nil, category: category, points: 10) }
+    let!(:vote_2) { FactoryGirl.create(:vote, scene: scene_with_votes, credit: nil, category: category, points: 5) }
+
+    it "should return the sum of points in a category" do
+      scene_with_votes.compute_points.should eq(15)
+    end
+
+    it "should return 0 if movie has no votes in the category" do
+      scene_without_votes.compute_points.should eq(0)
+    end
+  end
+
+  describe "#compute_votes" do
+    let(:scene_with_votes) { FactoryGirl.create(:scene, title: "Scene 1") }
+    let(:scene_without_votes) { FactoryGirl.create(:scene, title: "Scene 2")}
+    let!(:category) { FactoryGirl.create(:category, name: "Scene") }
+    let!(:vote_1) { FactoryGirl.create(:vote, scene: scene_with_votes, credit: nil, category: category, points: 10) }
+    let!(:vote_2) { FactoryGirl.create(:vote, scene: scene_with_votes, credit: nil, category: category, points: 5) }
+
+    it "should return the number of votes in a category" do
+      scene_with_votes.compute_votes.should eq(2)
+    end
+
+    it "should return 0 if movie has no votes in the category" do
+      scene_without_votes.compute_votes.should eq(0)
+    end
+  end
 end
