@@ -11,6 +11,10 @@ class Credit < ActiveRecord::Base
   validates :job_id, presence: true
   validates :year_id, presence: true
 
+  def results_display
+    "#{person.name}, #{movie.title} #{points}/#{nbr_votes}"
+  end
+
   def points_by_category(category)
     total_points = 0
     votes.where(category: category).each do |v|

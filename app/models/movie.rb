@@ -11,6 +11,42 @@ class Movie < ActiveRecord::Base
 
   before_validation :compute_title_index
 
+  def picture_results_display
+    "#{title} #{picture_points}/#{picture_votes}"
+  end
+
+  def director_results_display
+    "#{director_name}, #{title} #{director_points}/#{director_votes}"
+  end
+
+  def screenplay_results_display
+    "#{screenwriter_name}, #{title} #{screenplay_points}/#{screenplay_votes}"
+  end
+
+  def director_name
+    if director_display
+      director_display
+    else
+      director_job = Job.where(name: "Director").first
+      credit = credits.where(job: director_job).first
+      if credit
+        credit.person.name
+      end
+    end
+  end
+
+  def screenwriter_name
+    if screenwriter_display
+      screenwriter_display
+    else
+      screenwriter_job = Job.where(name: "Screenwriter").first
+      credit = credits.where(job: screenwriter_job).first
+      if credit
+        credit.person.name
+      end
+    end
+  end
+
   def compute_title_index
     title_without_leading_article = title.gsub(/(The|A|An)\s/,"")
     if $1

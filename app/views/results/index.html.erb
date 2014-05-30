@@ -1,0 +1,23 @@
+<h1>Best <%= @category.name %></h1>
+<% if @category.name == "Picture" %>
+  <% @results_items.each do |ri| %>
+    <%= ri.picture_results_display %>
+    <br/>
+  <% end %>
+<% elsif @category.name == "Director" %>
+  <% @results_items.each do |ri| %>
+    <%= ri.director_results_display %>
+    <br/>
+  <% end %>
+<% elsif @category.name == "Screenplay" %>
+  <% @results_items.each do |ri| %>
+    <%= ri.screenplay_results_display %>
+    <br/>
+  <% end %>
+<% else %>
+  <% @results_items.each do |ri| %>
+    <%= ri.results_display %>
+    <br/>
+  <% end %>
+<% end %>
+

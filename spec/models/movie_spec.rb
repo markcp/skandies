@@ -167,4 +167,8 @@ describe Movie do
       movie_with_no_ratings.standard_dev.should eq(nil)
     end
   end
+
+  describe "#director_name" do
+
+  end
 end
