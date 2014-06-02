@@ -5,7 +5,7 @@ class Ballot < ActiveRecord::Base
   has_many :ratings
   has_many :top_ten_entries
 
-  validates :user_id, presence: true
+  validates :user, presence: true
   validates :year, presence: true
   validates :complete, inclusion: [ true, false ]
 

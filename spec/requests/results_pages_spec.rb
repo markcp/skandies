@@ -8,10 +8,5 @@ describe "Results pages" do
     let!(:m3) { FactoryGirl.create(:movie, picture_points: 200, picture_votes: 29)}
 
     before { visit results_path }
-
-    describe "list of winners" do
-      it { should have_content(m)}
-
-
   end
 end

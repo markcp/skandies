@@ -13,13 +13,17 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'guard-rspec'
+  gem 'factory_girl_rails'
 end
 
 group :test do
+  gem 'faker'
+  gem 'database_cleaner'
+  gem 'launchy'
   gem 'selenium-webdriver'
   gem 'capybara'
   gem 'terminal-notifier-guard'
-  gem 'factory_girl_rails'
+  gem 'shoulda-matchers'
 end
 
 gem 'sass-rails', '~> 4.0.1'
