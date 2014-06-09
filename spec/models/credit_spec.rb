@@ -1,132 +1,123 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Credit do
 
-  let(:movie) { FactoryGirl.create(:movie) }
-  let(:person) { FactoryGirl.create(:person) }
-  let(:job) { FactoryGirl.create(:job) }
-  let(:year) { FactoryGirl.create(:year) }
-  let(:category) { FactoryGirl.create(:category) }
-  before { @credit = movie.credits.build( person: person, job: job, year: year,
-                                          category: category) }
-
-  subject { @credit }
-
-  it { should respond_to(:person_id) }
-  it { should respond_to(:person) }
-  it { should respond_to(:movie_id) }
-  it { should respond_to(:movie) }
-  it { should respond_to(:job_id) }
-  it { should respond_to(:job) }
-  it { should respond_to(:year_id) }
-  it { should respond_to(:year) }
-  it { should respond_to(:votes) }
-  it { should respond_to(:results_category_id) }
-  it { should respond_to(:category) }
-  it { should respond_to(:points) }
-  it { should respond_to(:votes) }
-
-  its(:person) { should eq person }
-  its(:movie) { should eq movie }
-  its(:job) { should eq job }
-  its(:year) { should eq year }
-  its(:results_category_id) { should eq category.id }
-
-  it { should be_valid }
-
-  describe "when person_id is not present" do
-    before { @credit.person_id = nil }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(build(:credit)).to be_valid
   end
 
-  describe "when movie_id is not present" do
-    before { @credit.movie_id = nil }
-    it { should_not be_valid }
+  it { should validate_presence_of :person }
+  it { should validate_presence_of :movie }
+  it { should validate_presence_of :job }
+  it { should validate_presence_of :year }
+
+  it "returns a credit in results display format" do
+    credit = build_stubbed(:credit, points: 100, nbr_votes: 10)
+    expect(credit.results_display).to eq "Berenice Bejo, The Past 100/10"
   end
 
-  describe "when job_id is not present" do
-    before { @credit.job_id = nil }
-    it { should_not be_valid }
-  end
+  describe "number of votes and points computation by category" do
+    let!(:credit) { create(:credit) }
+    let!(:actress_category) { create(:category, name: "Actress") }
+    let!(:actor_category) { create(:category, name: "Actor") }
+    let!(:v1) { create(:vote, credit: credit, category: actress_category, points: 10) }
+    let!(:v2) { create(:vote, credit: credit, category: actress_category, points: 5) }
 
-  describe "when year_id is not present" do
-    before { @credit.year_id = nil }
-    it { should_not be_valid }
-  end
+    context "there are votes in the category" do
+      it "returns the vote total in the category" do
+        expect(credit.points_by_category(actress_category)).to eq(15)
+      end
 
-  describe "#compute_results_category" do
-    let(:credit) { FactoryGirl.create(:credit) }
-    let(:credit_with_votes_in_two_categories) { FactoryGirl.create(:credit) }
-    let(:credit_with_equal_number_of_votes_in_two_categories) { FactoryGirl.create(:credit) }
-    let(:credit_with_equal_number_of_votes_and_points_in_two_categories) { FactoryGirl.create(:credit) }
-    let(:actress_category) { FactoryGirl.create(:category, name: "Actress") }
-    let(:supporting_actress_category) { FactoryGirl.create(:category, name: "Supporting Actress") }
-    let!(:v1) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
-    let!(:v2) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 5) }
-    let!(:v3) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v4) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
-    let!(:v5) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: actress_category, points: 10)}
-    let!(:v6) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v7) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: supporting_actress_category, points: 5) }
-    let!(:v8) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: actress_category, points: 10)}
-    let!(:v9) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: actress_category, points: 10) }
-    let!(:v10) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v11) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: supporting_actress_category, points: 5) }
-    let!(:v12) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: actress_category, points: 10)}
-    let!(:v13) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: actress_category, points: 10) }
-    let!(:v14) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v15) { FactoryGirl.create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: actress_category, points: 5) }
-
-    it "should return correct category when votes are in one category only" do
-      credit.compute_results_category.should eq(supporting_actress_category)
+      it "returns the number of votes in the category" do
+        expect(credit.number_of_votes(actress_category)).to eq(2)
+      end
     end
 
-    it "should return category with higher number of votes when votes are in two complementary categories" do
-      credit_with_votes_in_two_categories.compute_results_category.should eq(supporting_actress_category)
-    end
+    context "there are no votes in the category" do
+      it "should return 0 for point total" do
+        expect(credit.points_by_category(actor_category)).to eq(0)
+      end
 
-    it "should return category with higher point total when two category vote totals are equal" do
-      credit_with_equal_number_of_votes_and_points_in_two_categories.compute_results_category.should eq(actress_category)
-    end
-
-    it "should return primary category when two category vote totals and point totals are equal" do
-      credit_with_equal_number_of_votes_and_points_in_two_categories.compute_results_category.should eq(actress_category)
+      it "should return 0 for number of votes" do
+        expect(credit.number_of_votes(actor_category)).to eq(0)
+      end
     end
   end
 
-  describe "#compute_votes_results" do
-    let(:credit) { FactoryGirl.create(:credit) }
-    let(:credit_with_votes_in_two_categories) { FactoryGirl.create(:credit) }
-    let!(:actress_category) { FactoryGirl.create(:category, name: "Actress") }
-    let!(:supporting_actress_category) { FactoryGirl.create(:category, name: "Supporting Actress") }
-    let!(:v1) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
-    let!(:v2) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 5) }
-    let!(:v3) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v4) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
-    let!(:v5) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: actress_category, points: 10) }
-    it "should return correct total" do
-      credit.compute_votes_results(supporting_actress_category).should eq(2)
+  describe "determination of results category" do
+    let!(:credit) { create(:credit) }
+    let!(:credit_with_votes_in_two_categories) { create(:credit) }
+    let!(:credit_with_equal_number_of_votes_in_two_categories) { create(:credit) }
+    let!(:credit_with_equal_number_of_votes_and_points_in_two_categories) { create(:credit) }
+    let!(:actress_category) { create(:category, name: "Actress") }
+    let!(:supporting_actress_category) { create(:category, name: "Supporting Actress") }
+    let!(:v1) { create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
+    let!(:v2) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
+    let!(:v3) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
+    let!(:v4) { create(:vote, credit: credit_with_votes_in_two_categories, category: actress_category, points: 10)}
+    let!(:v5) { create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: supporting_actress_category, points: 5) }
+    let!(:v6) { create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: supporting_actress_category, points: 5) }
+    let!(:v7) { create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: actress_category, points: 5)}
+    let!(:v8) { create(:vote, credit: credit_with_equal_number_of_votes_in_two_categories, category: actress_category, points: 10)}
+    let!(:v9) { create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: supporting_actress_category, points: 10) }
+    let!(:v10) { create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: supporting_actress_category, points: 5) }
+    let!(:v11) { create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: actress_category, points: 7)}
+    let!(:v12) { create(:vote, credit: credit_with_equal_number_of_votes_and_points_in_two_categories, category: actress_category, points: 8) }
+
+    context "votes are in one category only" do
+      it "returns the category that all votes are in" do
+        expect(credit.compute_results_category).to eq(supporting_actress_category)
+      end
     end
-    it "should return correct total when votes are in two complementary categories" do
-      credit_with_votes_in_two_categories.compute_votes_results(supporting_actress_category).should eq(3)
+
+    context "votes are in two complimentary categories" do
+      it "returns the category with the higher number of votes" do
+        expect(credit_with_votes_in_two_categories.compute_results_category).to eq(supporting_actress_category)
+      end
+    end
+
+    context "votes are in two complimentary categories and number of votes in each category are equal" do
+      it "returns the category with the higher point total" do
+        expect(credit_with_equal_number_of_votes_and_points_in_two_categories.compute_results_category).to eq(actress_category)
+      end
+    end
+
+    context "votes are in two complimentary categories and number of votes and point total in each category are equal" do
+      it "returns the tiebreaker category (actor or actress) for the category/complimentary category pair" do
+        expect(credit_with_equal_number_of_votes_and_points_in_two_categories.compute_results_category).to eq(actress_category)
+      end
     end
   end
 
-  describe "#compute_points_results" do
-    let(:credit) { FactoryGirl.create(:credit) }
-    let(:credit_with_votes_in_two_categories) { FactoryGirl.create(:credit) }
-    let!(:actress_category) { FactoryGirl.create(:category, name: "Actress") }
-    let!(:supporting_actress_category) { FactoryGirl.create(:category, name: "Supporting Actress") }
-    let!(:v1) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
-    let!(:v2) { FactoryGirl.create(:vote, credit: credit, category: supporting_actress_category, points: 5) }
-    let!(:v3) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
-    let!(:v4) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
-    let!(:v5) { FactoryGirl.create(:vote, credit: credit_with_votes_in_two_categories, category: actress_category, points: 10) }
-    it "should return correct total" do
-      credit.compute_points_results(supporting_actress_category).should eq(15)
+  describe "total points and total number of votes computation for results purposes" do
+    let!(:credit) { create(:credit) }
+    let!(:credit_with_votes_in_two_categories) { create(:credit) }
+    let!(:actress_category) { create(:category, name: "Actress") }
+    let!(:supporting_actress_category) { create(:category, name: "Supporting Actress") }
+    let!(:v1) { create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
+    let!(:v2) { create(:vote, credit: credit, category: supporting_actress_category, points: 5) }
+    let!(:v3) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
+    let!(:v4) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
+    let!(:v5) { create(:vote, credit: credit_with_votes_in_two_categories, category: actress_category, points: 10) }
+
+    context "votes are in one category only" do
+      it "returns the number of votes in that category" do
+        expect(credit.compute_votes_results(supporting_actress_category)).to eq(2)
+      end
+
+      it "returns the total points in that category" do
+        expect(credit.compute_points_results(supporting_actress_category)).to eq(15)
+      end
     end
-    it "should return correct total when votes are in two complementary categories" do
-      credit_with_votes_in_two_categories.compute_points_results(supporting_actress_category).should eq(25)
+
+    context "votes are in two complimentary categories" do
+      it "returns the total number of votes in both categories" do
+        expect(credit_with_votes_in_two_categories.compute_votes_results(supporting_actress_category)).to eq(3)
+      end
+
+      it "returns the total points of both categories" do
+        expect(credit_with_votes_in_two_categories.compute_points_results(supporting_actress_category)).to eq(25)
+      end
     end
   end
 end

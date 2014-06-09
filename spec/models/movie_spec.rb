@@ -1,174 +1,202 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Movie do
-  let(:year) { FactoryGirl.create(:year) }
-  before { @movie = year.movies.new(title: "The Past",
-                              director_display: "Asghar Farhadi",
-                              screenwriter_display: "Asghar Farhadi") }
 
-  subject { @movie }
-
-  it { should respond_to(:title) }
-  it { should respond_to(:title_index) }
-  it { should respond_to(:year_id) }
-  it { should respond_to(:year) }
-  it { should respond_to(:director_display) }
-  it { should respond_to(:screenwriter_display) }
-  it { should respond_to(:credits) }
-  it { should respond_to(:votes) }
-  it { should respond_to(:ratings) }
-  it { should respond_to(:picture_points) }
-  it { should respond_to(:picture_votes) }
-  it { should respond_to(:director_points) }
-  it { should respond_to(:director_votes) }
-  it { should respond_to(:screenplay_points) }
-  it { should respond_to(:nbr_ratings) }
-  it { should respond_to(:average_rating) }
-  it { should respond_to(:four_ratings) }
-  it { should respond_to(:three_pt_five_ratings) }
-  it { should respond_to(:three_ratings) }
-  it { should respond_to(:two_pt_five_ratings) }
-  it { should respond_to(:two_ratings) }
-  it { should respond_to(:one_pt_five_ratings) }
-  it { should respond_to(:one_ratings) }
-  it { should respond_to(:zero_ratings) }
-  it { should respond_to(:standard_dev) }
-
-  its(:year) { should eq year }
-
-  it { should be_valid }
-
-  describe "when title is not present" do
-    before { @movie.title = " " }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(build(:movie)).to be_valid
   end
 
-  describe "when year_id is not present" do
-    before { @movie.year_id = " " }
-    it { should_not be_valid }
+  it { should validate_presence_of :title }
+  it { should validate_presence_of :year }
+  it { should validate_presence_of :title_index }
+
+  it "returns a best picture display format" do
+    movie = build_stubbed(:movie, picture_points: 100, picture_votes: 10)
+    expect(movie.picture_results_display).to eq "The Past 100/10"
   end
 
-  describe "title_index" do
+  it "returns a best director display format" do
+    movie = build_stubbed(:movie, director_points: 100, director_votes: 10, director_display: "Joel & Ethan Coen")
+    expect(movie.director_results_display).to eq "Joel & Ethan Coen, The Past 100/10"
+  end
 
-    it "should always be computed and present" do
-      @movie.title_index = " "
-      @movie.save
-      expect(@movie).to be_valid
+  it "returns a best screenplay display format" do
+    movie = build_stubbed(:movie, screenplay_points: 100, screenplay_votes: 10, screenwriter_display: "Joel & Ethan Coen")
+    expect(movie.screenplay_results_display).to eq "Joel & Ethan Coen, The Past 100/10"
+  end
+
+  describe "computing title_index" do
+    let(:the_past) { create(:movie, title: "The Past") }
+    let(:a_separation) { create(:movie, title: "A Separation") }
+    let(:an_education) { create(:movie, title: "An Education") }
+    let(:upstream_color) { create(:movie, title: "Upstream Color") }
+
+    it "moves an initial 'The'" do
+      expect(the_past.title_index).to eq("Past, The")
     end
 
-    it "should move initial 'The'" do
-      @movie.title = "The Past"
-      @movie.save
-      expect(@movie.title_index).to eq("Past, The")
+    it "moves an initial 'A'" do
+      expect(a_separation.title_index).to eq("Separation, A")
     end
 
-    it "should move initial 'A'" do
-      @movie.title = "A Separation"
-      @movie.save
-      expect(@movie.title_index).to eq("Separation, A")
+    it "moves an initial 'An'" do
+      expect(an_education.title_index).to eq("Education, An")
     end
 
-    it "should move initial 'An'" do
-      @movie.title = "An Education"
-      @movie.save
-      expect(@movie.title_index).to eq("Education, An")
-    end
-
-    it "should equal title when title doesn't begin with an article" do
-      @movie.title = "Upstream Color"
-      @movie.save
-      expect(@movie.title_index).to eq("Upstream Color")
+    it "duplicates title when title doesn't begin with an article" do
+      expect(upstream_color.title_index).to eq("Upstream Color")
     end
   end
 
-  describe "#compute_points" do
-    let(:movie_with_votes) { FactoryGirl.create(:movie, title: "Movie 1") }
-    let(:movie_without_votes) { FactoryGirl.create(:movie, title: "Movie 2")}
-    let!(:category) { FactoryGirl.create(:category, name: "Picture") }
-    let!(:vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 10) }
-    let!(:vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 5) }
+  describe "number of votes and total points computation in a given category" do
+    let(:movie_with_votes) { create(:movie, title: "Movie 1") }
+    let(:movie_without_votes) { create(:movie, title: "Movie 2")}
+    let!(:picture_category) { create(:category, name: "Picture") }
+    let!(:director_category) { create(:category, name: "Director") }
+    let!(:v1) { create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 10) }
+    let!(:v2) { create(:vote, movie: movie_with_votes, credit: nil, category: picture_category, points: 5) }
+    let!(:v3) { create(:vote, movie: movie_with_votes, credit: nil, category: director_category, points: 5) }
 
-    it "should return the sum of points in a category" do
-      movie_with_votes.compute_points(category).should eq(15)
+    context "there are votes in the category" do
+      it "returns the total points in a category" do
+        expect(movie_with_votes.compute_points(picture_category)).to eq(15)
+      end
+
+      it "returns the number of votes in a category" do
+        expect(movie_with_votes.compute_votes(picture_category)).to eq(2)
+      end
     end
 
-    it "should return 0 if movie has no votes in the category" do
-      movie_without_votes.compute_points(category).should eq(0)
-    end
-  end
+    context "there are no votes in the category" do
+      it "returns 0" do
+        expect(movie_without_votes.compute_points(director_category)).to eq(0)
+      end
 
-  describe "#compute_votes" do
-    let(:movie_with_votes) { FactoryGirl.create(:movie, title: "Movie 1") }
-    let(:movie_without_votes) { FactoryGirl.create(:movie, title: "Movie 2")}
-    let!(:category) { FactoryGirl.create(:category, name: "Picture") }
-    let!(:vote_1) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 10) }
-    let!(:vote_2) { FactoryGirl.create(:vote, movie: movie_with_votes, credit: nil, category: category, points: 5) }
-
-    it "should return the number of votes in a category" do
-      movie_with_votes.compute_votes(category).should eq(2)
-    end
-
-    it "should return 0 if movie has no votes in the category" do
-      movie_without_votes.compute_votes(category).should eq(0)
+      it "returns 0" do
+        expect(movie_without_votes.compute_votes(director_category)).to eq(0)
+      end
     end
   end
 
-  describe "#compute_average_rating" do
-    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1")}
-    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie with no ratings")}
-    let!(:b1) { FactoryGirl.create(:ballot) }
-    let!(:b2) { FactoryGirl.create(:ballot) }
-    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
-    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+  describe "total number of ratings computation" do
+    let!(:movie) { create(:movie) }
+    let!(:movie_with_no_ratings) { create(:movie) }
+    let!(:r1) { create(:rating, movie: movie) }
+    let!(:r2) { create(:rating, movie: movie) }
 
-    it "should compute the correct average rating" do
-      movie.compute_average_rating.should eq(2.25)
+    context "movie has ratings" do
+      it "returns the number of ratings" do
+        expect(movie.compute_total_nbr_ratings).to eq(2)
+      end
     end
 
-    it "should give movies with zero ratings a nil average rating" do
-      movie_with_no_ratings.compute_average_rating.should eq(nil)
+    context "movie has no ratings" do
+      it "returns 0" do
+        expect(movie_with_no_ratings.compute_total_nbr_ratings).to eq(0)
+      end
     end
   end
 
-  describe "#compute_nbr_ratings(value)" do
-    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1:")}
-    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie 2")}
-    let!(:b1) { FactoryGirl.create(:ballot) }
-    let!(:b2) { FactoryGirl.create(:ballot) }
-    let!(:b3) { FactoryGirl.create(:ballot) }
-    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
-    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
-    let!(:r3) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+  describe "average rating computation" do
+    let!(:movie) { create(:movie, title: "Movie 1")}
+    let!(:movie_with_no_ratings) { create(:movie, title: "Movie with no ratings")}
+    let!(:r1) { create(:rating, movie: movie, value: 2.0)}
+    let!(:r2) { create(:rating, movie: movie, value: 2.5)}
 
-    it "should compute the correct number of ratings" do
-      movie.compute_nbr_ratings(2.5).should eq(2)
+    context "movie has ratings" do
+      it "returns the correct average rating" do
+        expect(movie.compute_average_rating).to eq(2.25)
+      end
     end
 
-    it "should handle movies with zero ratings" do
-      movie_with_no_ratings.compute_nbr_ratings(2.5).should eq(0)
+    context "movie has no ratings" do
+      it "returns 0" do
+        expect(movie_with_no_ratings.compute_average_rating).to eq(nil)
+      end
+    end
+  end
+
+  describe "computation of number of ratings for a particular rating value" do
+    let!(:movie) { create(:movie, title: "Movie 1:")}
+    let!(:movie_with_no_ratings) { create(:movie, title: "Movie 2")}
+    let!(:r1) { create(:rating, movie: movie, value: 2.0)}
+    let!(:r2) { create(:rating, movie: movie, value: 2.5)}
+    let!(:r3) { create(:rating, movie: movie, value: 2.5)}
+
+    context "movie has ratings of the given value" do
+      it "returns the total number of ratings" do
+        expect(movie.compute_nbr_ratings(2.5)).to eq(2)
+      end
+    end
+
+    context "movie has no ratings of the given value" do
+      it "returns 0" do
+        expect(movie_with_no_ratings.compute_nbr_ratings(2.5)).to eq(0)
+      end
     end
   end
 
   describe "compute_standard_dev" do
-    let!(:movie) { FactoryGirl.create(:movie, title: "Movie 1:")}
-    let!(:movie_with_no_ratings) { FactoryGirl.create(:movie, title: "Movie 2")}
-    let!(:b1) { FactoryGirl.create(:ballot) }
-    let!(:b2) { FactoryGirl.create(:ballot) }
-    let!(:b3) { FactoryGirl.create(:ballot) }
-    let!(:r1) { FactoryGirl.create(:rating, movie: movie, ballot: b1, value: 2.0)}
-    let!(:r2) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
-    let!(:r3) { FactoryGirl.create(:rating, movie: movie, ballot: b2, value: 2.5)}
+    let!(:movie) { create(:movie, title: "Movie 1:")}
+    let!(:movie_with_no_ratings) { create(:movie, title: "Movie 2")}
+    let!(:r1) { create(:rating, movie: movie, value: 2.0)}
+    let!(:r2) { create(:rating, movie: movie, value: 2.5)}
+    let!(:r3) { create(:rating, movie: movie, value: 2.5)}
 
-    it "should compute the correct standard dev" do
-      movie.compute_standard_dev.should eq(0.29)
+    context "movie has ratings" do
+      it "returns the correct standard dev" do
+        expect(movie.compute_standard_dev).to eq(0.29)
+      end
     end
 
-    it "should handle movies with zero ratings" do
-      movie_with_no_ratings.standard_dev.should eq(nil)
+    context "movie has no ratings" do
+      it "returns 0" do
+        expect(movie_with_no_ratings.standard_dev).to eq(nil)
+      end
     end
   end
 
-  describe "#director_name" do
+  describe "director name determination" do
+    let!(:movie) { create(:movie) }
+    let!(:movie_with_director_display_value) { create(:movie, director_display: "Jean-Pierre and Luc Dardenne") }
+    let!(:director_job) { create(:job, name: "Director") }
+    let!(:wes_anderson) { create(:person, first_name: "Wes", last_name: "Anderson") }
+    let!(:jean_pierre_dardennes) { create(:person, first_name: "Jean-Pierre", last_name: "Dardennes") }
+    let!(:c1) { create(:credit, movie: movie, job: director_job, person: wes_anderson) }
+    let!(:c2) { create(:credit, movie: movie_with_director_display_value, job: director_job, person: wes_anderson) }
 
+    context "movie has one director" do
+      it "returns the director name determined from the movies credits" do
+        expect(movie.director_name).to eq("Wes Anderson")
+      end
+    end
+
+    context "movie has a director display value" do
+      it "returns the director display value" do
+        expect(movie_with_director_display_value.director_name).to eq("Jean-Pierre and Luc Dardenne")
+      end
+    end
+  end
+
+  describe "screenwriter name determination" do
+    let!(:movie) { create(:movie) }
+    let!(:movie_with_screenwriter_display_value) { create(:movie, screenwriter_display: "Jean-Pierre and Luc Dardenne") }
+    let!(:screenwriter_job) { create(:job, name: "Screenwriter") }
+    let!(:wes_anderson) { create(:person, first_name: "Wes", last_name: "Anderson") }
+    let!(:jean_pierre_dardennes) { create(:person, first_name: "Jean-Pierre", last_name: "Dardennes") }
+    let!(:c1) { create(:credit, movie: movie, job: screenwriter_job, person: wes_anderson) }
+    let!(:c2) { create(:credit, movie: movie_with_screenwriter_display_value, job: screenwriter_job, person: wes_anderson) }
+
+    context "movie has one screenwriter" do
+      it "returns the screenwriter name determined from the movie's credits" do
+        expect(movie.screenwriter_name).to eq("Wes Anderson")
+      end
+    end
+
+    context "movie has a screenwriter display value" do
+      it "returns the screenwriter display value" do
+        expect(movie_with_screenwriter_display_value.screenwriter_name).to eq("Jean-Pierre and Luc Dardenne")
+      end
+    end
   end
 end

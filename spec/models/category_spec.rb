@@ -1,39 +1,31 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Category do
-
-  before { @category = Category.new( name: "Actor") }
-
-  subject { @category }
-
-  it { should respond_to(:name) }
-
-  it { should be_valid }
-
-  describe "when name is not present" do
-    before { @category.name = " " }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(FactoryGirl.build(:category)).to be_valid
   end
 
-  describe "#complimentary_category" do
-    let!(:actress_category) { FactoryGirl.create(:category, name: "Actress")}
-    let!(:supporting_actress_category) { FactoryGirl.create(:category, name: "Supporting Actress")}
-    let!(:actor_category) { FactoryGirl.create(:category, name: "Actor") }
-    let!(:supporting_actor_category) { FactoryGirl.create(:category, name: "Supporting Actor") }
-    it "should return correct complimentary_category" do
-      actress_category.complementary_category.should eq(supporting_actress_category)
-      supporting_actress_category.complementary_category.should eq(actress_category)
-      actor_category.complementary_category.should eq(supporting_actor_category)
-      supporting_actor_category.complementary_category.should eq(actor_category)
+  it { should validate_presence_of :name }
+
+  describe "complimentary category determination" do
+    let!(:actress_category) { create(:category, name: "Actress")}
+    let!(:supporting_actress_category) { create(:category, name: "Supporting Actress")}
+    let!(:actor_category) { create(:category, name: "Actor") }
+    let!(:supporting_actor_category) { create(:category, name: "Supporting Actor") }
+    it "returns the correct complimentary_category" do
+      expect(actress_category.complementary_category).to eq(supporting_actress_category)
+      expect(supporting_actress_category.complementary_category).to eq(actress_category)
+      expect(actor_category.complementary_category).to eq(supporting_actor_category)
+      expect(supporting_actor_category.complementary_category).to eq(actor_category)
     end
   end
 
-  describe "#{}tiebreaker_category" do
-    let!(:actor_category) { FactoryGirl.create(:category, name: "Actor") }
-    let!(:supporting_actor_category) { FactoryGirl.create(:category, name: "Supporting Actor") }
-    it "should return correct primary category" do
-      actor_category.tiebreaker_category.should eq(actor_category)
-      supporting_actor_category.tiebreaker_category.should eq(actor_category)
+  describe "tiebreaker category determination" do
+    let!(:actor_category) { create(:category, name: "Actor") }
+    let!(:supporting_actor_category) { create(:category, name: "Supporting Actor") }
+    it "should return primary category (Actor or Actress) based on the gender of the given category" do
+      expect(actor_category.tiebreaker_category).to eq(actor_category)
+      expect(supporting_actor_category.tiebreaker_category).to eq(actor_category)
     end
   end
 end

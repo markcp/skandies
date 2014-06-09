@@ -9,7 +9,7 @@ class ResultsController < ApplicationController
     if params[:category_name]
       if params[:category_name] == "director"
         @category = Category.where(name: "Director").first
-        @results_items = Movie.where("year_id = ? and director_points > ?", @year.id, 0).order(director_points: :desc, director_votes: :desc)
+        @results_items = Movie.where("year_id = ? and director_points > ?", @year.id, 0).order(director_points: :desc, director_votes: :desc, title_index: :asc)
       elsif params[:category_name] == "actress"
         @category = Category.where(name: "Actress").first
         @results_items = Credit.where("year_id = ? and results_category_id = ? and points > ?", @year.id, @category.id, 0).order(points: :desc, nbr_votes: :desc).all
@@ -30,11 +30,11 @@ class ResultsController < ApplicationController
         @results_items = Scene.where("year_id = ? and points > ?", @year.id, 0).order(points: :desc, nbr_votes: :desc)
       else
         @category = Category.where(name: "Picture").first
-        @results_items = Movie.where("year_id = ? and picture_points > ?", @year.id, 0).order(points: :desc, nbr_votes: :desc).all
+        @results_items = Movie.where("year_id = ? and picture_points > ?", @year.id, 0).order(picture_points: :desc, picture_votes: :desc, title_index: :asc).all
       end
     else
       @category = Category.where(name: "Picture").first
-      @results_items = Movie.where("year_id = ? and picture_points > ?", @year.id, 0).order(picture_points: :desc, picture_votes: :desc).all
+      @results_items = Movie.where("year_id = ? and picture_points > ?", @year.id, 0).order(picture_points: :desc, picture_votes: :desc, title_index: :asc).all
     end
     puts @results_items.length
   end

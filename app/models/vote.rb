@@ -7,8 +7,8 @@ class Vote < ActiveRecord::Base
   belongs_to :scene
 
   validate :correct_voting_object
-  validates :ballot_id, presence: true
-  validates :category_id, presence: true
+  validates :ballot, presence: true
+  validates :category, presence: true
   validates :points, presence: true
 
   def correct_voting_object

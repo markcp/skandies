@@ -1,35 +1,12 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Rating do
-  let(:movie) { FactoryGirl.create(:movie) }
-  let(:ballot) { FactoryGirl.create(:ballot) }
-  before { @rating = ballot.ratings.build(movie: movie, value: "2.5") }
 
-  subject { @rating }
-
-  it { should respond_to(:movie_id) }
-  it { should respond_to(:movie) }
-  it { should respond_to(:ballot_id) }
-  it { should respond_to(:ballot) }
-  it { should respond_to(:value) }
-
-  its(:movie) { should eq movie }
-  its(:ballot) { should eq ballot }
-
-  it { should be_valid }
-
-  describe "when movie_id is not present" do
-    before { @rating.movie_id = nil }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(build(:rating)).to be_valid
   end
 
-  describe "when ballot_id is not present" do
-    before { @rating.ballot_id = nil }
-    it { should_not be_valid }
-  end
-
-  describe "when value is not present" do
-    before { @rating.value = " " }
-    it { should_not be_valid }
-  end
+  it { should validate_presence_of :movie }
+  it { should validate_presence_of :ballot }
+  it { should validate_presence_of :value }
 end

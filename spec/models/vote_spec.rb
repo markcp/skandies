@@ -1,71 +1,37 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Vote do
-  let(:ballot) { FactoryGirl.create(:ballot) }
-  let(:category) { FactoryGirl.create(:category) }
-  let(:credit) { FactoryGirl.create(:credit) }
-  let(:scene) { FactoryGirl.create(:scene) }
-  let(:movie) { FactoryGirl.create(:movie) }
-  before{ @vote = ballot.votes.build(category: category, credit: credit, points: 10) }
 
-  subject { @vote }
+  it "has a valid factory" do
+    expect(build(:vote)).to be_valid
+  end
 
-  it { should respond_to(:ballot_id) }
-  it { should respond_to(:ballot) }
-  it { should respond_to(:category_id) }
-  it { should respond_to(:category) }
-  it { should respond_to(:credit_id) }
-  it { should respond_to(:credit) }
-  it { should respond_to(:movie_id) }
-  it { should respond_to(:movie) }
-  it { should respond_to(:scene_id) }
-  it { should respond_to(:scene) }
-  it { should respond_to(:points) }
+  it { should validate_presence_of(:ballot) }
+  it { should validate_presence_of(:category) }
+  it { should validate_presence_of(:points) }
 
-  its(:ballot) { should eq ballot }
-  its(:category) { should eq category }
-  its(:credit) { should eq credit }
+  describe "vote value object validation" do
+    let!(:movie) { create(:movie) }
+    let!(:scene) { create(:scene) }
+    let!(:credit_vote) { build(:vote) }
+    let!(:movie_vote) { build(:vote, credit_id: nil, movie: movie) }
+    let!(:scene_vote) { build(:vote, credit_id: nil, scene: scene) }
+    let!(:invalid_vote) { build(:vote, credit_id: nil) }
 
-  it { should be_valid }
-
-  describe "when voting for a scene" do
-    before do
-      @vote.credit_id = nil
-      @vote.scene_id = scene.id
+    it "validates credit votes" do
+      expect(credit_vote).to be_valid
     end
-    it { should be_valid }
-  end
 
-  describe "when voting for a movie" do
-    before do
-      @vote.credit_id = nil
-      @vote.movie_id = movie.id
+    it "validates movie votes" do
+      expect(movie_vote).to be_valid
     end
-    it { should be_valid }
-    its(:movie) { should eq movie }
-  end
 
-  describe "when ballot_id is not present" do
-    before { @vote.ballot_id = nil }
-    it { should_not be_valid }
-  end
-
-  describe "when category_id is not present" do
-    before { @vote.category_id = nil }
-    it { should_not be_valid }
-  end
-
-  describe "when credit_id, movie_id, and scene_id are not present" do
-    before do
-      @vote.credit_id = nil
-      @vote.movie_id = nil
-      @vote.scene_id = nil
+    it "validates scene votes" do
+      expect(scene_vote).to be_valid
     end
-    it { should_not be_valid }
-  end
 
-  describe "when points is not present" do
-    before { @vote.points = nil }
-    it { should_not be_valid }
+    it "invalidates votes with no object" do
+      expect(invalid_vote).not_to be_valid
+    end
   end
 end

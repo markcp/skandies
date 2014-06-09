@@ -6,10 +6,10 @@ class Credit < ActiveRecord::Base
   belongs_to :category, foreign_key: 'results_category_id'
   has_many :votes
 
-  validates :person_id, presence: true
-  validates :movie_id, presence: true
-  validates :job_id, presence: true
-  validates :year_id, presence: true
+  validates :person, presence: true
+  validates :movie, presence: true
+  validates :job, presence: true
+  validates :year, presence: true
 
   def results_display
     "#{person.name}, #{movie.title} #{points}/#{nbr_votes}"
@@ -36,6 +36,7 @@ class Credit < ActiveRecord::Base
   end
 
   def compute_results_category
+    # todo: handle what happens if votes are in non-compatable categories
     first_category = votes.first.category
     complementary_category = first_category.complementary_category
     nbr_votes_in_first_category = number_of_votes(first_category)

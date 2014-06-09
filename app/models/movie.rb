@@ -1,4 +1,6 @@
 class Movie < ActiveRecord::Base
+  include Skandies::Maths
+
   belongs_to :year
   has_many :credits
   has_many :votes
@@ -6,7 +8,7 @@ class Movie < ActiveRecord::Base
   has_many :scenes
 
   validates :title, presence: true
-  validates :year_id, presence: true
+  validates :year, presence: true
   validates :title_index, presence: true
 
   before_validation :compute_title_index
@@ -48,11 +50,13 @@ class Movie < ActiveRecord::Base
   end
 
   def compute_title_index
-    title_without_leading_article = title.gsub(/(The|A|An)\s/,"")
-    if $1
-      self.title_index = title_without_leading_article + ", " + $1
-    else
-      self.title_index = title
+    if title
+      title_without_leading_article = title.gsub(/(The|A|An)\s/,"")
+      if $1
+        self.title_index = title_without_leading_article + ", " + $1
+      else
+        self.title_index = title
+      end
     end
   end
 
@@ -73,8 +77,8 @@ class Movie < ActiveRecord::Base
   end
 
   def compute_average_rating
+    points = 0
     if ratings.count > 0
-      points = 0
       ratings.each do |r|
         points = points + r.value
       end
@@ -93,9 +97,6 @@ class Movie < ActiveRecord::Base
 
   def compute_standard_dev
     values = ratings.map { |r| r.value }
-    sum = values.inject(0){ |accum, i| accum + i }
-    mean = sum / values.length.to_f
-    sample_variance = values.inject(0){ |accum, i| accum + (i - mean) ** 2 } / (values.length - 1).to_f
-    standard_dev = Math.sqrt(sample_variance).round(2)
+    Skandies::Maths.standard_deviation(values).round(2)
   end
 end

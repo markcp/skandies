@@ -1,17 +1,10 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Job do
-  before { @job = Job.new(name: "director") }
 
-  subject { @job }
-
-  it { should respond_to(:name) }
-  it { should respond_to(:credits) }
-
-  it { should be_valid }
-
-  describe "when name is not present" do
-    before { @job.name = " " }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(build(:job)).to be_valid
   end
+
+  it { should validate_presence_of :name }
 end

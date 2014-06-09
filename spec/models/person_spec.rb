@@ -1,30 +1,11 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Person do
-  before { @person = Person.new(first_name: "Buster", last_name: "Keaton", gender: "M") }
 
-  subject { @person }
-
-  it { should respond_to(:first_name) }
-  it { should respond_to(:last_name) }
-  it { should respond_to(:gender) }
-  it { should respond_to(:last_name_first) }
-  it { should respond_to(:credits) }
-
-  it { should be_valid }
-
-  describe "when last_name is not present" do
-    before { @person.last_name = " " }
-    it { should_not be_valid }
+  it "has a valid factory" do
+    expect(build(:person)).to be_valid
   end
 
-  describe "when gender is not present" do
-    before { @person.last_name = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when gender is not 'M', 'F', or 'O'" do
-    before { @person.gender = "Q" }
-    it { should_not be_valid }
-  end
+  it { should validate_presence_of :last_name }
+  it { should ensure_inclusion_of(:gender).in_array(['M','F','O']) }
 end
