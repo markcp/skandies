@@ -1,0 +1,16 @@
+<h1>Best <%= @category.name.capitalize %> votes for <%= @credit.person.name %> in <%= @credit.movie.title %></h1>
+
+<ul>
+  <% additional_category = false %>
+  <% @votes.each do |v| %>
+    <li><%= v.ballot.user.name %> <%= v.points %>
+    <% if v.category.name != @credit.category.name %>
+      *
+      <% additional_category = true %>
+    <% end %></li>
+  <% end %>
+</ul>
+
+<% if additional_category %>
+  <p>* Vote was in <%= @credit.category.complementary_category.name.titleize %> category.</p>
+<% end %>

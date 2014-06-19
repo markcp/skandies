@@ -10,19 +10,101 @@ describe Movie do
   it { should validate_presence_of :year }
   it { should validate_presence_of :title_index }
 
-  it "returns a best picture display format" do
-    movie = build_stubbed(:movie, picture_points: 100, picture_votes: 10)
-    expect(movie.picture_results_display).to eq "The Past 100/10"
+  describe "results listing for category results" do
+    let!(:year) { create(:year) }
+    let!(:picture_category) { create(:category, name: "picture") }
+    let!(:director_category) { create(:category, name: "director") }
+    let!(:screenplay_category) { create(:category, name: "screenplay") }
+    let!(:m1) { create(:movie, title: "abc", picture_points: 100, picture_votes: 15,
+                               director_points: 150, director_votes: 10,
+                               screenplay_points: 50, screenplay_votes: 5, year: year ) }
+    let!(:m2) { create(:movie, title: "stu", picture_points: 150, picture_votes: 15,
+                               director_points: 50, director_votes: 10,
+                               screenplay_points: 100, screenplay_votes: 5, year: year ) }
+    let!(:m3) { create(:movie, title: "zyx", picture_points: 100, picture_votes: 14,
+                               director_points: 0, director_votes: 0,
+                               screenplay_points: 50, screenplay_votes: 5, year: year ) }
+
+    it "returns movies in best picture order and handles point ties" do
+      expect(Movie.results_list(year, picture_category)).to eq([m2,m1,m3])
+    end
+
+    it "returns movies in best director order and handle movies with zero votes" do
+      expect(Movie.results_list(year, director_category)).to eq([m1,m2])
+    end
+
+    it "returns movies in best screenplay order and handles point/vote ties" do
+      expect(Movie.results_list(year, picture_category)).to eq([m2,m1,m3])
+    end
   end
 
-  it "returns a best director display format" do
-    movie = build_stubbed(:movie, director_points: 100, director_votes: 10, director_display: "Joel & Ethan Coen")
-    expect(movie.director_results_display).to eq "Joel & Ethan Coen, The Past 100/10"
+  describe "results listing for ratings results" do
+    let!(:year) { create(:year) }
+    let!(:m1) { create(:movie, title: "xyz", year: year, average_rating: 2.50, nbr_ratings: 5) }
+    let!(:m2) { create(:movie, title: "stu", year: year, average_rating: 2.75, nbr_ratings: 5) }
+    let!(:m3) { create(:movie, title: "abc", year: year, average_rating: 2.50, nbr_ratings: 5) }
+    let!(:m4_too_few_ratings) { create(:movie, title: "ttt", year: year, average_rating: 3.00, nbr_ratings: 4) }
+
+    it "returns movies in order by average rating and title" do
+      expect(Movie.ratings_results_list(year)).to eq([m2,m3,m1])
+    end
   end
 
-  it "returns a best screenplay display format" do
-    movie = build_stubbed(:movie, screenplay_points: 100, screenplay_votes: 10, screenwriter_display: "Joel & Ethan Coen")
-    expect(movie.screenplay_results_display).to eq "Joel & Ethan Coen, The Past 100/10"
+  describe "list of movies with less than five but more than zero ratings for supplementary ratings page" do
+    let!(:year) { create(:year) }
+    let!(:m1) { create(:movie, title: "xyz", year: year, nbr_ratings: 5) }
+    let!(:m2) { create(:movie, title: "stu", year: year, nbr_ratings: 4) }
+    let!(:m3) { create(:movie, title: "The abc", year: year, nbr_ratings: 4) }
+    let!(:m4) { create(:movie, title: "ttt", year: year, nbr_ratings: 0) }
+
+    it "returns movies with less than five votes by title" do
+      expect(Movie.less_than_five_ratings(year)).to eq([m3,m2])
+    end
+  end
+
+  describe "list of movies with zero ratings for supplementary ratings page" do
+    let!(:year) { create(:year) }
+    let!(:m1) { create(:movie, title: "xyz", year: year, nbr_ratings: 1) }
+    let!(:m2) { create(:movie, title: "stu", year: year, nbr_ratings: 0) }
+    let!(:m3) { create(:movie, title: "The abc", year: year, nbr_ratings: 0) }
+
+    it "returns movies with less than five votes by title" do
+      expect(Movie.zero_ratings(year)).to eq([m3,m2])
+    end
+  end
+
+  describe "ratings movie list display format" do
+    let!(:year) { create(:year) }
+    let!(:m1) { create(:movie, title: "xyz", year: year, nbr_ratings: 10) }
+    let!(:m2) { create(:movie, title: "stu", year: year, nbr_ratings: 5) }
+
+    it "returns title of movie with 10 or more ratings normally" do
+      expect(m1.ratings_results_display_format).to eq(m1.title)
+    end
+
+    it "returns title of movie with less than 10 ratings in parenthesis" do
+      expect(m2.ratings_results_display_format).to eq("(" + m2.title + ")")
+    end
+  end
+
+  describe "determining points and number of votes in a given category" do
+    let!(:screenplay_category) { create(:category, name: "screenplay")}
+    let!(:picture_category) { create(:category, name: "picture") }
+    let!(:director_category) { create(:category, name: "director") }
+    let!(:m1) { create(:movie, director_points: 20, director_votes: 3,
+       screenplay_points: 15, screenplay_votes: 2, picture_points: 5, picture_votes: 1)}
+
+    it "returns points in a given category" do
+      expect(m1.points_in_category(screenplay_category)).to eq(15)
+      expect(m1.points_in_category(picture_category)).to eq(5)
+      expect(m1.points_in_category(director_category)).to eq(20)
+    end
+
+    it "returns number of votes in a given category" do
+      expect(m1.nbr_votes_in_category(screenplay_category)).to eq(2)
+      expect(m1.nbr_votes_in_category(picture_category)).to eq(1)
+      expect(m1.nbr_votes_in_category(director_category)).to eq(3)
+    end
   end
 
   describe "computing title_index" do
@@ -145,7 +227,7 @@ describe Movie do
 
     context "movie has ratings" do
       it "returns the correct standard dev" do
-        expect(movie.compute_standard_dev).to eq(0.29)
+        expect(movie.compute_standard_dev).to eq(0.24)
       end
     end
 
@@ -159,7 +241,7 @@ describe Movie do
   describe "director name determination" do
     let!(:movie) { create(:movie) }
     let!(:movie_with_director_display_value) { create(:movie, director_display: "Jean-Pierre and Luc Dardenne") }
-    let!(:director_job) { create(:job, name: "Director") }
+    let!(:director_job) { create(:job, name: "director") }
     let!(:wes_anderson) { create(:person, first_name: "Wes", last_name: "Anderson") }
     let!(:jean_pierre_dardennes) { create(:person, first_name: "Jean-Pierre", last_name: "Dardennes") }
     let!(:c1) { create(:credit, movie: movie, job: director_job, person: wes_anderson) }
@@ -181,7 +263,7 @@ describe Movie do
   describe "screenwriter name determination" do
     let!(:movie) { create(:movie) }
     let!(:movie_with_screenwriter_display_value) { create(:movie, screenwriter_display: "Jean-Pierre and Luc Dardenne") }
-    let!(:screenwriter_job) { create(:job, name: "Screenwriter") }
+    let!(:screenwriter_job) { create(:job, name: "screenwriter") }
     let!(:wes_anderson) { create(:person, first_name: "Wes", last_name: "Anderson") }
     let!(:jean_pierre_dardennes) { create(:person, first_name: "Jean-Pierre", last_name: "Dardennes") }
     let!(:c1) { create(:credit, movie: movie, job: screenwriter_job, person: wes_anderson) }

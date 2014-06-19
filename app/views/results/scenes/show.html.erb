@@ -1,0 +1,7 @@
+<h1>Best Scene votes for <%= @scene.title %> in <%= @scene.movie.title %></h1>
+
+<ul>
+  <% @votes.each do |v| %>
+    <li><%= v.ballot.user.name %> <%= v.points %></li>
+  <% end %>
+</ul>

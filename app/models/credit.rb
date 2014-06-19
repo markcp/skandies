@@ -11,8 +11,8 @@ class Credit < ActiveRecord::Base
   validates :job, presence: true
   validates :year, presence: true
 
-  def results_display
-    "#{person.name}, #{movie.title} #{points}/#{nbr_votes}"
+  def self.results_list(year, category)
+    joins(:person).where("year_id = ? and results_category_id = ? and points > 0", year.id, category.id).order("points DESC, nbr_votes DESC, people.last_name ASC")
   end
 
   def points_by_category(category)

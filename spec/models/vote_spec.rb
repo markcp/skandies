@@ -10,6 +10,24 @@ describe Vote do
   it { should validate_presence_of(:category) }
   it { should validate_presence_of(:points) }
 
+  describe "display list for movie category pages" do
+    let!(:u1) { create(:user, last_name: "zzz") }
+    let!(:u2) { create(:user, last_name: "aaa") }
+    let!(:u3) { create(:user, last_name: "mmm") }
+    let!(:b1) { create(:ballot, user: u1) }
+    let!(:b2) { create(:ballot, user: u2) }
+    let!(:b3) { create(:ballot, user: u3) }
+    let!(:movie) { create(:movie) }
+    let!(:picture_category) { create(:category, name: "picture") }
+    let!(:v1) { create(:vote, ballot: b1, movie: movie, credit: nil, category: picture_category, points: 10) }
+    let!(:v2) { create(:vote, ballot: b2, movie: movie, credit: nil, category: picture_category, points: 10) }
+    let!(:v3) { create(:vote, ballot: b3, movie: movie, credit: nil, category: picture_category, points: 5) }
+
+    it "returns the votes in a category by vote points and user last name" do
+      expect(Vote.by_points_and_user_name(picture_category)).to eq([v2,v1,v3])
+    end
+  end
+
   describe "vote value object validation" do
     let!(:movie) { create(:movie) }
     let!(:scene) { create(:scene) }

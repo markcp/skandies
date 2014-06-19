@@ -1,0 +1,13 @@
+<% if @category.name == "screenplay" %>
+  <h1>Best Screenplay votes for <%= @movie.screenwriter_name %>, <%= @movie.title %></h1>
+<% elsif @category.name == "director" %>
+  <h1>Best Director votes for <%= @movie.director_name %>, <%= @movie.title %></h1>
+<% else %>
+  <h1>Best Picture votes for <%= @movie.title %></h1>
+<% end %>
+
+<ul>
+<% @votes.each do |v| %>
+  <li><%= v.ballot.user.name %> <%= v.points %></li>
+<% end %>
+</ul>

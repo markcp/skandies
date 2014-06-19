@@ -10,9 +10,16 @@ describe Scene do
   it { should validate_presence_of :title }
   it { should validate_presence_of :year }
 
-  it "provides a results display format" do
-    scene = build_stubbed(:scene, points: 100, nbr_votes: 10)
-    expect(scene.results_display).to eq("A stirring scene, The Past 100/10")
+  describe "provides a list of results for the scene category results page" do
+    let!(:year) { create(:year) }
+    let!(:s1) { create(:scene, year: year, points: 10, nbr_votes: 2, title: "zzz") }
+    let!(:s2) { create(:scene, year: year, points: 10, nbr_votes: 2, title: "aaa") }
+    let!(:s3) { create(:scene, year: year, points: 20, nbr_votes: 4, title: "ttt") }
+    let!(:s4) { create(:scene, year: year, points: 20, nbr_votes: 5, title: "sss") }
+
+    it "returns scenes in category results order by points, number of votes, and title" do
+      expect(Scene.results_list(year)).to eq([s4,s3,s2,s1])
+    end
   end
 
   describe "total points and number of votes computation" do

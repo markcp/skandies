@@ -6,16 +6,16 @@ class Category < ActiveRecord::Base
 
   def complementary_category
     complementary_category = case name
-      when "Actress" then Category.where(name: "Supporting Actress").first
-      when "Supporting Actress" then Category.where(name: "Actress").first
-      when "Actor" then Category.where(name: "Supporting Actor").first
-      when "Supporting Actor" then Category.where(name: "Actor").first
+      when "actress" then Category.where(name: "supporting actress").first
+      when "supporting actress" then Category.where(name: "actress").first
+      when "actor" then Category.where(name: "supporting actor").first
+      when "supporting actor" then Category.where(name: "actor").first
       else nil
     end
   end
 
   def tiebreaker_category
-    if name == "Actress" || name == "Actor"
+    if name == "actress" || name == "actor"
       return self
     else
       return self.complementary_category

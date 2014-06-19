@@ -1,0 +1,34 @@
+<h1>Respondent Profiles <%= @year.name %></h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>N</th>
+    <th>4</th>
+    <th>3.5</th>
+    <th>3</th>
+    <th>2.5</th>
+    <th>2</th>
+    <th>1.5</th>
+    <th>1</th>
+    <th>0</th>
+    <th>Avg.</th>
+    <th>Sel.</th>
+  </tr>
+  <% @ballots.each do |b| %>
+    <tr>
+      <td><%= b.user.name %></td>
+      <td><%= b.nbr_ratings %></td>
+      <td><%= b.four_ratings %></td>
+      <td><%= b.three_pt_five_ratings %></td>
+      <td><%= b.three_ratings %></td>
+      <td><%= b.two_pt_five_ratings %></td>
+      <td><%= b.two_ratings %></td>
+      <td><%= b.one_pt_five_ratings %></td>
+      <td><%= b.one_ratings %></td>
+      <td><%= b.zero_ratings %></td>
+      <td><%= b.average_rating %></td>
+      <td><%= b.selectivity_index %></td>
+    </tr>
+  <% end %>
+</table>

@@ -10,7 +10,7 @@ module Skandies::Maths
   def self.sample_variance(a)
     m = mean(a)
     sum = a.inject(0){ |accum, i| accum + (i - m) ** 2 }
-    sum / (a.length - 1).to_f
+    sum / (a.length).to_f
   end
 
   def self.standard_deviation(a)

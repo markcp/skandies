@@ -5,4 +5,7 @@ class TopTenEntry < ActiveRecord::Base
   validates :value, presence: true
   validates :rank, inclusion: 0..10
 
+  def self.by_rank
+    order(rank: :asc)
+  end
 end

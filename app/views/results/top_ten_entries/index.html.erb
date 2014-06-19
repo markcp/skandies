@@ -1,0 +1,16 @@
+<h1>Top Ten Lists <%= @year.name %></h1>
+
+<% @ballots.each do |b| %>
+  <% if b.top_ten_entries.length > 0 %>
+    <h2><%= b.user.name %></h2>
+    <ul>
+      <% b.top_ten_entries.by_rank.each do |tte| %>
+        <% if tte.rank == 0 %>
+          <li><%= tte.value %></li>
+        <% else %>
+          <li><%= tte.rank %>. <%= tte.value %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>

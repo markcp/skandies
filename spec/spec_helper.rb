@@ -15,6 +15,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'database_cleaner'
+require 'capybara/rspec'
 
 RSpec.configure do |config|
 
@@ -81,4 +82,8 @@ RSpec.configure do |config|
 
   # Include Factory Girl syntax to simplify calls to factories
   config.include FactoryGirl::Syntax::Methods
+
+  # Include Capybara DSL
+  config.include Capybara::DSL
 end
+

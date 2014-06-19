@@ -9,6 +9,24 @@ describe Ballot do
   it { should validate_presence_of :user }
   it { should validate_presence_of :year }
 
+  describe "display order" do
+    let!(:year) { create(:year) }
+    let!(:user1) { create(:user, last_name: "sss") }
+    let!(:user2) { create(:user, last_name: "zyx") }
+    let!(:user3) { create(:user, last_name: "abc") }
+    let!(:ballot1) { create(:ballot, year: year, user: user1, nbr_ratings: 25 ) }
+    let!(:ballot2) { create(:ballot, year: year, user: user2, nbr_ratings: 50) }
+    let!(:ballot3) { create(:ballot, year: year, user: user3, nbr_ratings: 25) }
+
+    it "returns ballots by number of ratings and user's last name" do
+      expect(Ballot.by_nbr_ratings(year)).to eq([ballot2, ballot3, ballot1])
+    end
+
+    it "returns ballot by only user's last name" do
+      expect(Ballot.by_user_name(year)).to eq([ballot3, ballot1, ballot2])
+    end
+  end
+
   describe "ratings counter" do
     let!(:ballot) { create(:ballot) }
     let!(:ballot_with_no_ratings) { create(:ballot) }

@@ -1,0 +1,42 @@
+<h1>Ratings <%= @year.name %></h1>
+
+<table>
+  <tr>
+    <th>Rank</th>
+    <th>Title</th>
+    <th>Avg</th>
+    <th>Nbr</th>
+    <th>4</th>
+    <th>3.5</th>
+    <th>3</th>
+    <th>2.5</th>
+    <th>2</th>
+    <th>1.5</th>
+    <th>1</th>
+    <th>0</th>
+    <th>Standard Dev</th>
+  </tr>
+  <% hold_avg_rating = 0 %>
+  <% @movies.each_with_index do |m, i| %>
+    <tr>
+      <% if m.average_rating == hold_avg_rating %>
+        <td>&nbsp;</td>
+      <% else %>
+        <td><%= i + 1 %></td>
+      <% end %>
+      <td><%= m.ratings_results_display_format %></td>
+      <td><%= m.average_rating %></td>
+      <td><%= m.nbr_ratings %></td>
+      <td><%= m.four_ratings %></td>
+      <td><%= m.three_pt_five_ratings %></td>
+      <td><%= m.three_ratings %></td>
+      <td><%= m.two_pt_five_ratings %></td>
+      <td><%= m.two_ratings %></td>
+      <td><%= m.one_pt_five_ratings %></td>
+      <td><%= m.one_ratings %></td>
+      <td><%= m.zero_ratings %></td>
+      <td><%= m.standard_dev %></td>
+    </tr>
+    <% hold_avg_rating = m.average_rating %>
+  <% end %>
+</table>

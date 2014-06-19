@@ -1,4 +1,13 @@
+
 Rails.application.routes.draw do
+
+  namespace :results do
+    resources :categories, :credits, :ballots, :top_ten_entries, :scenes
+    resources :movies do
+      get 'supplementary_ratings', on: :collection
+    end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -47,6 +56,9 @@ Rails.application.routes.draw do
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
 
-  get 'results/:year_name/:category_name', to: 'results#index'
-
+  get 'results/performance/:id', to: 'results#performance'
+  get 'results/scene/:id', to: 'results#scene'
+  get 'results/ratings/(:year_name)', to: 'results#ratings'
+  get 'results/profiles/(:year_name)', to: 'results#profiles'
+  get 'results/top_tens/(:year_name)', to: 'results#top_tens'
 end

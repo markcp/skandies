@@ -13,23 +13,61 @@ class Movie < ActiveRecord::Base
 
   before_validation :compute_title_index
 
-  def picture_results_display
-    "#{title} #{picture_points}/#{picture_votes}"
+  def self.results_list(year, category)
+    if category.name == "director"
+      where("year_id = ? and director_points > 0",year.id).order(director_points: :desc, director_votes: :desc, title_index: :asc)
+    elsif category.name == "screenplay"
+      where("year_id = ? and screenplay_points > 0",year.id).order(screenplay_points: :desc, screenplay_votes: :desc, title_index: :asc)
+    else # category is best picture
+      where("year_id = ? and picture_points > 0",year.id).order(picture_points: :desc, picture_votes: :desc, title_index: :asc)
+    end
   end
 
-  def director_results_display
-    "#{director_name}, #{title} #{director_points}/#{director_votes}"
+  def self.ratings_results_list(year)
+    where("year_id = ? and nbr_ratings > 4", year.id).order(average_rating: :desc, title_index: :asc)
   end
 
-  def screenplay_results_display
-    "#{screenwriter_name}, #{title} #{screenplay_points}/#{screenplay_votes}"
+  def self.less_than_five_ratings(year)
+    where("year_id = ? and nbr_ratings < 5 and nbr_ratings > 0",year.id).order(title_index: :asc)
+  end
+
+  def self.zero_ratings(year)
+    where(year: year, nbr_ratings: 0).order(title_index: :asc)
+  end
+
+  def ratings_results_display_format
+    if nbr_ratings < 10
+      "(" + title + ")"
+    else
+      title
+    end
+  end
+
+  def points_in_category(category)
+    if category.name == "director"
+      director_points
+    elsif category.name == "screenplay"
+      screenplay_points
+    else
+      picture_points
+    end
+  end
+
+  def nbr_votes_in_category(category)
+    if category.name == "director"
+      director_votes
+    elsif category.name == "screenplay"
+      screenplay_votes
+    else
+      picture_votes
+    end
   end
 
   def director_name
     if director_display
       director_display
     else
-      director_job = Job.where(name: "Director").first
+      director_job = Job.where(name: "director").first
       credit = credits.where(job: director_job).first
       if credit
         credit.person.name
@@ -41,7 +79,7 @@ class Movie < ActiveRecord::Base
     if screenwriter_display
       screenwriter_display
     else
-      screenwriter_job = Job.where(name: "Screenwriter").first
+      screenwriter_job = Job.where(name: "screenwriter").first
       credit = credits.where(job: screenwriter_job).first
       if credit
         credit.person.name

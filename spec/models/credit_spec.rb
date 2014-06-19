@@ -11,15 +11,27 @@ describe Credit do
   it { should validate_presence_of :job }
   it { should validate_presence_of :year }
 
-  it "returns a credit in results display format" do
-    credit = build_stubbed(:credit, points: 100, nbr_votes: 10)
-    expect(credit.results_display).to eq "Berenice Bejo, The Past 100/10"
+  describe "display order" do
+    let!(:year) { create(:year) }
+    let!(:category) { create(:category) }
+    let!(:person1) { create(:person, last_name: "zyx") }
+    let!(:person2) { create(:person, last_name: "abc") }
+    let!(:person3) { create(:person, last_name: "ttt") }
+    let!(:person4) { create(:person, last_name: "sss") }
+    let!(:credit1) { create(:credit, person: person1, year: year, points: 25, nbr_votes: 3, category: category) }
+    let!(:credit2) { create(:credit, person: person2, year: year, points: 50, nbr_votes: 3, category: category) }
+    let!(:credit3) { create(:credit, person: person3, year: year, points: 25, nbr_votes: 4, category: category) }
+    let!(:credit4) { create(:credit, person: person4, year: year, points: 25, nbr_votes: 4, category: category) }
+
+    it "returns credits in order by points, number of votes, and person's last name" do
+      expect(Credit.results_list(year,category)).to eq([credit2, credit4, credit3, credit1])
+    end
   end
 
   describe "number of votes and points computation by category" do
     let!(:credit) { create(:credit) }
-    let!(:actress_category) { create(:category, name: "Actress") }
-    let!(:actor_category) { create(:category, name: "Actor") }
+    let!(:actress_category) { create(:category, name: "actress") }
+    let!(:actor_category) { create(:category, name: "actor") }
     let!(:v1) { create(:vote, credit: credit, category: actress_category, points: 10) }
     let!(:v2) { create(:vote, credit: credit, category: actress_category, points: 5) }
 
@@ -49,8 +61,8 @@ describe Credit do
     let!(:credit_with_votes_in_two_categories) { create(:credit) }
     let!(:credit_with_equal_number_of_votes_in_two_categories) { create(:credit) }
     let!(:credit_with_equal_number_of_votes_and_points_in_two_categories) { create(:credit) }
-    let!(:actress_category) { create(:category, name: "Actress") }
-    let!(:supporting_actress_category) { create(:category, name: "Supporting Actress") }
+    let!(:actress_category) { create(:category, name: "actress") }
+    let!(:supporting_actress_category) { create(:category, name: "supporting actress") }
     let!(:v1) { create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
     let!(:v2) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }
     let!(:v3) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 5) }
@@ -92,8 +104,8 @@ describe Credit do
   describe "total points and total number of votes computation for results purposes" do
     let!(:credit) { create(:credit) }
     let!(:credit_with_votes_in_two_categories) { create(:credit) }
-    let!(:actress_category) { create(:category, name: "Actress") }
-    let!(:supporting_actress_category) { create(:category, name: "Supporting Actress") }
+    let!(:actress_category) { create(:category, name: "actress") }
+    let!(:supporting_actress_category) { create(:category, name: "supporting actress") }
     let!(:v1) { create(:vote, credit: credit, category: supporting_actress_category, points: 10) }
     let!(:v2) { create(:vote, credit: credit, category: supporting_actress_category, points: 5) }
     let!(:v3) { create(:vote, credit: credit_with_votes_in_two_categories, category: supporting_actress_category, points: 10) }

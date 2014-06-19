@@ -7,8 +7,8 @@ class Scene < ActiveRecord::Base
   validates :movie, presence: true
   validates :year, presence: true
 
-  def results_display
-    "#{title}, #{movie.title} #{points}/#{nbr_votes}"
+  def self.results_list(year)
+    where("year_id = ? and points > 0", year.id).order(points: :desc, nbr_votes: :desc, title: :asc)
   end
 
   def compute_points

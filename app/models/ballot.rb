@@ -9,6 +9,14 @@ class Ballot < ActiveRecord::Base
   validates :year, presence: true
   validates :complete, inclusion: [ true, false ]
 
+  def self.by_nbr_ratings(year)
+    joins(:user).where("year_id = ? and nbr_ratings > 0", year.id).order("nbr_ratings DESC, users.last_name ASC")
+  end
+
+  def self.by_user_name(year)
+    joins(:user).where("year_id = ?", year.id).order("users.last_name ASC")
+  end
+
   def compute_total_nbr_ratings
     ratings.count
   end

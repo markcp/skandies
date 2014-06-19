@@ -9,6 +9,14 @@ class Year < ActiveRecord::Base
   validates :close_voting, presence: true
   validates :display_results, presence: true
 
+  def self.get_display_year(year)
+    if year
+      where("name = ? and display_results < ?", year, Time.zone.now ).last
+    else
+      where("display_results < ?", Time.zone.now).last
+    end
+  end
+
   def eligible_movies_by_average_rating
     movies.where("nbr_ratings > 4").order(average_rating: :desc, title_index: :asc)
   end
@@ -54,9 +62,9 @@ class Year < ActiveRecord::Base
   end
 
   def save_movie_vote_results
-    picture_category = Category.where(name: "Picture").first
-    director_category = Category.where(name: "Director").first
-    screenplay_category = Category.where(name: "Screenplay").first
+    picture_category = Category.where(name: "picture").first
+    director_category = Category.where(name: "director").first
+    screenplay_category = Category.where(name: "screenplay").first
     movies.each do |m|
       m.picture_points = m.compute_points(picture_category)
       m.picture_votes = m.compute_votes(picture_category)
@@ -99,6 +107,9 @@ class Year < ActiveRecord::Base
       m.one_pt_five_ratings = m.compute_nbr_ratings(1.5)
       m.one_ratings = m.compute_nbr_ratings(1.0)
       m.zero_ratings = m.compute_nbr_ratings(0.0)
+      if m.compute_total_nbr_ratings > 1
+        m.standard_dev = m.compute_standard_dev
+      end
       m.save
     end
   end

@@ -69,28 +69,24 @@ describe Year do
 
   # describe "save best picture, director, and screenplay voting results on movie records" do
   #   let!(:year) { create(:year) }
-  #   let!(:picture_category) { create(:category, name: "Picture") }
-  #   let!(:director_category) { create(:category, name: "Director") }
-  #   let!(:screenplay_category) { create(:category, name: "Screenplay") }
+  #   let!(:picture_category) { create(:category, name: "picture") }
+  #   let!(:director_category) { create(:category, name: "director") }
+  #   let!(:screenplay_category) { create(:category, name: "screenplay") }
   #   let!(:movie) { create(:movie, year: year) }
   #   let!(:v1) { create(:vote, movie: movie, credit_id: nil, category: picture_category, points: 10) }
   #   let!(:v2) { create(:vote, movie: movie, credit_id: nil, category: director_category, points: 5) }
   #   let!(:v3) { create(:vote, movie: movie, credit_id: nil, category: screenplay_category, points: 15) }
 
-  #   before { year.save_movie_vote_results }
-
   #   it "should save correct best picture point value to movie record" do
-  #     puts movie.picture_points
-  #     puts year.save_movie_vote_results.to_s
-  #     movie.save
-  #     puts movie.picture_points
+  #     year.save_movie_vote_results
+
+  #     # movie.picture_points = movie.compute_points(picture_category)
+  #     # puts movie.picture_points.to_s + "alkdsjf"
   #     expect(movie.picture_points).to eq(10)
   #     expect(movie.picture_votes).to eq(1)
   #   end
 
   #   it "should save correct best director point value to movie record" do
-  #     puts movie.director_points
-  #     puts year.save_movie_vote_results.to_s
   #     expect(movie.director_points).to eq(5)
   #     expect(movie.director_votes).to eq(1)
   #   end
@@ -104,7 +100,6 @@ describe Year do
   #   before { year.save_movie_vote_results }
 
   #   it "should save correct best picture point value to movie record" do
-  #     puts credit.compute_results_category
   #     expect(credit.points).to eq(10)
   #     expect(credit.nbr_votes).to eq(1)
   #   end
