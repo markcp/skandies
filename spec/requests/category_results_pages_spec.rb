@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "Results pages" do
+describe "Category results pages" do
 
   describe "voting results page - best picture" do
     let!(:year) { create(:year) }
