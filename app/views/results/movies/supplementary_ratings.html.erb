@@ -1,4 +1,4 @@
-<h1>Supplementary Ratings</h1>
+<h1>Supplementary Ratings <%= @year.name %></h1>
 
 <h2>Films with fewer than five ratings</h2>
 <ul>
@@ -8,8 +8,8 @@
     <% length = m.ratings.length %>
     <% if i == 0 %>(<% end %><%= r.ballot.user.last_name %> <%= r.value %><% if i != length - 1 %>, <% else %>)<% end %>
   <% end %>
-
-<% end %></li>
+  <li>
+<% end %>
 </ul>
 
 <h2>Films shunned by all and sundry</h2>
