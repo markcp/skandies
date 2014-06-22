@@ -17,6 +17,22 @@ class Ballot < ActiveRecord::Base
     joins(:user).where("year_id = ?", year.id).order("users.last_name ASC")
   end
 
+  def movie_votes_by_points(category)
+    votes.joins(:movie).where(category: category).order("points DESC, movies.title_index ASC")
+  end
+
+  def credit_votes_by_points(category)
+    votes.joins(credit: :person).where(category: category).order("points DESC, people.last_name ASC")
+  end
+
+  def scene_votes_by_points
+    votes.joins(:scene).where(category: Category.best_scene).order("points DESC, scenes.title ASC")
+  end
+
+  def ratings_by_movie_title
+    ratings.joins(:movie).order("movies.title_index ASC")
+  end
+
   def compute_total_nbr_ratings
     ratings.count
   end
