@@ -4,6 +4,7 @@ ruby '2.1.2'
 gem 'rails', '4.1.0'
 gem 'pg'
 gem 'mysql'
+gem 'foundation-rails'
 
 group :development do
   gem 'spring'
