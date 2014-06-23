@@ -55,10 +55,4 @@ Rails.application.routes.draw do
   #   end
   #   resources :posts, concerns: :toggleable
   #   resources :photos, concerns: :toggleable
-
-  get 'results/performance/:id', to: 'results#performance'
-  get 'results/scene/:id', to: 'results#scene'
-  get 'results/ratings/(:year_name)', to: 'results#ratings'
-  get 'results/profiles/(:year_name)', to: 'results#profiles'
-  get 'results/top_tens/(:year_name)', to: 'results#top_tens'
 end
