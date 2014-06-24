@@ -1,0 +1,24 @@
+<div id="home">
+
+  <h1>The <%= @year.name %> Skander Halim Memorial Survey<sup>*</sup></h1>
+
+  <ul>
+    <li><%= link_to "Results", results_category_path(Category.best_picture) %></li>
+    <li><%= link_to "Ratings", results_movies_path %></li>
+    <li><%= link_to "Participants", results_ballots_path %></li>
+    <li class="last"><%= link_to "Top Tens", results_top_ten_entries_path %></li>
+  </ul>
+
+  <h2>Past results</h2>
+  <ul>
+    <% @years.each do |year| %>
+      <% if year.name.to_i < 2006 %>
+        <li><%= link_to year.name, page_path('results_' + year.name) %></li>
+      <% else %>
+        <li><%= link_to year.name, results_category_path(Category.best_picture, year: year.name) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+
+  <p class="disclaimer">* Better known as the Skandies. Also, Skander Halim is still alive, so far.</p>
+</div>

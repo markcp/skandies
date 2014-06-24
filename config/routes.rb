@@ -1,9 +1,15 @@
-
 Rails.application.routes.draw do
 
+  root 'results/years#index'
+
   namespace :results do
-    resources :categories, :credits, :ballots, :top_ten_entries, :scenes
-    resources :movies do
+    resources :categories, only: :show
+    resources :credits, only: :show
+    resources :ballots, only: [:index, :show]
+    resources :top_ten_entries, only: :index
+    resources :scenes, only: [:index, :show]
+    resources :years, only: :index
+    resources :movies, only: [:index, :show] do
       get 'supplementary_ratings', on: :collection
     end
   end

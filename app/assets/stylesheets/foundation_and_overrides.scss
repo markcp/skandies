@@ -30,9 +30,9 @@
 // $include-print-styles: true;
 // $include-html-global-classes: $include-html-classes;
 
-// Grid 
+// Grid
 
-// $include-html-block-grid-classes: $include-html-classes; 
+// $include-html-block-grid-classes: $include-html-classes;
 // $include-xl-html-grid-classes: false;
 
 // $row-width: rem-calc(1000);
@@ -135,7 +135,9 @@
 
 // We use these to control header font sizes
 // $h1-font-size: rem-calc(44);
+// $h1-font-size: rem-calc(27);
 // $h2-font-size: rem-calc(37);
+// $h2-font-size: rem-calc(23);
 // $h3-font-size: rem-calc(27);
 // $h4-font-size: rem-calc(23);
 // $h5-font-size: rem-calc(18);
@@ -177,10 +179,10 @@
 // $code-font-weight: $font-weight-bold;
 
 // We use these to style anchors
-// $anchor-text-decoration: none;
-// $anchor-text-decoration-hover: none;
-// $anchor-font-color: $primary-color;
-// $anchor-font-color-hover: scale-color($primary-color, $lightness: -14%);
+$anchor-text-decoration: underline;
+$anchor-text-decoration-hover: underline;
+$anchor-font-color: #801D2F;
+$anchor-font-color-hover: scale-color(#801D2F, $lightness: -14%);
 
 // We use these to style the <hr> element
 // $hr-border-width: 1px;

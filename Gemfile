@@ -5,6 +5,7 @@ gem 'rails', '4.1.0'
 gem 'pg'
 gem 'mysql'
 gem 'foundation-rails'
+gem 'high_voltage'
 
 group :development do
   gem 'spring'

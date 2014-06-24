@@ -9,6 +9,20 @@ class Year < ActiveRecord::Base
   validates :close_voting, presence: true
   validates :display_results, presence: true
 
+  def self.current
+    where("display_results < ?", Time.zone.now).last
+  end
+
+  def self.all_but_current
+    year_array = []
+    where("display_results < ?", Time.zone.now).all.each do |y|
+      if y != Year.current
+        year_array << y
+      end
+    end
+    year_array
+  end
+
   def self.get_display_year(year)
     if year
       where("name = ? and display_results < ?", year, Time.zone.now ).last
