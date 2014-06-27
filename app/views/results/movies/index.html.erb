@@ -1,11 +1,17 @@
-<h1>Ratings <%= @year.name %></h1>
+<%= render 'results/shared/results_header', year: @year %>
 
-<table>
+<h2 id="results-title">Average Ratings</h2>
+
+<p class="explanation">Ratings were assigned using a Maltin-style four-star system, with no 0.5 rating. N = number of participants who rated that film. Dev. = standard deviation; the higher the number, the greater the disagreement among voters. Titles in parentheses signify fewer than ten votes -- just an indication to take the rating with a pinch of salt.</p>
+
+<p class="supplementary-ratings-link"><%= link_to "Films with fewer than five ratings", supplementary_ratings_results_movies_path(year: @year.name) %></p>
+
+<table id="results-table">
   <tr>
     <th>Rank</th>
-    <th>Title</th>
-    <th>Avg</th>
-    <th>Nbr</th>
+    <th>Movie</th>
+    <th>Avg.</th>
+    <th>N</th>
     <th>4</th>
     <th>3.5</th>
     <th>3</th>
@@ -14,7 +20,7 @@
     <th>1.5</th>
     <th>1</th>
     <th>0</th>
-    <th>Standard Dev</th>
+    <th>Dev.</th>
   </tr>
   <% hold_avg_rating = 0 %>
   <% @movies.each_with_index do |m, i| %>

@@ -1,6 +1,10 @@
-<h1>Respondent Profiles <%= @year.name %></h1>
+<%= render 'results/shared/results_header', year: @year %>
 
-<table>
+<h2 id="results-title">Respondent Profiles</h2>
+
+<p class="explanation">Self-explanatory, except for "Sel." This is the Selectivity index, which sorta vaguely suggests each participant's propensity to see films closer to the top of the ranked averages list than the bottom; a viewer seeing n films on the list would have an index of 100 if (s)he'd seen the top n films, and an index of zero if (s)he'd seen the bottom n.</p>
+
+<table id="results-table">
   <tr>
     <th>Name</th>
     <th>N</th>
@@ -17,7 +21,7 @@
   </tr>
   <% @ballots.each do |b| %>
     <tr>
-      <td><%= b.user.name %></td>
+      <td><%= link_to b.user.name, results_ballot_path(b) %></td>
       <td><%= b.nbr_ratings %></td>
       <td><%= b.four_ratings %></td>
       <td><%= b.three_pt_five_ratings %></td>

@@ -1,8 +1,21 @@
 <%= render 'results/shared/results_header', year: @year %>
 
-<h1>Best <%= @category.name.titleize %> <%= @year.name %></h1>
+<p class="explanation">RULES: Participants divvied up 100 points among ten "nominees" in each category, with a maximum of 30 points for any given selection and a minimum of 5 points. Results are expressed as points/votes.</p>
 
-<table>
+<dl class="sub-nav">
+  <dt>Category:</dt>
+<% @categories.each do |category| %>
+  <% if category == @category %>
+    <dd class="active"><%= link_to category.name.capitalize, results_category_path(category, year: @year.name) %></dd>
+  <% else %>
+    <dd><%= link_to category.name.capitalize, results_category_path(category, year: @year.name) %></dd>
+  <% end %>
+<% end %>
+</dl>
+
+<h2 id="results-title">Best <%= @category.name.titleize %></h2>
+
+<table id="results-table">
   <tr>
     <th>Rank</th>
     <% if @category.name != "picture" && @category.name != "scene" %>

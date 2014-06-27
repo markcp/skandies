@@ -1,16 +1,24 @@
-<h1>Top Ten Lists <%= @year.name %></h1>
+<%= render 'results/shared/results_header', year: @year %>
 
-<% @ballots.each do |b| %>
-  <% if b.top_ten_entries.length > 0 %>
-    <h2><%= b.user.name %></h2>
-    <ul>
-      <% b.top_ten_entries.by_rank.each do |tte| %>
-        <% if tte.rank == 0 %>
-          <li><%= tte.value %></li>
-        <% else %>
-          <li><%= tte.rank %>. <%= tte.value %></li>
-        <% end %>
+<h2 id="results-title">Top Ten Lists</h2>
+
+<div id="top-tens">
+  <% @ballots.each do |b| %>
+    <% if b.top_ten_entries.length > 0 %>
+      <h3><%= b.user.name %></h3>
+      <% if b.top_ten_entries[0].rank == 0 %>
+        <ul class="top-ten-unranked">
+      <% else %>
+        <ol class="top-ten">
       <% end %>
-    </ul>
+      <% b.top_ten_entries.by_rank.each do |tte| %>
+          <li><%= tte.value %></li>
+      <% end %>
+      <% if b.top_ten_entries[0].rank == 0 %>
+        </ul>
+      <% else %>
+        </ol>
+      <% end %>
+    <% end %>
   <% end %>
-<% end %>
+</div>

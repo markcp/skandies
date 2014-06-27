@@ -1,20 +1,33 @@
-<h1>Supplementary Ratings <%= @year.name %></h1>
+<%= render "results/shared/results_header", year: @year %>
 
-<h2>Films with fewer than five ratings</h2>
-<ul>
-<% @movies.each do |m| %>
-  <li><%= m.title %>
-  <% m.ratings.each_with_index do |r, i| %>
-    <% length = m.ratings.length %>
-    <% if i == 0 %>(<% end %><%= r.ballot.user.last_name %> <%= r.value %><% if i != length - 1 %>, <% else %>)<% end %>
+<h2 id="results-title">Supplementary Ratings <%= @year.name %></h2>
+
+<h3 class="results-subtitle">Films seen by less than five voters</h3>
+<table id="results-table">
+  <tr>
+    <th>Movie</th>
+    <th>Avg.</th>
+    <th>Votes</th>
+  </tr>
+  <% @movies.each do |m| %>
+    <tr>
+      <td><%= m.title %></td>
+      <td><%= m.average_rating %></td>
+      <td>
+        <% m.ratings.each_with_index do |r, i| %>
+          <% if i == 0 %>(<% end %><%= r.ballot.user.last_name %> <%= r.value %><% if i != m.ratings.length - 1 %>, <% else %>)<% end %>
+        <% end %>
+      </td>
+    </tr>
   <% end %>
-  <li>
-<% end %>
-</ul>
+</table>
 
-<h2>Films shunned by all and sundry</h2>
-<ul>
-<% @shunned_movies.each do |sm| %>
-  <li><%= sm.title %></li>
-<% end %>
-</ul>
+<h3 class="results-subtitle">Films shunned by all and sundry</h3>
+
+<table id="shunned-movies-table">
+  <% @shunned_movies.each do |sm| %>
+    <tr>
+      <td><%= sm.title %></td>
+    </tr>
+  <% end %>
+</table>

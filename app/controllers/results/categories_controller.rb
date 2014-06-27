@@ -2,6 +2,7 @@ class Results::CategoriesController < ApplicationController
   def show
     @year = Year.get_display_year(params[:year])
     @category = Category.find(params[:id])
+    @categories = Category.all
 
     if @category.name == "director" || @category.name == "picture" || @category.name == "screenplay"
       @movies = Movie.results_list(@year, @category)
