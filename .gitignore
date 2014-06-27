@@ -10,7 +10,6 @@
 
 # Ignore secret files.
 database.yml
-secrets.yml
 
 # Ignore other unneeded files.
 doc/
