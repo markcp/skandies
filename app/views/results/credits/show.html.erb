@@ -1,6 +1,8 @@
-<h1>Best <%= @category.name.capitalize %> votes for <%= @credit.person.name %> in <%= @credit.movie.title %></h1>
+<%= render 'results/shared/results_header', year: @credit.year %>
 
-<ul>
+<h2 id="results-title">Best <%= @category.name.capitalize %> votes for <%= @credit.person.name %> in <em><%= @credit.movie.title %></em></h2>
+
+<ul id="credit-votes">
   <% additional_category = false %>
   <% @votes.each do |v| %>
     <li><%= v.ballot.user.name %> <%= v.points %>

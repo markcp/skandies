@@ -1,11 +1,11 @@
 <%= render 'results/shared/results_header', year: @movie.year %>
 
 <% if @category.name == "screenplay" %>
-  <h2 id="results-title">Best Screenplay votes for <%= @movie.screenwriter_name %>, <%= @movie.title %></h2>
+  <h2 id="results-title">Best Screenplay votes for <%= @movie.screenwriter_name %>, <em><%= @movie.title %></em></h2>
 <% elsif @category.name == "director" %>
-  <h2 id="results-title">Best Director votes for <%= @movie.director_name %>, <%= @movie.title %></h2>
+  <h2 id="results-title">Best Director votes for <%= @movie.director_name %>, <em><%= @movie.title %></em></h2>
 <% else %>
-  <h2 id="results-title">Best Picture votes for <%= @movie.title %></h2>
+  <h2 id="results-title">Best Picture votes for <em><%= @movie.title %></em></h2>
 <% end %>
 
 <ul id="movie-votes">
