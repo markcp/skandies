@@ -1,6 +1,8 @@
-<h1>Best Scene votes for <%= @scene.title %> in <%= @scene.movie.title %></h1>
+<%= render 'results/shared/results_header', year: @scene.year %>
 
-<ul>
+<h2 id="results-title">Best Scene votes for <%= @scene.title %>, <em><%= @scene.movie.title %></em></h2>
+
+<ul id="movie-votes">
   <% @votes.each do |v| %>
     <li><%= v.ballot.user.name %> <%= v.points %></li>
   <% end %>
