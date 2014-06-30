@@ -7,7 +7,7 @@ class Results::MoviesController < ApplicationController
   def show
     @category = Category.find(params[:category])
     @movie = Movie.find(params[:id])
-    @votes = @movie.votes.by_points_and_user_name(@category)
+    @votes = @movie.votes.by_category_and_points_and_user_name(@category)
   end
 
   def supplementary_ratings

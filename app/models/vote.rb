@@ -15,6 +15,10 @@ class Vote < ActiveRecord::Base
     joins(ballot: :user).order("points DESC, users.last_name ASC")
   end
 
+  def self.by_category_and_points_and_user_name(category)
+    joins(ballot: :user).where( category: category).order("points DESC, users.last_name ASC")
+  end
+
   def correct_voting_object
     if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
       return true
