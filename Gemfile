@@ -8,11 +8,13 @@ gem 'foundation-rails'
 gem 'high_voltage'
 
 group :development do
-  gem 'spring'
   gem 'spring-commands-rspec'
 end
 
 group :development, :test do
+  gem 'byebug'
+  gem 'web-console', '~> 2.0.0.beta2'
+  gem 'spring'
   gem 'rspec-rails'
   gem 'guard-rspec'
   gem 'factory_girl_rails'
@@ -34,6 +36,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
+gem 'rails-html-sanitizer', '~> 1.0'
 
 group :doc do
   gem 'sdoc', require: false
