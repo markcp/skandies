@@ -28,6 +28,9 @@ group :test do
   gem 'capybara'
   gem 'terminal-notifier-guard'
   gem 'shoulda-matchers'
+  gem 'minitest-reporters'
+  gem 'mini_backtrace'
+  gem 'guard-minitest'
 end
 
 gem 'sass-rails', '~> 5.0.0.beta1'
