@@ -7,30 +7,17 @@ gem 'mysql'
 gem 'foundation-rails'
 gem 'high_voltage'
 
-group :development do
-  gem 'spring-commands-rspec'
-end
-
 group :development, :test do
   gem 'byebug'
   gem 'web-console', '~> 2.0.0.beta2'
   gem 'spring'
-  gem 'rspec-rails'
-  gem 'guard-rspec'
-  gem 'factory_girl_rails'
 end
 
 group :test do
-  gem 'faker'
-  gem 'database_cleaner'
-  gem 'launchy'
-  gem 'selenium-webdriver'
-  gem 'capybara'
-  gem 'terminal-notifier-guard'
-  gem 'shoulda-matchers'
   gem 'minitest-reporters'
   gem 'mini_backtrace'
   gem 'guard-minitest'
+  gem 'terminal-notifier-guard'
 end
 
 gem 'sass-rails', '~> 5.0.0.beta1'
