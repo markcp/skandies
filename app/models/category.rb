@@ -21,11 +21,11 @@ class Category < ActiveRecord::Base
   end
 
   def self.best_supporting_actress
-    where(name: "actress").last
+    where(name: "supporting actress").last
   end
 
   def self.best_supporting_actor
-    where(name: "actor").last
+    where(name: "supporting actor").last
   end
 
   def self.best_screenplay
