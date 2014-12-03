@@ -1,0 +1,16 @@
+henry:
+  first_name: Henry
+  last_name: Spencer
+  email: hspencer@example.com
+
+madonna:
+  first_name:
+  last_name: Madonna
+  email: madonna@example.com
+
+yuen:
+  first_name: Woo-ping
+  last_name: Yuen
+  last_name_first: true
+  email: ywoo-ping@example.com
+

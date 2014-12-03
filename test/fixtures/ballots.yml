@@ -1,0 +1,5 @@
+henrys_ballot:
+  user: :henry
+  year: :year
+  complete: false
+

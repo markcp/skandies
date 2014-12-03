@@ -7,9 +7,9 @@ class Person < ActiveRecord::Base
 
   def name
     if last_name_first
-      "#{last_name} #{first_name}"
+      "#{last_name} #{first_name}".strip
     else
-      "#{first_name} #{last_name}"
+      "#{first_name} #{last_name}".strip
     end
   end
 
