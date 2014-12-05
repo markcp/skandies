@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :movies, only: [:index, :show] do
       get 'supplementary_ratings', on: :collection
     end
+    resources :users
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
