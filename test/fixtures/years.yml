@@ -1,0 +1,5 @@
+open_year:
+  name: 2014
+  open_voting: <% Time.now - 2.weeks %>
+  close_voting: <% Time.now + 2.weeks %>
+  display_results: <% Time.now + 3.weeks %>

@@ -1,0 +1,11 @@
+actor:
+  name: actor
+
+actress:
+  name: actress
+
+supporting_actor:
+  name: supporting actor
+
+supporting_actress:
+  name: supporting actress

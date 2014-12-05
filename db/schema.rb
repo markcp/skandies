@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140522013342) do
+ActiveRecord::Schema.define(version: 20141205221222) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "ballots", ["year_id", "nbr_ratings"], name: "index_ballots_on_year_id_and_nbr_ratings", using: :btree
 
   create_table "categories", force: true do |t|
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -63,17 +63,17 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "credits", ["year_id", "results_category_id", "points", "nbr_votes"], name: "index_credits_on_results_fields", using: :btree
 
   create_table "jobs", force: true do |t|
-    t.string   "name"
+    t.string   "name",       limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "movies", force: true do |t|
-    t.string   "title"
-    t.string   "title_index"
+    t.string   "title",                 limit: 255
+    t.string   "title_index",           limit: 255
     t.integer  "year_id"
-    t.string   "director_display"
-    t.string   "screenwriter_display"
+    t.string   "director_display",      limit: 255
+    t.string   "screenwriter_display",  limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "picture_points"
@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.integer  "screenplay_points"
     t.integer  "screenplay_votes"
     t.integer  "nbr_ratings"
-    t.decimal  "average_rating",        precision: 3, scale: 2
+    t.decimal  "average_rating",                    precision: 3, scale: 2
     t.integer  "four_ratings"
     t.integer  "three_pt_five_ratings"
     t.integer  "three_ratings"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
     t.integer  "one_pt_five_ratings"
     t.integer  "one_ratings"
     t.integer  "zero_ratings"
-    t.decimal  "standard_dev",          precision: 3, scale: 2
+    t.decimal  "standard_dev",                      precision: 3, scale: 2
   end
 
   add_index "movies", ["year_id", "average_rating"], name: "index_movies_on_year_id_and_average_rating", using: :btree
@@ -102,10 +102,10 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "movies", ["year_id", "title_index"], name: "index_movies_on_year_id_and_title_index", using: :btree
 
   create_table "people", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "gender"
-    t.boolean  "last_name_first", default: false
+    t.string   "first_name",      limit: 255
+    t.string   "last_name",       limit: 255
+    t.string   "gender",          limit: 255
+    t.boolean  "last_name_first",             default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "ratings", ["movie_id"], name: "index_ratings_on_movie_id", using: :btree
 
   create_table "scenes", force: true do |t|
-    t.string   "title"
+    t.string   "title",      limit: 255
     t.integer  "movie_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -135,7 +135,7 @@ ActiveRecord::Schema.define(version: 20140522013342) do
 
   create_table "top_ten_entries", force: true do |t|
     t.integer  "ballot_id"
-    t.string   "value"
+    t.string   "value",      limit: 255
     t.integer  "rank"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -144,12 +144,13 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "top_ten_entries", ["ballot_id"], name: "index_top_ten_entries_on_ballot_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "email"
-    t.boolean  "admin",      default: false
+    t.string   "first_name",      limit: 255
+    t.string   "last_name",       limit: 255
+    t.string   "email",           limit: 255
+    t.boolean  "admin",                       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "password_digest"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
@@ -172,10 +173,10 @@ ActiveRecord::Schema.define(version: 20140522013342) do
   add_index "votes", ["movie_id"], name: "index_votes_on_movie_id", using: :btree
 
   create_table "years", force: true do |t|
-    t.string   "name"
-    t.datetime "open_voting",     default: '2001-01-01 00:00:00'
-    t.datetime "close_voting",    default: '2001-01-01 00:00:00'
-    t.datetime "display_results", default: '2001-01-01 00:00:00'
+    t.string   "name",            limit: 255
+    t.datetime "open_voting",                 default: '2001-01-01 00:00:00'
+    t.datetime "close_voting",                default: '2001-01-01 00:00:00'
+    t.datetime "display_results",             default: '2001-01-01 00:00:00'
     t.datetime "created_at"
     t.datetime "updated_at"
   end

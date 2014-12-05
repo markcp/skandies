@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 ruby '2.1.2'
 
 gem 'rails', '4.2.0.rc1'
+gem 'bcrypt'
 gem 'pg'
 gem 'mysql'
 gem 'foundation-rails'
