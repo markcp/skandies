@@ -5,6 +5,7 @@ class Results::MoviesController < ApplicationController
   end
 
   def show
+    @year = Year.get_display_year(params[:year])
     @category = Category.find(params[:category])
     @movie = Movie.find(params[:id])
     @votes = @movie.votes.by_category_and_points_and_user_name(@category)

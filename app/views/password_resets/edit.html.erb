@@ -1,0 +1,21 @@
+<% provide(:title, 'Reset password') %>
+<h2>Reset password</h2>
+
+<%= simple_form_for(@user, url: password_reset_path(params[:id])) do |f| %>
+  <%= hidden_field_tag :email, @user.email %>
+  <div class="row">
+    <div class="large-4 columns large-centered">
+      <%= f.input :password, label: "New password" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns large-centered">
+      <%= f.input :password_confirmation, label: "Confirmation" %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="large-4 columns large-centered">
+      <%= f.submit "Update password", class: "button" %>
+    </div>
+  </div>
+<% end %>

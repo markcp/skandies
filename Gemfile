@@ -7,6 +7,7 @@ gem 'pg'
 gem 'mysql'
 gem 'foundation-rails'
 gem 'high_voltage'
+gem 'simple_form'
 
 group :development, :test do
   gem 'byebug'

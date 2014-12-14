@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get 'users/edit'
+
+  get 'users/update'
+
   root 'results/years#index'
 
   namespace :results do
@@ -12,8 +16,17 @@ Rails.application.routes.draw do
     resources :movies, only: [:index, :show] do
       get 'supplementary_ratings', on: :collection
     end
-    resources :users
   end
+
+  resources :users
+  resources :ballots
+  resources :password_resets, only: [:new, :create, :edit, :update]
+
+
+  get 'login' => 'sessions#new'
+  post 'login' => 'sessions#create'
+  delete 'logout' => 'sessions#destroy'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -1,0 +1,16 @@
+<% content_for :stylesheets do %>
+  #results-menu {display: none}
+<% end %>
+<% content_for :content do %>
+  <div id="auth_menu">
+    <% if logged_in? %>
+      Logged in: <%= current_user.name %> |
+      <%= link_to "Log out", logout_path, method: "delete" %> |
+      <%= link_to "Change password", edit_user_path(current_user) %>
+    <% else %>
+      <%= link_to "Log in", login_path %>
+    <% end %>
+  </div>
+  <%= yield %>
+<% end %>
+<%= render template: "layouts/application" %>
