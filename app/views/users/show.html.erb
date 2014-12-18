@@ -5,9 +5,9 @@
 <ul>
 <% if @active_year_ballot %>
   <% if @active_year_ballot.complete? %>
-    <li><%= link_to "View " + @year.name + " ballot", ballot_path(@ballot) %></li>
+    <li><%= link_to "View " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% else %>
-    <li><%= link_to "Edit " + @year.name + " ballot", edit_ballot_path(@ballot) %></li>
+    <li><%= link_to "Edit " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% end %>
 <% elsif @year %>
   <li><%=  link_to "Create " + @year.name + " ballot", new_ballot_path %></li>

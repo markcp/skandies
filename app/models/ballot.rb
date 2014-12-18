@@ -39,6 +39,16 @@ class Ballot < ActiveRecord::Base
     votes.joins(:scene).where(category: Category.best_scene).order("points DESC, scenes.title ASC")
   end
 
+  def votes_by_points(category)
+    if category.name == "picture" || category.name == "director" || category.name == "screenplay"
+      votes.joins(:movie).where(category: category).order("points DESC, movies.title_index ASC")
+    elsif category.name == "scene"
+      votes.joins(:scene).where(category: Category.best_scene).order("points DESC, scenes.title ASC")
+    else
+      votes.joins(credit: :person).where(category: category).order("points DESC, people.last_name ASC")
+    end
+  end
+
   def ratings_by_movie_title
     ratings.joins(:movie).order("movies.title_index ASC")
   end

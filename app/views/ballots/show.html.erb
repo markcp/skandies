@@ -1,83 +1,26 @@
 <%= @ballot.user.name %>'s ballot for <%= @year.name %>
 
 <div class="row ballot-categories">
-  <div class="small-12 medium-6 columns">
-    <h3>Best Picture</h3>
-    <ul>
-    <% @ballot.movie_votes_by_points(Category.best_picture).each do |v| %>
-      <li><em><%= v.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-    <% if Time.now < @year.close_voting %>
-      <%= link_to "Edit category", edit_category_ballot_path(@ballot, category_id: '1') %>
-    <% end %>
-  </div>
+  <% @categories.each do |category| %>
+    <div class="small-12 medium-6 columns">
+      <h3><%= category.display_name %></h3>
+      <% if @ballot.votes_by_points(category).length == 0 %>
+        <% if Time.now < @year.close_voting %>
+          <%= link_to "Vote in this category", "#" %>
+        <% end %>
+      <% else %>
+        <ul>
+          <% @ballot.votes_by_points(category).each do |v| %>
+            <li><%= v.object_display %><% if v.movie_display %>, <em><%= v.movie_display %></em><% end %> <%= v.points %></li>
+          <% end %>
+        </ul>
+        <% if Time.now < @year.close_voting %>
+          <%= link_to "Edit category", edit_category_ballot_path(@ballot, category_id: '1') %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Director</h3>
-    <ul>
-    <% @ballot.movie_votes_by_points(Category.best_director).each do |v| %>
-      <li><%= v.movie.director_name %>, <em><%= v.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h4>Best Actress</h4>
-    <ul>
-    <% @ballot.credit_votes_by_points(Category.best_actress).each do |v| %>
-      <li><%= v.credit.person.name %>, <em><%= v.credit.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Actor</h3>
-    <ul>
-    <% @ballot.credit_votes_by_points(Category.best_actor).each do |v| %>
-      <li><%= v.credit.person.name %>, <em><%= v.credit.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Supporting Actor</h3>
-    <ul>
-    <% @ballot.credit_votes_by_points(Category.best_supporting_actor).each do |v| %>
-      <li><%= v.credit.person.name %>, <em><%= v.credit.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Supporting Actress</h3>
-    <ul>
-    <% @ballot.credit_votes_by_points(Category.best_supporting_actress).each do |v| %>
-      <li><%= v.credit.person.name %>, <em><%= v.credit.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Screenplay</h4>
-    <ul>
-    <% @ballot.movie_votes_by_points(Category.best_screenplay).each do |v| %>
-      <li><%= v.movie.screenwriter_name %>, <em><%= v.movie.title %> </em> <%= v.points %></li>
-    <% end %>
-    </ul>
-  </div>
-
-  <div class="small-12 medium-6 columns">
-    <h3>Best Scene</h3>
-    <ul>
-    <% @ballot.scene_votes_by_points.each do |v| %>
-      <li><%= v.scene.title %>, <em><%= v.scene.movie.title %></em> <%= v.points %></li>
-    <% end %>
-    </ul>
-</div>
 
 <div id="ballot-top-ten">
   <h3>Top Ten List</h3>

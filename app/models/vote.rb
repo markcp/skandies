@@ -11,17 +11,29 @@ class Vote < ActiveRecord::Base
   validates :category, presence: true
   validates :points, presence: true
 
-  def display_format
+  def object_display
     if category == Category.best_picture
-      movie.title + " " + points.to_s
+      movie.title
     elsif category == Category.best_director
-      movie.director_name + ", " + movie.title + points.to_s
+      movie.director_name
     elsif category == Category.best_screenplay
-      movie.screenwriter_name + ", " + movie.title + " " + points.to_s
+      movie.screenwriter_name
     elsif category == Category.best_scene
-      scene.title + ", " + scene.movie.title + " " + points.to_s
-    else # actor, actress, supp. actor, supp. actress
-      credit.person.name + ", " + credit.movie.title + " " + points.to_s
+      scene.title
+    else # acting categories
+      credit.person.name
+    end
+  end
+
+  def movie_display
+    if category == Category.best_picture
+      nil
+    elsif category == Category.best_director || category == Category.best_director || category == Category.best_screenplay
+      movie.title
+    elsif category == Category.best_scene
+      scene.movie.title
+    else #acting categories
+      credit.movie.title
     end
   end
 
