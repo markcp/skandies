@@ -5,6 +5,7 @@ class Results::BallotsController < ApplicationController
   end
 
   def show
+    @year = Year.get_display_year(params[:year])
     @ballot = Ballot.find(params[:id])
   end
 end

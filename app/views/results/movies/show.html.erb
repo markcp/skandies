@@ -1,5 +1,3 @@
-<%= render 'results/shared/results_header', year: @movie.year %>
-
 <% if @category.name == "screenplay" %>
   <h2 id="results-title">Best Screenplay votes for <%= @movie.screenwriter_name %>, <em><%= @movie.title %></em></h2>
 <% elsif @category.name == "director" %>

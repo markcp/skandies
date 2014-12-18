@@ -19,8 +19,12 @@ Rails.application.routes.draw do
   end
 
   resources :users
-  resources :ballots
+  resources :ballots do
+    get :edit_category, on: :member
+    get :update_category, on: :member
+  end
   resources :password_resets, only: [:new, :create, :edit, :update]
+  resources :category_vote_groups, only: [:new, :create, :edit, :update]
 
 
   get 'login' => 'sessions#new'

@@ -1,7 +1,7 @@
 <header>
-  <%= link_to "Home", root_path, id: "home-link" %>
-
   <h1>Skandies <%= @year.name %></h1>
+
+  <%= link_to "Home", root_path, id: "home-link" %>
 
   <ul id="results-menu">
     <li><%= link_to "Results", results_category_path(Category.best_picture, year: @year.name) %></li>

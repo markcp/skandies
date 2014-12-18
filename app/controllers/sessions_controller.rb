@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   def new
-    @year = Year.current
+    @year = voting_display_year
   end
 
   def create
@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
       redirect_back_or user
     else
       flash.now[:alert] = 'Invalid email/password combination'
-      @year = Year.current
+      @year = voting_display_year
       render 'new'
     end
   end

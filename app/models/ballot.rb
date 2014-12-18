@@ -9,6 +9,16 @@ class Ballot < ActiveRecord::Base
   validates :year, presence: true
   validates :complete, inclusion: [ true, false ]
 
+  def self.past_ballots_by_user(user, year)
+    past_ballots = []
+    where(user: user).order("year_id DESC").each do |ballot|
+      if ballot.year != year
+        past_ballots << ballot
+      end
+    end
+    past_ballots
+  end
+
   def self.by_nbr_ratings(year)
     joins(:user).where("year_id = ? and nbr_ratings > 0", year.id).order("nbr_ratings DESC, users.last_name ASC")
   end

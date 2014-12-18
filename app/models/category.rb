@@ -4,6 +4,10 @@ class Category < ActiveRecord::Base
 
   validates :name, presence: true
 
+  def display_name
+    "Best " + name.titleize
+  end
+
   def self.best_picture
     where( name: "picture").last
   end

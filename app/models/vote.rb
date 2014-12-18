@@ -11,6 +11,20 @@ class Vote < ActiveRecord::Base
   validates :category, presence: true
   validates :points, presence: true
 
+  def display_format
+    if category == Category.best_picture
+      movie.title + " " + points.to_s
+    elsif category == Category.best_director
+      movie.director_name + ", " + movie.title + points.to_s
+    elsif category == Category.best_screenplay
+      movie.screenwriter_name + ", " + movie.title + " " + points.to_s
+    elsif category == Category.best_scene
+      scene.title + ", " + scene.movie.title + " " + points.to_s
+    else # actor, actress, supp. actor, supp. actress
+      credit.person.name + ", " + credit.movie.title + " " + points.to_s
+    end
+  end
+
   def self.by_points_and_user_name
     joins(ballot: :user).order("points DESC, users.last_name ASC")
   end

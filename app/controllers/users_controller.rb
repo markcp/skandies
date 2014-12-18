@@ -4,12 +4,15 @@ class UsersController < ApplicationController
   before_action :correct_user,   only: [:show, :edit, :update]
 
   def show
-    @year = Year.current
+    @year = voting_display_year
+    @active_voting_year = active_voting_year
     @user = User.find(params[:id])
+    @active_year_ballot = Ballot.where(user: @user, year: @active_voting_year).last
+    @past_ballots = Ballot.past_ballots_by_user(@user, @active_voting_year)
   end
 
   def edit
-    @year = Year.current
+    @year = voting_display_year
     @user = User.find(params[:id])
   end
 
@@ -19,7 +22,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Profile updated"
       redirect_to @user
     else
-      @year = Year.current
+      @year = voting_display_year
       render 'edit'
     end
   end
@@ -29,17 +32,6 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:name, :email, :password,
                                    :password_confirmation)
-    end
-
-    # Before filters
-
-    # Confirms a logged-in user.
-    def logged_in_user
-      unless logged_in?
-        store_location
-        flash[:alert] = "Please log in."
-        redirect_to login_url
-      end
     end
 
     # Confirms the correct user.
