@@ -11,6 +11,10 @@ class Scene < ActiveRecord::Base
     where("year_id = ? and points > 0", year.id).order(points: :desc, nbr_votes: :desc, title: :asc)
   end
 
+  def self.results_list_top_25(year)
+    where("year_id = ? and points > 0", year.id).order(points: :desc, nbr_votes: :desc, title: :asc).limit(25)
+  end
+
   def compute_points
     scene_category = Category.where( name: "Scene" ).first
     points = 0

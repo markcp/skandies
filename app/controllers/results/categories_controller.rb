@@ -12,4 +12,10 @@ class Results::CategoriesController < ApplicationController
       @scenes = Scene.results_list(@year)
     end
   end
+
+  def index
+    @year = Year.get_display_year(params[:year])
+    @categories = Category.all
+  end
+
 end

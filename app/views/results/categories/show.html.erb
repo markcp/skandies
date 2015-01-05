@@ -2,6 +2,7 @@
 
 <dl class="sub-nav">
   <dt>Category:</dt>
+  <dd><%= link_to "Winners", results_categories_path %></dd>
 <% @categories.each do |category| %>
   <% if category == @category %>
     <dd class="active"><%= link_to category.name.capitalize, results_category_path(category, year: @year.name) %></dd>
@@ -11,7 +12,7 @@
 <% end %>
 </dl>
 
-<h2 id="results-title">Best <%= @category.name.titleize %></h2>
+<h2 id="results-title">Best <%= @category.name.titleize %> </h2>
 
 <table id="results-table">
   <tr>

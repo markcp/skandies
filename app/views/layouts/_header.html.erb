@@ -4,7 +4,7 @@
   <%= link_to "Home", root_path, id: "home-link" %>
 
   <ul id="results-menu">
-    <li><%= link_to "Results", results_category_path(Category.best_picture, year: @year.name) %></li>
+    <li><%= link_to "Results", results_categories_path(Category.best_picture, year: @year.name) %></li>
     <li><%= link_to "Ratings", results_movies_path(year: @year.name) %></li>
     <li><%= link_to "Participants", results_ballots_path(year: @year.name) %></li>
     <li class="last"><%= link_to "Top Tens", results_top_ten_entries_path(year: @year.name) %></li>

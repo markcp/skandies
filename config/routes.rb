@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   root 'results/years#index'
 
   namespace :results do
-    resources :categories, only: :show
+    resources :categories, only: [:index, :show]
     resources :credits, only: :show
     resources :ballots, only: [:index, :show]
     resources :top_ten_entries, only: :index

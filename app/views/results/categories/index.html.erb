@@ -1,0 +1,118 @@
+<p class="explanation">RULES: Participants divvied up 100 points among ten "nominees" in each category, with a maximum of 30 points for any given selection and a minimum of 5 points. Results are expressed as points/votes.</p>
+
+<dl class="sub-nav">
+  <dt>Category:</dt>
+  <dd class="active"><%= link_to "Winners", results_categories_path %></dd>
+  <% @categories.each do |category| %>
+    <dd><%= link_to category.name.capitalize, results_category_path(category, year: @year.name) %></dd>
+  <% end %>
+</dl>
+
+<% @categories.each do |category| %>
+  <h2 id="results-title">Best <%= category.name.titleize %></h2>
+
+  <table id="results-table">
+    <tr>
+    <th>Rank</th>
+    <% if category.name != "picture" && category.name != "scene" %>
+      <th>Name</th>
+    <% end %>
+    <th>Movie</th>
+    <th>Points/Votes</th>
+  </tr>
+  <% if category.name == "picture" || category.name == "director" || category.name == "screenplay" %>
+  <% hold_points = 0 %>
+  <% hold_votes = 0 %>
+  <% Movie.results_list(@year, category).each_with_index do |m, i| %>
+    <% points_in_category = m.points_in_category(category) %>
+    <% nbr_votes_in_category = m.nbr_votes_in_category(category) %>
+    <% if i > 19 && (points_in_category != hold_points || nbr_votes_in_category != hold_votes) %>
+    <% else %>
+      <tr>
+        <% if points_in_category == hold_points && nbr_votes_in_category == hold_votes %>
+          <td>&nbsp;</td>
+        <% else %>
+          <td><%= i + 1 %></td>
+        <% end %>
+        <% hold_points = points_in_category %>
+        <% hold_votes = nbr_votes_in_category %>
+        <% if category.name == "director" %>
+          <td><%= link_to m.director_name, results_movie_path(m, category: category.id) %></td>
+          <td><%= m.title %></td>
+        <% elsif category.name == "screenplay" %>
+          <td><%= link_to m.screenwriter_name, results_movie_path(m, category: category.id) %></td>
+          <td><%= m.title %></td>
+        <% else %>
+          <td><%= link_to m.title, results_movie_path(m, category: category.id) %></td>
+        <% end %>
+        <td><%= points_in_category %> / <%= nbr_votes_in_category %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  <tr>
+    <% if category == Category.best_picture %>
+      <td colspan="3" class="full-results-link">
+    <% else %>
+      <td colspan="4" class="full-results-link">
+    <% end %>
+      <%= link_to "View full results", results_category_path(category, year: @year.name), class: "full-results-link" %>
+    </td>
+  </tr>
+<% elsif category.name == "scene" %>
+  <% hold_points = 0 %>
+  <% hold_votes = 0 %>
+  <% Scene.results_list_top_25(@year).each_with_index do |s, i| %>
+    <% if i > 19 && (s.points != hold_points || s.nbr_votes != hold_votes) %>
+    <% else %>
+      <tr>
+        <% if s.points == hold_points && s.nbr_votes == hold_votes %>
+          <td>&nbsp;</td>
+        <% else %>
+          <td><%= i + 1 %></td>
+        <% end %>
+        <% hold_points = s.points %>
+        <% hold_votes = s.nbr_votes %>
+        <td><%= link_to s.title, results_scene_path(s) %></td>
+        <td><%= s.movie.title %></td>
+        <td><%= s.points %> / <%= s.nbr_votes %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  <tr>
+    <td colspan="4" class="full-results-link">
+      <%= link_to "View full results", results_category_path(category, year: @year.name), class: "full-results-link" %>
+    </td>
+  </tr>
+<% else %>
+  <% hold_points = 0 %>
+  <% hold_votes = 0 %>
+  <% Credit.results_list(@year,category).each_with_index do |c, i| %>
+    <% if i > 19 && (c.points != hold_points || c.nbr_votes != hold_votes) %>
+    <% else %>
+      <tr>
+        <% if c.points == hold_points && c.nbr_votes == hold_votes %>
+          <td>&nbsp;</td>
+        <% else %>
+          <td><%= i + 1 %></td>
+        <% end %>
+        <% hold_points = c.points %>
+        <% hold_votes = c.nbr_votes %>
+        <td><%= link_to c.person.name, results_credit_path(c, category: category.id) %></td>
+        <td><%= c.movie.title %></td>
+        <td><%= c.points %> / <%= c.nbr_votes %></td>
+      </tr>
+    <% end %>
+  <% end %>
+  <tr>
+    <td colspan="4" class="full-results-link">
+      <%= link_to "View full results", results_category_path(category, year: @year.name), class: "full-results-link" %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<div class="full-results-link">
+
+</div>
+<% end %>
+
+
