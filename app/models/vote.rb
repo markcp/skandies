@@ -5,11 +5,24 @@ class Vote < ActiveRecord::Base
   belongs_to :credit
   belongs_to :movie
   belongs_to :scene
+  belongs_to :category_vote_group
 
-  validate :correct_voting_object
+  # validate :correct_voting_object
   validates :ballot, presence: true
   validates :category, presence: true
-  validates :points, presence: true
+  validates :points, presence: true, inclusion: { in: 5..30, allow_nil: true, message: 'must be > 5 and < 30' }
+  validates :movie_id, presence: true
+  # validate :value_is_not_blank_if_acting_or_scene_vote
+
+  default_scope { order('points DESC') }
+
+  attr_accessor :vote_movie_id
+
+  def value_is_not_blank_if_acting_or_scene_vote
+    if category != Category.best_picture && category != Category.best_director && category != Category.best_screenplay
+      errors.add(:value, "can't be blank.") if value.blank?
+    end
+  end
 
   def object_display
     if category == Category.best_picture
@@ -19,9 +32,9 @@ class Vote < ActiveRecord::Base
     elsif category == Category.best_screenplay
       movie.screenwriter_name
     elsif category == Category.best_scene
-      scene.title
+      value
     else # acting categories
-      credit.person.name
+      value ? value : credit.person.name
     end
   end
 
@@ -31,9 +44,9 @@ class Vote < ActiveRecord::Base
     elsif category == Category.best_director || category == Category.best_director || category == Category.best_screenplay
       movie.title
     elsif category == Category.best_scene
-      scene.movie.title
+      movie ? movie.title : scene.movie.title
     else #acting categories
-      credit.movie.title
+      movie ? movie.title : credit.movie.title
     end
   end
 
@@ -45,17 +58,17 @@ class Vote < ActiveRecord::Base
     joins(ballot: :user).where( category: category).order("points DESC, users.last_name ASC")
   end
 
-  def correct_voting_object
-    if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
-      return true
-    elsif self.credit_id.blank? && !self.movie_id.blank? && self.scene_id.blank? # movie vote (picture, director or screenplay)
-      return true
-    elsif self.credit_id.blank? && self.movie_id.blank? && !self.scene_id.blank? # scene vote
-      return true
-    elsif self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank?
-      errors.add(:credit_id, "Must have a voting object.")
-    else
-      errors.add(:credit_id, "Incorrect voting object.")
-    end
-  end
+  # def correct_voting_object
+  #   if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
+  #     return true
+  #   elsif self.credit_id.blank? && !self.movie_id.blank? && self.scene_id.blank? # movie vote (picture, director or screenplay)
+  #     return true
+  #   elsif self.credit_id.blank? && self.movie_id.blank? && !self.scene_id.blank? # scene vote
+  #     return true
+  #   elsif self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank?
+  #     errors.add(:credit_id, "Must have a voting object.")
+  #   else
+  #     errors.add(:credit_id, "Incorrect voting object.")
+  #   end
+  # end
 end

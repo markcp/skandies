@@ -1,49 +1,119 @@
-<%= @ballot.user.name %>'s ballot for <%= @year.name %>
-
-<div class="row ballot-categories">
-  <% @categories.each do |category| %>
-    <div class="small-12 medium-6 columns">
-      <h3><%= category.display_name %></h3>
-      <% if @ballot.votes_by_points(category).length == 0 %>
-        <% if Time.now < @year.close_voting %>
-          <%= link_to "Vote in this category", "#" %>
-        <% end %>
-      <% else %>
-        <ul>
-          <% @ballot.votes_by_points(category).each do |v| %>
-            <li><%= v.object_display %><% if v.movie_display %>, <em><%= v.movie_display %></em><% end %> <%= v.points %></li>
-          <% end %>
-        </ul>
-        <% if Time.now < @year.close_voting %>
-          <%= link_to "Edit category", edit_category_ballot_path(@ballot, category_id: '1') %>
-        <% end %>
-      <% end %>
-    </div>
+<h2>
+  <%= @ballot.user.name %>'s ballot
+  <% if @ballot.complete %>
+     <span class="submitted label round success">Ballot submitted</span>
   <% end %>
+</h2>
+<% if !@ballot.complete && @ballot.valid_for_submission? %>
+  <%= form_tag '/ballots/' + @ballot.id.to_s + '/submit_ballot', method: 'post' %>
+  <div class="submit-ballot">
+    <%= submit_tag "Submit ballot", class: "button" %>
+  </div>
+<% end %>
+
+<div class="row">
+  <div class="large-10 large-centered columns">
+
+    <% @categories.each_with_index do |category, i| %>
+      <% cvg = @ballot.category_vote_groups.where(category: category).first %>
+      <% if i%2 == 0 %>
+        <div class="row ballot-categories">
+      <% end %>
+      <div class="small-12 medium-6 columns category-list">
+        <h3>
+          <%= category.display_name %>
+          <% if cvg && cvg.valid_for_submission? %>
+              <i class="fi-check"></i>
+          <% else %>
+              <i class="fi-minus-circle"></i>
+          <% end %>
+        </h3>
+        <% if cvg %>
+          <ul>
+            <% cvg.votes.each do |v| %>
+              <li><%= v.object_display %><% if v.movie_display %>, <em><%= v.movie_display %></em><% end %> <%= v.points %></li>
+            <% end %>
+          </ul>
+          <% if Time.now < @year.close_voting && !@ballot.complete %>
+            <div class="vote-link"><%= link_to "Edit category", edit_category_vote_group_path(cvg) %></div>
+          <% end %>
+        <% else %>
+          <% if Time.now < @year.close_voting && !@ballot.complete %>
+            <div class="vote-link"><%= link_to "Vote in this category", new_category_vote_group_path(cat_id: category.id) %></div>
+          <% end %>
+        <% end %>
+      </div>
+      <% if i%2 != 0 %>
+        </div>
+      <% end %>
+    <% end %>
+    <br/>
+  </div>
+</div>
 
 
-<div id="ballot-top-ten">
-  <h3>Top Ten List</h3>
-
-  <ul>
-  <% @ballot.top_ten_entries.by_rank.each do |tte| %>
-    <% if tte.rank == 0 %>
-      <li><%= tte.value %></li>
+<div id="top-ten">
+  <% ttl = @ballot.top_ten_list %>
+  <h3>
+    Top Ten List
+    <% if ttl && ttl.valid_for_submission? %>
+      <i class="fi-check"></i>
     <% else %>
-      <li><%= tte.rank %>. <%= tte.value %></li>
+      <i class="fi-minus-circle"></i>
+    <% end %>
+  </h3>
+  <% if ttl %>
+    <% if Time.now < @year.close_voting && !@ballot.complete %>
+      <div class="top-ten-link">
+        <%= link_to "Edit top ten list", edit_top_ten_list_path(ttl) %>
+      </div>
+    <% end %>
+    <ul id="top-ten-list">
+    <% ttl.top_ten_entries.each do |tte| %>
+      <% if tte.rank == 0 %>
+        <li><%= tte.value %></li>
+      <% else %>
+        <li><%= tte.rank %>. <%= tte.value %></li>
+      <% end %>
+    <% end %>
+    </ul>
+  <% else %>
+    <% if Time.now < @year.close_voting && !@ballot.complete %>
+      <div class="top-ten-link">
+        <%= link_to "Create top ten list", new_top_ten_list_path %>
+      </div>
     <% end %>
   <% end %>
-  </ul>
 </div>
 
 <% if @ballot.user_id != 12 && @ballot.user_id != 25 %>
-<div id="ballot-ratings">
-  <h3>Ratings</h3>
-
-  <ul>
-  <% @ballot.ratings_by_movie_title.each do |r| %>
-    <li><%= r.movie.title %> <%= r.value %></li>
-  <% end %>
-  </ul>
-</div>
+  <div id="ratings">
+    <% rg = @ballot.ratings_group %>
+    <h3>
+      Ratings
+      <% if rg && rg.valid_for_submission? %>
+        <i class="fi-check"></i>
+      <% else %>
+        <i class="fi-minus-circle"></i>
+      <% end %>
+    </h3>
+    <% if rg %>
+      <% if Time.now < @year.close_voting && !@ballot.complete %>
+        <div class="ratings-link">
+          <%= link_to "Edit ratings", edit_ratings_group_path(rg) %>
+        </div>
+      <% end %>
+      <ul>
+      <% rg.ratings.each do |r| %>
+        <li><%= r.movie.title %> <%= r.value %></li>
+      <% end %>
+      </ul>
+    <% else %>
+      <% if Time.now < @year.close_voting && !@ballot.complete %>
+        <div class="ratings-link">
+          <%= link_to "Create ratings", new_ratings_group_path %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>

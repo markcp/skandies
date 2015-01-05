@@ -1,0 +1,11 @@
+<%= form_tag votes_path, method: :post do %>
+  <% @votes.each do |vote| %>
+    <%= simple_fields_for "votes[#{vote.id}]", vote do |vf| %>
+      <%= vf.input :movie_id %>
+      <%= vf.input :points %>
+      <%= vf.input :ballot_id, as: :hidden %>
+      <%= vf.input :category_id, as: :hidden %>
+    <% end %>
+  <% end %>
+  <%= submit_tag "Submit" %>
+<% end %>

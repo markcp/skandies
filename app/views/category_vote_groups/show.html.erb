@@ -1,0 +1,7 @@
+<%= @category_vote_group.category.display_name %>
+
+<% @category_vote_group.votes.each do |v| %>
+  <%= v.value %>
+  <%= v.movie.title %>
+  <%= v.points %>
+<% end %>

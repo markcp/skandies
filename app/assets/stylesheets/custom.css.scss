@@ -15,9 +15,97 @@ h2 {
   }
 }
 
+i.fi-check {
+  color: green;
+}
+
+i.fi-minus-circle {
+  color: red;
+}
+
+.ballot-categories {
+  margin: 0 0 20px 0;
+}
 #session_remember_me {
   width: auto;
   margin-left: 0;
+}
+
+#point-total {
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.category-list {
+  ul {
+    margin-bottom: 5px !important;
+  }
+}
+
+.complete {
+  background-color: green;
+}
+
+.incomplete {
+  background-color: red;
+}
+.vote-link {
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+#top-ten {
+  h3 {
+    text-align: center;
+  }
+  .top-ten-link {
+    text-align: center;
+  }
+  ul#top-ten-list {
+    width: 300px;
+    margin: 0 auto 25px auto;
+    list-style-type: none;
+  }
+}
+
+#ratings {
+  h3 {
+    text-align: center;
+  }
+  ul {
+    width: 230px;
+    margin: 0 auto;
+    list-style-type: none;
+  }
+  .ratings-link {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}
+
+.ranked-choice {
+  text-align: center;
+}
+
+.rating-button {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.rating-link {
+  text-align: center;
+}
+.home-link {
+  text-align: center;
+}
+.radio {
+  display: inline;
+}
+
+.submit-ballot {
+  text-align: center;
+}
+.ballot-list {
+  list-style-type: none;
 }
 
 /* miscellaneous */

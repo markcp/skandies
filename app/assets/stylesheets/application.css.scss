@@ -12,6 +12,9 @@
  *
  *= require foundation_and_overrides
  *= require custom
+ *= require jquery-ui/autocomplete
  *= require_tree .
  *= require_self
 */
+
+@import 'foundation-icons';

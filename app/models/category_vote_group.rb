@@ -1,38 +1,33 @@
-class CategoryVoteGroup
-  include ActiveRecord::Validations
-  attr_accessor :votes
+class CategoryVoteGroup < ActiveRecord::Base
+  has_many :votes
+  belongs_to :category
+  belongs_to :ballot
+  accepts_nested_attributes_for :votes, reject_if: :reject_vote, allow_destroy: true
 
-  validate :all_votes_okay
+  validates :category_id, presence: true
+  validates :ballot_id, presence: true
 
-  def all_votes_okay
-    votes.each do |vote|
-      errors.add vote.errors unless vote.valid?
+  def reject_vote(attributes)
+    exists = attributes['id'].present?
+    empty = attributes[:movie_id].blank? && attributes[:value].blank? && attributes[:points].blank?
+    attributes.merge!({:_destroy => 1}) if exists and empty
+    return (!exists and empty)
+  end
+
+  def vote_is_blank(attributed)
+    attributed['value'].blank? && attributed['movie_id'].blank?
+  end
+
+  def valid_for_submission?
+    votes.length == 10 && point_total == 100
+  end
+
+  def point_total
+    point_total = 0
+    votes.each do |v|
+      point_total = point_total + v.points
     end
+    point_total
   end
 
-  def save
-    votes.all?(&:save)
-  end
-
-  def votes=(incoming_data)
-    incoming_data.each do |incoming|
-       if incoming.respond_to? :attributes
-         @votes << incoming unless @votes.include? incoming
-       else
-         if incoming[:id]
-            target = @votes.select { |t| t.id == incoming[:id] }
-         end
-         if target
-            target.attributes = incoming
-         else
-            @votes << Vote.new incoming
-         end
-       end
-    end
-  end
-
-  def votes
-     # your photo-find logic here
-    @votes || Vote.find :all
-  end
 end

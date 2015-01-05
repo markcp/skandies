@@ -1,3 +1,24 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
+$(".points-input").blur ->
+  totalPoints()
+
+$(document).ready ->
+  totalPoints()
+
+totalPoints = ->
+  total = 0
+  $(".points-input").each (i, o) ->
+    pointsInt = parseInt($(o).val())
+    total = total + pointsInt  unless isNaN(pointsInt)
+
+  pointTotalDiv = $("#point-total")
+  pointTotalDiv.html total
+  if(parseInt(total) == 100)
+    pointTotalDiv.addClass("success")
+    pointTotalDiv.removeClass("alert")
+  else
+    pointTotalDiv.addClass("alert")
+    pointTotalDiv.removeClass("success")
+  return
+
+
+

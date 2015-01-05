@@ -1,0 +1,24 @@
+<%= simple_form_for @ballot, url: ballot_path, method: :put do |bf| %>
+  <%= bf.simple_fields_for :votes, @ballot.votes do |vf| %>
+    <div class="row">
+    <% if @category == Category.best_scene %>
+      <div class="large-4 columns">
+        <%= vf.input :value, label: "Scene" %>
+      </div>
+    <% elsif @category == Category.best_actor || @category == Category.best_actress || @category == Category.best_supporting_actor || @category == Category.best_supporting_actress %>
+      <div class="large-4 columns">
+        <%= vf.input :value, label: "Performer" %>
+      </div>
+    <% end %>
+    <div class="large-4 columns">
+      <%= vf.association :movie, collection: @movies %>
+    </div>
+    <div class="large-1 columns end">
+      <%= vf.input :points %>
+    </div>
+    </div>
+    <%= vf.input :ballot_id, as: :hidden %>
+    <%= vf.input :category_id, as: :hidden %>
+  <% end %>
+  <%= bf.submit "Submit", class: "button" %>
+<% end %>

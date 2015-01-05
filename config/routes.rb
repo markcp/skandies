@@ -20,16 +20,25 @@ Rails.application.routes.draw do
 
   resources :users
   resources :ballots do
-    get :edit_category, on: :member
-    get :update_category, on: :member
+    get :edit_category_vote, on: :member
+    get :new_category_vote, on: :member
+    resources :build, controller: 'ballots/build'
+    post :submit_ballot, on: :member
   end
   resources :password_resets, only: [:new, :create, :edit, :update]
-  resources :category_vote_groups, only: [:new, :create, :edit, :update]
-
+  resources :category_vote_groups, only: [:new, :create, :edit, :update] do
+      get :autocomplete_vote_movie_id, on: :collection
+    end
+  resources :votes
+  resources :movies
+  resources :category_vote_groups
+  resources :ratings_groups
+  resources :top_ten_lists
 
   get 'login' => 'sessions#new'
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'
+  get 'profile' => 'users#show'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,27 @@
+<h2>Ratings</h2>
+<%= simple_form_for @ratings_group do |rgf| %>
+  <% @ratings_group.ratings.each do |rating| %>
+    <%= rgf.simple_fields_for :ratings, rating do |rf| %>
+      <div class="row">
+        <div class="large-8 columns large-centered">
+          <div class="large-2 columns large-offset-2">
+            <%= rf.input :value, label: false, collection: [[0,0.0],[1,1.0],[1.5,1.5],[2,2.0],[2.5,2.5],[3,3.0],[3.5,3.5],[4,4.0]],required: false %>
+          </div>
+          <div class="large-6 columns end">
+            <%= rating.movie.title %>
+          </div>
+        </div>
+      </div>
+      <%= rf.input :movie_id, as: :hidden %>
+      <%= rf.input :ballot_id, as: :hidden %>
+    <% end %>
+  <% end %>
+  <%= rgf.input :ballot_id, as: :hidden %>
+  <div class="rating-button">
+    <%= rgf.submit "Save", class: "button" %>
+  </div>
+  <br/>
+  <div class="rating-link">
+    <%= link_to "Return to ballot", ballot_path(@ballot) %>
+  </div>
+<% end %>

@@ -2,10 +2,10 @@
 
 <h3>Ballots</h3>
 
-<ul>
+<ul class="ballot-list">
 <% if @active_year_ballot %>
   <% if @active_year_ballot.complete? %>
-    <li><%= link_to "View " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
+    <li><%= link_to "View " + @year.name + " ballot", results_ballot_path(@active_year_ballot) %></li>
   <% else %>
     <li><%= link_to "Edit " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% end %>
@@ -15,6 +15,7 @@
 
 <% @past_ballots.each do |ballot| %>
   <% if ballot.complete? %>
-    <li><%= link_to "View " + ballot.year.name + " ballot", ballot_path(ballot) %></li>
+    <li><%= link_to "View " + ballot.year.name + " ballot", results_ballot_path(ballot) %></li>
   <% end %>
 <% end %>
+</ul>

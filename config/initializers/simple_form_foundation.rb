@@ -8,7 +8,7 @@ SimpleForm.setup do |config|
   # Uncomment them to enable hints.
 
   config.wrappers :vertical_form, class: :input, hint_class: :field_with_hint, error_class: :error do |b|
-    b.use :html5
+    # b.use :html5
     b.use :placeholder
     b.optional :maxlength
     b.optional :pattern
@@ -21,7 +21,7 @@ SimpleForm.setup do |config|
   end
 
   config.wrappers :horizontal_form, tag: 'div', class: 'row', hint_class: :field_with_hint, error_class: :error do |b|
-    b.use :html5
+    # b.use :html5
     b.use :placeholder
     b.optional :maxlength
     b.optional :pattern
@@ -40,7 +40,7 @@ SimpleForm.setup do |config|
   end
 
   config.wrappers :horizontal_radio_and_checkboxes, tag: 'div', class: 'row' do |b|
-    b.use :html5
+    # b.use :html5
     b.optional :readonly
 
     b.wrapper :container_wrapper, tag: 'div', class: 'small-offset-3 small-9 columns' do |ba|
@@ -62,7 +62,7 @@ SimpleForm.setup do |config|
   # columns form then change the wrapper class to 'small-3', if you need
   # only two use 'small-6' and so on.
   config.wrappers :inline_form, tag: 'div', class: 'column small-4', hint_class: :field_with_hint, error_class: :error do |b|
-    b.use :html5
+    # b.use :html5
     b.use :placeholder
     b.optional :maxlength
     b.optional :pattern
@@ -80,7 +80,7 @@ SimpleForm.setup do |config|
   # - wrapper_html: {class: 'row'}, custom_wrapper_html: {class: 'column small-12'}
   # - custom_wrapper_html: {class: 'column small-3 end'}
   config.wrappers :customizable_wrapper, tag: 'div', error_class: :error do |b|
-    b.use :html5
+    # b.use :html5
     b.optional :readonly
 
     b.wrapper :custom_wrapper, tag: :div do |ba|

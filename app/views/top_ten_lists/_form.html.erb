@@ -1,0 +1,27 @@
+<h2>Top Ten List</h2>
+<%= simple_form_for @top_ten_list do |ttl| %>
+  <div class="ranked-choice">
+    <%= ttl.input :ranked, as: :radio_buttons, collection: [[' ranked', true],[' unranked',false]], label: false, input_html: { class: 'ranked' }, wrapper_html: { class: 'ranked-wrapper'} %>
+  </div>
+  <%= ttl.simple_fields_for :top_ten_entries do |tte| %>
+    <div class="row">
+      <div class="large-10 large-centered columns">
+        <div class="large-1 columns large-offset-3">
+          <%= tte.input :rank, input_html: { class: 'rank' }, label_html: { class: "rank-label" } %>
+        </div>
+        <div class="large-5 columns end">
+          <%= tte.input :value, label: "Movie", required: false %>
+        </div>
+      </div>
+    </div>
+    <%= tte.input :ballot_id, as: :hidden %>
+  <% end %>
+  <%= ttl.input :ballot_id, as: :hidden %>
+  <div class="rating-button">
+    <%= ttl.submit "Save", class: "button" %>
+  </div>
+  <br/>
+  <div class="home-link">
+    <%= link_to "Return to ballot", ballot_path(@ballot) %>
+  </div>
+<% end %>

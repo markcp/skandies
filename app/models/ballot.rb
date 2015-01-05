@@ -4,10 +4,39 @@ class Ballot < ActiveRecord::Base
   has_many :votes
   has_many :ratings
   has_many :top_ten_entries
+  accepts_nested_attributes_for :votes
+  has_many :category_vote_groups
+  has_one :ratings_group
+  has_one :top_ten_list
 
   validates :user, presence: true
   validates :year, presence: true
   validates :complete, inclusion: [ true, false ]
+  validate :zero_or_ten_category_votes
+
+  def valid_for_submission?
+    category_vote_groups.each do |cvg|
+      if !cvg.valid_for_submission?
+        return false
+      end
+    end
+    if ratings_group.valid_for_submission? && top_ten_list.valid_for_submission?
+      return true
+    else
+      return false
+    end
+  end
+
+  def zero_or_ten_category_votes
+    Category.all.each do |cat|
+      cat_votes = votes.where(category: cat).all
+      if cat_votes.length == 0 || cat_votes.length == 10
+        return true
+      else
+        errors.add(:ballot, "You must have 10 votes in a category.")
+      end
+    end
+  end
 
   def self.past_ballots_by_user(user, year)
     past_ballots = []
