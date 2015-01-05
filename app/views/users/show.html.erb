@@ -9,8 +9,8 @@
   <% else %>
     <li><%= link_to "Edit " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% end %>
-<% elsif @year %>
-  <li><%=  link_to "Create " + @year.name + " ballot", new_ballot_path %></li>
+<% elsif @active_voting_year %>
+  <li><%=  link_to "Create " + @active_voting_year.name + " ballot", new_ballot_path %></li>
 <% end %>
 
 <% @past_ballots.each do |ballot| %>
