@@ -4,7 +4,7 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration, only: [:edit, :update]
 
   def new
-    @year = Year.current
+    @year = Year.active_voting_year
   end
 
   def create
@@ -22,7 +22,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @year = Year.current
+    @year = Year.active_voting_year
   end
 
   def update
@@ -34,7 +34,7 @@ class PasswordResetsController < ApplicationController
       flash[:notice] = "Password has been reset."
       redirect_to @user
     else
-      @year = Year.current
+      @year = Year.active_voting_year
       render 'edit'
     end
   end
