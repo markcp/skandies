@@ -8,7 +8,8 @@
 <%= simple_form_for @category_vote_group do |cvgf| %>
   <%= cvgf.simple_fields_for :votes do |vf| %>
     <% if @category != Category.best_picture && @category != Category.best_director && @category != Category.best_screenplay %>
-      <div class="large-8 columns large-centered">
+      <div class="row">
+      <div class="large-10 columns large-centered">
         <% if @category == Category.best_scene %>
           <div class="large-5 columns">
             <%= vf.input :value, label: "Scene" %>
@@ -25,14 +26,17 @@
           <%= vf.input :points, required: false, input_html: { class: 'points-input'} %>
         </div>
       </div>
+      </div>
     <% else %>
-      <div class="large-8 columns large-centered">
+      <div class="row">
+      <div class="large-10 columns large-centered">
         <div class="large-6 columns large-offset-2">
           <%= vf.association :movie, collection: @movies, required: false %>
         </div>
         <div class="large-1 columns end">
           <%= vf.input :points, required: false, input_html: { class: 'points-input'} %>
         </div>
+      </div>
       </div>
     <% end %>
     <%= vf.input :ballot_id, as: :hidden %>
@@ -41,7 +45,7 @@
   <%= cvgf.input :ballot_id, as: :hidden %>
   <%= cvgf.input :category_id, as: :hidden %>
   <div class="row">
-    <div class="large-2 columns large-centered">
+    <div class="large-2 columns large-centered category-button">
       <%= cvgf.submit "Save", class: "button" %>
       <%= link_to "Return to ballot", ballot_path(@category_vote_group.ballot) %>
     </div>

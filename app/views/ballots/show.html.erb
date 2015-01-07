@@ -23,15 +23,15 @@
         <h3>
           <%= category.display_name %>
           <% if cvg && cvg.valid_for_submission? %>
-              <i class="fi-check"></i>
+              <i class="fi-check" title="Valid for submission"></i>
           <% else %>
-              <i class="fi-minus-circle"></i>
+              <i class="fi-minus-circle" title="Not valid for submission"></i>
           <% end %>
         </h3>
         <% if cvg %>
           <ul>
             <% cvg.votes.each do |v| %>
-              <li><%= v.object_display %><% if v.movie_display %>, <em><%= v.movie_display %></em><% end %> <%= v.points %></li>
+              <li><%= v.object_display %><% if v.movie_display %><% if !v.object_display.blank? %>,<% end %> <em><%= v.movie_display %></em><% end %> <%= v.points %></li>
             <% end %>
           </ul>
           <% if Time.now < @year.close_voting && !@ballot.complete %>

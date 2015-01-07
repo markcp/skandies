@@ -3,7 +3,13 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 #home-link {
   float: right;
-  margin: 10px 20px 0 0;
+  margin: -25px 20px 0 0;
+  clear: both;
+}
+
+#user-home-link {
+  float: right;
+  margin: -25px 20px 0 0;
   clear: both;
 }
 

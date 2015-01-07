@@ -1,7 +1,10 @@
 <% content_for :stylesheets do %>
   #results-menu {display: none}
+  #home-link {display: none}
 <% end %>
 <% content_for :content do %>
+  <%= link_to "Back to ballot", ballot_path(@ballot), id: "user-home-link" %>
+
   <div id="auth_menu">
     <% if logged_in? %>
       Logged in: <%= current_user.name %> |

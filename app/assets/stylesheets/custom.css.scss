@@ -22,6 +22,9 @@ i.fi-check {
 i.fi-minus-circle {
   color: red;
 }
+.category-button {
+  height: 0px;
+}
 
 .ballot-categories {
   margin: 0 0 20px 0;
@@ -40,6 +43,9 @@ i.fi-minus-circle {
   ul {
     margin-bottom: 5px !important;
   }
+}
+#ballot-ratings {
+  margin-bottom: 30px;
 }
 
 .complete {

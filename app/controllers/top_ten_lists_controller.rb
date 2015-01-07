@@ -6,8 +6,8 @@ class TopTenListsController < ApplicationController
   def new
     @ballot = Ballot.where(user: @user, year: @year).first
     @top_ten_list = @ballot.build_top_ten_list(ranked: true)
-    10.times do
-      @top_ten_list.top_ten_entries.build(ballot: @ballot)
+    10.times do |i|
+      @top_ten_list.top_ten_entries.build(ballot: @ballot, rank: i+1)
     end
   end
 

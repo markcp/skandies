@@ -6,7 +6,7 @@ class RatingsGroupsController < ApplicationController
   def new
     @ballot = Ballot.where(user: @user, year: @year).first
     @ratings_group = @ballot.build_ratings_group
-    @movies = Movie.where(year: @year).all
+    @movies = Movie.by_title.where(year: @year).all
     @movies.each do |movie|
       @ratings_group.ratings.build(movie: movie, ballot: @ballot)
     end
@@ -25,10 +25,14 @@ class RatingsGroupsController < ApplicationController
   def edit
     @ratings_group = RatingsGroup.find(params[:id])
     @ballot = @ratings_group.ballot
-    @movies = Movie.where(year: @year).all
+    @movies = Movie.by_title.where(year: @year).all
+    @rated_movie_ids = []
+    @ratings_group.ratings.each do |rating|
+      @rated_movie_ids << rating.movie.id
+    end
     @movies.each do |movie|
-      rating = @ratings_group.ratings.where(movie: movie).first
-      if !rating
+      rating_present = false
+      if !@rated_movie_ids.include?(movie.id)
         @ratings_group.ratings.build(movie: movie, ballot: @ballot)
       end
     end

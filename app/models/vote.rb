@@ -12,7 +12,7 @@ class Vote < ActiveRecord::Base
   validates :category, presence: true
   validates :points, presence: true, inclusion: { in: 5..30, allow_nil: true, message: 'must be > 5 and < 30' }
   validates :movie_id, presence: true
-  # validate :value_is_not_blank_if_acting_or_scene_vote
+  validate :value_is_not_blank_if_acting_or_scene_vote
 
   default_scope { order('points DESC') }
 
