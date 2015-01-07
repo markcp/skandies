@@ -1,0 +1,14 @@
+<%= simple_form_for :vote, url: admin_update_votes_path, method: :put do |vf| %>
+  <% movie_title_hold = "" %>
+  <% @votes.each_with_index do |vote, i| %>
+    <%= simple_fields_for "vote[]", vote do |vsf| %>
+      <% if vote.movie.title != movie_title_hold %>
+        <%= vote.movie.title %>
+        <% movie_title_hold = vote.movie.title %>
+      <% end %>
+      <%= vsf.input :value %>
+      <%= vote.ballot.user.name %>
+    <% end %>
+  <% end %>
+  <%= vf.submit "Edit", class: "button" %>
+<% end %>

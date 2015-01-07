@@ -29,7 +29,10 @@ Rails.application.routes.draw do
   resources :category_vote_groups, only: [:new, :create, :edit, :update] do
       get :autocomplete_vote_movie_id, on: :collection
     end
-  resources :votes
+  resources :votes do
+    get :admin_edit, on: :collection
+    put :admin_update, on: :collection
+  end
   resources :movies
   resources :category_vote_groups
   resources :ratings_groups

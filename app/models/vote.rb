@@ -58,6 +58,21 @@ class Vote < ActiveRecord::Base
     joins(ballot: :user).where( category: category).order("points DESC, users.last_name ASC")
   end
 
+  def self.by_year_category_movie(year, category)
+    votes = []
+    Movie.where(year: year).each do |m|
+      votes_in_category = m.votes.where(category: category).all
+      if votes_in_category.length > 0
+        votes_in_category.each do |v|
+          votes << v
+        end
+      end
+    end
+    votes
+  end
+
+
+
   # def correct_voting_object
   #   if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
   #     return true
