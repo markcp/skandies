@@ -4,7 +4,7 @@ class PasswordResetsController < ApplicationController
   before_action :check_expiration, only: [:edit, :update]
 
   def new
-    @year = Year.active_voting_year
+    @year = active_voting_year
   end
 
   def create
