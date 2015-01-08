@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   resources :votes do
     get :admin_edit, on: :collection
     put :admin_update, on: :collection
+    get :admin_view_leaders, on: :collection
+    get :admin_index, on: :collection
   end
   resources :movies do
     get :admin_edit, on: :collection

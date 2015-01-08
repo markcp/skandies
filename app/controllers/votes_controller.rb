@@ -1,4 +1,12 @@
 class VotesController < ApplicationController
+  before_action :logged_in_user
+  before_action :admin_user, only: [:admin_edit, :admin_index, :admin_view_leaders]
+
+  def admin_index
+    @year = active_voting_year
+    @user = current_user
+    @categories = Category.all
+  end
 
   def admin_edit
     @year = active_voting_year
@@ -52,5 +60,10 @@ class VotesController < ApplicationController
 
     def vote_params(id)
       params.require(:vote).fetch(id).permit( :value )
+    end
+
+    def admin_user
+      @user = current_user
+      redirect_to(root_url) unless @user.admin
     end
 end

@@ -1,14 +1,34 @@
+<h2><%= @category.name.pluralize.capitalize %></h2>
+
 <%= simple_form_for :vote, url: admin_update_votes_path, method: :put do |vf| %>
   <% movie_title_hold = "" %>
   <% @votes.each_with_index do |vote, i| %>
     <%= simple_fields_for "vote[]", vote do |vsf| %>
-      <% if vote.movie.title != movie_title_hold %>
-        <%= vote.movie.title %>
-        <% movie_title_hold = vote.movie.title %>
-      <% end %>
-      <%= vsf.input :value %>
-      <%= vote.ballot.user.name %>
+      <div class="row">
+        <div class="large-8 large-centered columns">
+          <div class="row">
+            <div class="large-6 columns">
+              <% if vote.movie.title != movie_title_hold %>
+                <%= vote.movie.title %>
+                <% movie_title_hold = vote.movie.title %>
+              <% end %>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-6 columns end">
+              <%= vsf.input :value, label: false %>
+            </div>
+            <div class="large-3 columns end">
+              <%= vote.ballot.user.name %> <%= vote.points %>
+            </div>
+          </div>
+        </div>
+      </div>
     <% end %>
   <% end %>
-  <%= vf.submit "Edit", class: "button" %>
+  <div class="row">
+    <div class="large-2 large-centered columns">
+      <%= vf.submit "Edit", class: "button" %>
+    </div>
+  </div>
 <% end %>
