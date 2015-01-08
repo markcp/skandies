@@ -1,7 +1,7 @@
 class VotesController < ApplicationController
 
   def admin_edit
-    @year = Year.find(20)
+    @year = active_voting_year
     @user = current_user
     @category = Category.find(params[:cat_id])
     @votes = Vote.by_year_category_movie(@year, @category)

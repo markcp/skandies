@@ -1,0 +1,32 @@
+<% if @category == Category.best_director %>
+  <h2>Directors</h2>
+<% elsif @category == Category.best_screenplay %>
+  <h2>Screenwriters</h2>
+<% end %>
+
+<%= simple_form_for :movie, url: admin_update_movies_path, method: :put do |mf| %>
+  <% @movies.each_with_index do |movie, i| %>
+    <%= simple_fields_for "movie[]", movie do |msf| %>
+      <div class="row">
+        <div class="large-10 large-centered columns">
+            <div class="large-6 columns"
+              <% if @category == Category.best_director %>
+                <%= msf.input :director_display, label: false %>
+              <% elsif @category == Category.best_screenplay %>
+                <%= msf.input :screenwriter_display, label: false %>
+              <% end %>
+            </div>
+          <div class="large-4 columns end movie-title">
+            <%= movie.title %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="row">
+    <div class="large-2 large-centered columns">
+      <%= hidden_field_tag :cat_id, @category.id %>
+      <%= mf.submit "Edit", class: "button" %>
+    </div>
+  </div>
+<% end %>

@@ -71,8 +71,6 @@ class Vote < ActiveRecord::Base
     votes
   end
 
-
-
   # def correct_voting_object
   #   if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
   #     return true

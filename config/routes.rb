@@ -33,7 +33,10 @@ Rails.application.routes.draw do
     get :admin_edit, on: :collection
     put :admin_update, on: :collection
   end
-  resources :movies
+  resources :movies do
+    get :admin_edit, on: :collection
+    put :admin_update, on: :collection
+  end
   resources :category_vote_groups
   resources :ratings_groups
   resources :top_ten_lists
