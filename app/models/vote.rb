@@ -71,6 +71,26 @@ class Vote < ActiveRecord::Base
     votes
   end
 
+  def self.winner_list(year, category)
+    winner_list = {}
+    ballots = Ballot.where(year: year, complete: true).all
+    ballots.each do |ballot|
+      ballot.votes.where(category: category) do |v|
+        if winner_list.has_key?(v.value)
+          winner_list[v.movie.title] = winner_list[v.movie.title] + v.points
+        else
+          winner_list[v.movie.title] = v.points
+        end
+      end
+    end
+
+
+
+
+
+
+  end
+
   # def correct_voting_object
   #   if !self.credit_id.blank? && self.movie_id.blank? && self.scene_id.blank? # credit vote (acting)
   #     return true

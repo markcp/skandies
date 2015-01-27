@@ -47,6 +47,7 @@ Rails.application.routes.draw do
   post 'login' => 'sessions#create'
   delete 'logout' => 'sessions#destroy'
   get 'profile' => 'users#show'
+  get 'admin' => 'votes#admin_index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

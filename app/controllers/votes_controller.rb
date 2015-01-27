@@ -24,6 +24,12 @@ class VotesController < ApplicationController
   end
 
   def admin_view_leaders
+    @year = active_voting_year
+    @user = current_user
+    @category = Category.find(params[:cat_id])
+    puts @category.name
+    @results_array = @category.results_in_order(@year)
+    puts "results_array" + @results_array.to_s
   end
 
   # def new
