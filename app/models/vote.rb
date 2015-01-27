@@ -64,7 +64,9 @@ class Vote < ActiveRecord::Base
       votes_in_category = m.votes.where(category: category).all
       if votes_in_category.length > 0
         votes_in_category.each do |v|
-          votes << v
+          if v.ballot.complete
+            votes << v
+          end
         end
       end
     end
