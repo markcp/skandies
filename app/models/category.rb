@@ -133,9 +133,19 @@ class Category < ActiveRecord::Base
           end
         end
         if self.name == "director"
-          vote_hash[:value] = v1.movie.director_name
+          director_name = v1.movie.director_name
+          if director_name
+            vote_hash[:value] = director_name
+          else
+            vote_hash[:value] = ''
+          end
         elsif self.name == "screenplay"
-          vote_hash[:value] = v1.movie.screenwriter_name
+          screenwriter_name = v1.movie.screenwriter_name
+          if screenwriter_name
+            vote_hash[:value] = screenwriter_name
+          else
+            vote_hash[:value] = ''
+          end
         else
           vote_hash[:value] = ''
         end

@@ -1,4 +1,8 @@
+<h3><%= @category.display_name.titleize %></h3>
+<%= link_to "Back", admin_index_votes_path %>
+<br/><br/>
 <% @results_array.each_with_index do |r,i| %>
-  <%= i + 1 %>. <%= r[:value] %>, <em><%= r[:movie] %></em> <%= r[:points] %>&nbsp;&nbsp;<%= r[:nbr_votes] %><br/>
+  <%= i + 1 %>. <%= r[:value] %><% if !r[:value].empty? %>,<% end %> <em><%= r[:movie] %></em>&nbsp;<%= r[:points] %>(<%= r[:nbr_votes] %>)<br/>
 <% end %>
+<br/>
 <%= link_to "Back", admin_index_votes_path %>
