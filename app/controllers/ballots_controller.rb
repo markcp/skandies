@@ -95,6 +95,10 @@ class BallotsController < ApplicationController
     def correct_user
       @ballot = Ballot.find(params[:id])
       @user = @ballot.user
-      redirect_to(root_url) unless current_user?(@user)
+      redirect_to(root_url) unless current_user?(@user) || current_user.admin
+    end
+
+    def admin_user
+
     end
 end
