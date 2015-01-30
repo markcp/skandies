@@ -5,7 +5,7 @@
 <ul class="ballot-list">
 <% if @active_year_ballot %>
   <% if @active_year_ballot.complete? %>
-    <li><%= link_to "View " + @year.name + " ballot", results_ballot_path(@active_year_ballot) %></li>
+    <li><%= link_to "View " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% else %>
     <li><%= link_to "Edit " + @year.name + " ballot", ballot_path(@active_year_ballot) %></li>
   <% end %>
