@@ -1,4 +1,5 @@
 <h2>Ratings</h2>
+<p style="text-align: center">To remove a rating, select the "blank" value in the pulldown menu and resave the list.</p>
 <%= simple_form_for @ratings_group do |rgf| %>
   <% @ratings_group.ratings.each do |rating| %>
     <%= rgf.simple_fields_for :ratings, rating do |rf| %>
