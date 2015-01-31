@@ -104,19 +104,26 @@ class Category < ActiveRecord::Base
             votes_array.delete(v2)
           end
         end
+        comp_points = 0
+        nbr_comp_votes = 0
         comp_votes_array.each do |cv|
           if v1.value == cv.value && v1.movie_id == cv.movie_id
-            puts "comp vote"
-            points = points + cv.points
-            nbr_votes = nbr_votes + 1
+            comp_points = comp_points + cv.points
+            nbr_comp_votes = nbr_comp_votes + 1
             comp_votes_array.delete(cv)
           end
         end
-        vote_hash[:value] = v1.value
-        vote_hash[:movie] = v1.movie.title
-        vote_hash[:points] = points
-        vote_hash[:nbr_votes] = nbr_votes
-        results_array << vote_hash
+        if nbr_comp_votes < nbr_votes ||
+          (nbr_comp_votes == nbr_votes && comp_points < points) ||
+          (nbr_comp_votes == nbr_votes && comp_points == points && (self.name == "actress" || self.name == "actor"))
+          points = points + comp_points
+          nbr_votes = nbr_votes + nbr_comp_votes
+          vote_hash[:value] = v1.value
+          vote_hash[:movie] = v1.movie.title
+          vote_hash[:points] = points
+          vote_hash[:nbr_votes] = nbr_votes
+          results_array << vote_hash
+        end
       end
     else
       votes_values_counted = []
