@@ -69,6 +69,6 @@ class RatingsGroupsController < ApplicationController
       @ratings_group = RatingsGroup.find(params[:id])
       @ballot = @ratings_group.ballot
       @user = @ballot.user
-      redirect_to(root_url) unless current_user?(@user)
+      redirect_to(root_url) unless current_user?(@user) || current_user.admin
     end
 end
