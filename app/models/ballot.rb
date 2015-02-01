@@ -20,7 +20,7 @@ class Ballot < ActiveRecord::Base
         return false
       end
     end
-    if (ratings_group && ratings_group.valid_for_submission?) && (top_ten_list && top_ten_list.valid_for_submission?)
+    if (ratings_group && ratings_group.valid_for_submission?)
       return true
     else
       return false
