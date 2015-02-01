@@ -86,34 +86,32 @@
   <% end %>
 </div>
 
-<% if @ballot.user_id != 12 && @ballot.user_id != 25 %>
-  <div id="ratings">
-    <% rg = @ballot.ratings_group %>
-    <h3>
-      Ratings
-      <% if rg && rg.valid_for_submission? %>
-        <i class="fi-check"></i>
-      <% else %>
-        <i class="fi-minus-circle"></i>
-      <% end %>
-    </h3>
-    <% if rg %>
-      <% if Time.now < @year.close_voting && !@ballot.complete %>
-        <div class="ratings-link">
-          <%= link_to "Edit ratings", edit_ratings_group_path(rg) %>
-        </div>
-      <% end %>
-      <ul>
-      <% rg.ratings.each do |r| %>
-        <li><%= r.movie.title %> <%= r.value %></li>
-      <% end %>
-      </ul>
+<div id="ratings">
+  <% rg = @ballot.ratings_group %>
+  <h3>
+    Ratings
+    <% if rg && rg.valid_for_submission? %>
+      <i class="fi-check"></i>
     <% else %>
-      <% if Time.now < @year.close_voting && !@ballot.complete %>
-        <div class="ratings-link">
-          <%= link_to "Create ratings", new_ratings_group_path %>
-        </div>
-      <% end %>
+      <i class="fi-minus-circle"></i>
     <% end %>
-  </div>
-<% end %>
+  </h3>
+  <% if rg %>
+    <% if Time.now < @year.close_voting && !@ballot.complete %>
+      <div class="ratings-link">
+        <%= link_to "Edit ratings", edit_ratings_group_path(rg) %>
+      </div>
+    <% end %>
+    <ul>
+    <% rg.ratings.each do |r| %>
+      <li><%= r.movie.title %> <%= r.value %></li>
+    <% end %>
+    </ul>
+  <% else %>
+    <% if Time.now < @year.close_voting && !@ballot.complete %>
+      <div class="ratings-link">
+        <%= link_to "Create ratings", new_ratings_group_path %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
