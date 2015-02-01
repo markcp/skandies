@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= content_for?(:title) ? yield(:title) : "Skandies" %></title>
+<%= stylesheet_link_tag "application" %>
+<style><%= yield :stylesheets %></style>
+<%= javascript_include_tag "vendor/modernizr" %>
+<%= csrf_meta_tags %>
+</head>
+<body data-no-turbolink>
+  <div id="content"><%= content_for?(:content) ? yield(:content) : yield %></div>
+  <%= javascript_include_tag "application" %>
+  <%= debug(params) if Rails.env.development? %>
+</body>
+</html>
