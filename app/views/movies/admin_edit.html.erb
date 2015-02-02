@@ -1,8 +1,4 @@
-<% if @category == Category.best_director %>
-  <h2>Directors</h2>
-<% elsif @category == Category.best_screenplay %>
-  <h2>Screenwriters</h2>
-<% end %>
+<h2><%= @category.name.pluralize.capitalize %></h2>
 
 <%= simple_form_for :movie, url: admin_update_movies_path, method: :put do |mf| %>
   <% @movies.each_with_index do |movie, i| %>

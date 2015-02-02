@@ -60,7 +60,7 @@ class Vote < ActiveRecord::Base
 
   def self.by_year_category_movie(year, category)
     votes = []
-    Movie.where(year: year).each do |m|
+    Movie.where(year: year).order(:title_index).each do |m|
       votes_in_category = m.votes.where(category: category).all
       if votes_in_category.length > 0
         votes_in_category.each do |v|
