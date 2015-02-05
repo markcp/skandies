@@ -85,12 +85,109 @@ class Vote < ActiveRecord::Base
         end
       end
     end
+  end
 
+  def self.first_name(name)
+    name.split[0]
+  end
 
+  def self.last_name(name)
+    if name.split[2]
+      name.split[1] + " " + name.split[2]
+    elsif name.split[1]
+      name.split[1]
+    else
+      ""
+    end
+  end
 
+  def self.convert_votes(category, year)
+    ballots = Ballot.where(year: year, complete: true).all
+    votes = []
+    ballots.each do |ballot|
+      ballot.votes.where(category: category).each do |v|
+        votes << v
+      end
+    end
+    votes.each do |v|
+      puts v.id
+      first_name = Vote.first_name(v.value)
+      last_name = Vote.last_name(v.value)
+      puts first_name
+      puts last_name
+      if category.id == 3 || category.id == 6
+        person = Person.where(first_name: first_name, last_name: last_name, gender: "F").last
+      else
+        person = Person.where(first_name: first_name, last_name: last_name, gender: "M").last
+      end
+      if person
+        puts "person exists"
+        credit = Credit.where(movie_id: v.movie_id, person_id: person.id).last
+        if credit
+          puts "credit exists"
+          v.credit_id = credit.id
+          v.save
+        else
+          puts "credit does not exist"
+          c = Credit.new
+          c.person_id = person.id
+          c.movie_id = v.movie_id
+          c.job_id = 1
+          c.year_id = 20
+          c.save
+          v.credit_id = c.id
+          v.save
+        end
+      else
+        puts "person does not exist"
+        p = Person.new
+        p.first_name = first_name
+        p.last_name = last_name
+        if category.id == 3 || category.id == 6
+          p.gender = 'F'
+        else
+          p.gender = 'M'
+        end
+        p.save
+        c = Credit.new
+        c.person_id = p.id
+        c.movie_id = v.movie_id
+        c.job_id = 1
+        c.year_id = year.id
+        c.save
+        v.credit_id = c.id
+        v.save
+      end
+    end
+  end
 
-
-
+  def self.convert_scene_votes(year)
+    ballots = Ballot.where(year: year, complete: true).all
+    votes = []
+    ballots.each do |ballot|
+      ballot.votes.where(category_id: 8).each do |v|
+        votes << v
+      end
+    end
+    votes.each do |v|
+      puts v.id
+      scene = Scene.where(title: v.value, movie_id: v.movie_id).last
+      puts v.value
+      if scene
+        puts "scene exists"
+        v.scene_id = scene.id
+        v.save
+      else
+        puts "scene does not exist"
+        s = Scene.new
+        s.title = v.value
+        s.movie_id = v.movie_id
+        s.year_id = year.id
+        s.save
+        v.scene_id = s.id
+        v.save
+      end
+    end
   end
 
   # def correct_voting_object
