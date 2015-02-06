@@ -16,7 +16,7 @@ class Scene < ActiveRecord::Base
   end
 
   def compute_points
-    scene_category = Category.where( name: "Scene" ).first
+    scene_category = Category.where( name: "scene" ).first
     points = 0
     self.votes.where(category: scene_category).each do |v|
       points = points + v.points
@@ -25,7 +25,7 @@ class Scene < ActiveRecord::Base
   end
 
   def compute_votes
-    scene_category = Category.where( name: "Scene" ).first
+    scene_category = Category.where( name: "scene" ).first
     votes.where( category: scene_category ).count
   end
 end

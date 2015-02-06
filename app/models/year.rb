@@ -96,7 +96,7 @@ class Year < ActiveRecord::Base
   end
 
   def save_credit_vote_results
-    actor_job = Job.where(name: "Actor")
+    actor_job = Job.where(name: "actor")
     credits.where(job: actor_job).each do |c|
       results_category = c.compute_results_category
       c.category = results_category
