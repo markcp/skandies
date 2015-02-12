@@ -128,8 +128,8 @@ class Category < ActiveRecord::Base
             nbr_comp_votes = nbr_comp_votes + 1
           end
         end
-        if nbr_comp_votes < nbr_votes ||
-          (nbr_comp_votes == nbr_votes && comp_points < points) ||
+        if comp_points < points ||
+          (comp_points == points && nbr_comp_votes < nbr_votes) ||
           (nbr_comp_votes == nbr_votes && comp_points == points && (self.name == "actress" || self.name == "actor"))
           points = points + comp_points
           nbr_votes = nbr_votes + nbr_comp_votes
