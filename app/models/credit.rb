@@ -35,24 +35,47 @@ class Credit < ActiveRecord::Base
     number_of_votes(results_category) + number_of_votes(results_category.complementary_category)
   end
 
+  # def compute_results_category
+  #   # todo: handle what happens if votes are in non-compatable categories
+  #   first_category = votes.first.category
+  #   complementary_category = first_category.complementary_category
+  #   nbr_votes_in_first_category = number_of_votes(first_category)
+  #   nbr_votes_in_complementary_category = number_of_votes(complementary_category)
+  #   if nbr_votes_in_first_category > nbr_votes_in_complementary_category
+  #     return first_category
+  #   elsif nbr_votes_in_complementary_category > nbr_votes_in_first_category
+  #     return complementary_category
+  #   else # both categories have equal number of votes - shouldn't happen very often
+  #     points_in_first_category = points_by_category(first_category)
+  #     points_in_complementary_category = points_by_category(complementary_category)
+  #     if points_in_first_category > points_in_complementary_category
+  #       return first_category
+  #     elsif points_in_complementary_category > points_in_first_category
+  #       return complementary_category
+  #     else # point values in both categories are equal - return whichever category wins the tiebreaker (Actor or Actress) - should be very rare
+  #       return first_category.tiebreaker_category
+  #     end
+  #   end
+  # end
+
   def compute_results_category
     # todo: handle what happens if votes are in non-compatable categories
     first_category = votes.first.category
     complementary_category = first_category.complementary_category
     nbr_votes_in_first_category = number_of_votes(first_category)
     nbr_votes_in_complementary_category = number_of_votes(complementary_category)
-    if nbr_votes_in_first_category > nbr_votes_in_complementary_category
+    points_in_first_category = points_by_category(first_category)
+    points_in_complementary_category = points_by_category(complementary_category)
+    if points_in_first_category > points_in_complementary_category
       return first_category
-    elsif nbr_votes_in_complementary_category > nbr_votes_in_first_category
+    elsif points_in_complementary_category > points_in_first_category
       return complementary_category
-    else # both categories have equal number of votes - shouldn't happen very often
-      points_in_first_category = points_by_category(first_category)
-      points_in_complementary_category = points_by_category(complementary_category)
-      if points_in_first_category > points_in_complementary_category
+    else # both categories have equal points - shouldn't happen very often
+      if nbr_votes_in_first_category > nbr_votes_in_complementary_category
         return first_category
-      elsif points_in_complementary_category > points_in_first_category
+      elsif nbr_votes_in_complementary_category > nbr_votes_in_first_category
         return complementary_category
-      else # point values in both categories are equal - return whichever category wins the tiebreaker (Actor or Actress) - should be very rare
+      else # number of votes in both categories are equal - return Actor or Actress
         return first_category.tiebreaker_category
       end
     end
