@@ -38,6 +38,7 @@ Rails.application.routes.draw do
   resources :movies do
     get :admin_edit, on: :collection
     put :admin_update, on: :collection
+    get :admin_ratings, on: :collection
   end
   resources :category_vote_groups
   resources :ratings_groups

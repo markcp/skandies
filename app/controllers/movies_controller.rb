@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController
   before_action :logged_in_user
-  before_action :admin_user, only: [:admin_edit]
+  before_action :admin_user, only: [:admin_edit, :admin_ratings]
 
   def index
     if params[:term]
@@ -27,6 +27,12 @@ class MoviesController < ApplicationController
       @movie.update_attributes(movie_params(id))
     end
     redirect_to admin_edit_movies_path(cat_id: params[:cat_id])
+  end
+
+  def admin_ratings
+    @year = active_voting_year
+    @user = current_user
+    @movies = Movie.ratings_results_list(@year)
   end
 
   private
