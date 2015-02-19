@@ -25,6 +25,14 @@ class Movie < ActiveRecord::Base
     end
   end
 
+  def average_rating_display
+    ar = average_rating.round(2).to_s
+    if ar.length == 3
+      ar = ar + "0"
+    end
+    ar
+  end
+
   def self.ratings_results_list(year)
     where("year_id = ? and nbr_ratings > 4", year.id).order(average_rating: :desc, title_index: :asc)
   end
@@ -133,7 +141,7 @@ class Movie < ActiveRecord::Base
       ratings.each do |r|
         points = points + r.value
       end
-      average = (points / ratings.count).round(2)
+      average = (points / ratings.count).round(4)
     end
   end
 
