@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150102171029) do
+ActiveRecord::Schema.define(version: 20150219005151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 20150102171029) do
     t.integer  "screenplay_points"
     t.integer  "screenplay_votes"
     t.integer  "nbr_ratings"
-    t.decimal  "average_rating",                    precision: 3, scale: 2
+    t.decimal  "average_rating",                    precision: 5, scale: 4
     t.integer  "four_ratings"
     t.integer  "three_pt_five_ratings"
     t.integer  "three_ratings"
