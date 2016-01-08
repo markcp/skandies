@@ -1,7 +1,15 @@
 <h2>Ratings</h2>
 <p style="text-align: center">To remove a rating, select the "blank" value in the pulldown menu and resave the list.</p>
+<%# index = 0 %>
 <%= simple_form_for @ratings_group do |rgf| %>
-  <% @ratings_group.ratings.each do |rating| %>
+  <% @movies.each do |movie| %>
+    <% rating = @ratings_group.ratings.where(movie: movie).first %>
+    <% if !rating %>
+      <% rating = @ratings_group.ratings.build(movie: movie, ballot: @ballot) %>
+    <% end %>
+  <%# @ratings_group.ratings do |rating| %>
+    <%#= index %>
+    <%# if index >= @offset && index <= @offset + 5 %>
     <%= rgf.simple_fields_for :ratings, rating do |rf| %>
       <div class="row">
         <div class="large-8 columns large-centered">
@@ -16,10 +24,16 @@
       <%= rf.input :movie_id, as: :hidden %>
       <%= rf.input :ballot_id, as: :hidden %>
     <% end %>
+    <%# index = index + 1 %>
   <% end %>
   <%= rgf.input :ballot_id, as: :hidden %>
+  <%= hidden_field_tag :page, @page %>
   <div class="rating-button">
-    <%= rgf.submit "Save", class: "button" %>
+    <% if @last_page %>
+      <%= rgf.submit "Save and return to ballot", class: "button" %>
+    <% else %>
+      <%= rgf.submit "Save and go to next page", class: "button" %>
+    <% end %>
   </div>
   <br/>
   <div class="rating-link">

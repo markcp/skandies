@@ -23,26 +23,39 @@ class RatingsGroupsController < ApplicationController
   end
 
   def edit
+    # movie_offset = 0
+    # if params[:page]
+    #   movie_offset = (params[:page].to_i - 1) * 5
+    # end
     @ratings_group = RatingsGroup.find(params[:id])
     @ballot = @ratings_group.ballot
     @movies = Movie.by_title.where(year: @year).all
-    @rated_movie_ids = []
-    @ratings_group.ratings.each do |rating|
-      @rated_movie_ids << rating.movie.id
+    @page = params[:page] ? params[:page].to_i : 1
+    offset = (@page - 1) * 20
+    @movies = Movie.by_title.where(year: @year).limit(20).offset(offset)
+    if @movies.length < 1
+      redirect_to @ballot
+    elsif @movies.length < 20
+      @last_page = true
     end
-    @movies.each do |movie|
-      rating_present = false
-      if !@rated_movie_ids.include?(movie.id)
-        @ratings_group.ratings.build(movie: movie, ballot: @ballot)
-      end
-    end
+    # @rated_movie_ids = []
+    # @ratings_group.ratings.each do |rating|
+      # @rated_movie_ids << rating.movie.id
+    # end
+    # @movies.each do |movie|
+      # rating_present = false
+      # if !@rated_movie_ids.include?(movie.id)
+        # @ratings_group.ratings.build(movie: movie, ballot: @ballot)
+      #end
+    # end
   end
 
   def update
     @ratings_group = RatingsGroup.find(params[:id])
     @ballot = @ratings_group.ballot
+    page = params[:page].to_i + 1
     if @ratings_group.update(ratings_group_params)
-      redirect_to @ballot
+      redirect_to edit_ratings_group_path(@ratings_group, page: page)
     else
       @movies = Movie.where(year: @year).all
       @movies.each do |movie|

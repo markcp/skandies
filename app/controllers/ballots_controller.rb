@@ -12,9 +12,22 @@ class BallotsController < ApplicationController
   end
 
   def create
+    @year = voting_display_year
     @ballot = Ballot.new(ballot_params)
-
+    @movies = Movie.by_title.where(year: @year).all
     if @ballot.save
+      Category.all.each do |cat|
+        @ballot.category_vote_groups.build(category: cat)
+      end
+      @ballot.save
+      r = RatingsGroup.create(ballot: @ballot)
+      r.save
+      @movies.each do |movie|
+        r.ratings.build(movie: movie, ballot: @ballot)
+      end
+      r.save
+      t = TopTenList.create(ballot: @ballot)
+      t.save
       redirect_to @ballot
     else
       @user = current_user
@@ -89,7 +102,7 @@ class BallotsController < ApplicationController
   private
 
     def ballot_params
-      params.require(:ballot).permit(:user_id, :year_id, votes_attributes: [:movie_id, :points, :ballot_id, :category_id, :id, :scene_id, :value])
+      params.require(:ballot).permit(:user_id, :year_id, votes_attributes: [:movie_id, :points, :ballot_id, :category_id, :id, :scene_id, :value], category_vote_groups_attributes: [:ballot_id, :category_id])
     end
 
     def correct_user
