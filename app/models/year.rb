@@ -159,12 +159,12 @@ class Year < ActiveRecord::Base
   end
 
   def self.upload_2015_movies
-    Movie.create(title: '10 Cent Pistol', year_id: 21)
-    # Movie.create(title: '10 Days in a Madhouse - The Nellie Bly Story', year_id: 21)
-    # Movie.create(title: 'The 100-Year-Old Man Who Climbed out the Window and Disappeared', year_id: 21)
-    # Movie.create(title: '10,000 KM', year_id: 21)
-    # Movie.create(title: '1001 Grams', year_id: 21)
-    # Movie.create(title: 'The 11th Hour', year_id: 21)
+    # Movie.create(title: '10 Cent Pistol', year_id: 21)
+    Movie.create(title: '10 Days in a Madhouse - The Nellie Bly Story', year_id: 21)
+    Movie.create(title: 'The 100-Year-Old Man Who Climbed out the Window and Disappeared', year_id: 21)
+    Movie.create(title: '10,000 KM', year_id: 21)
+    Movie.create(title: '1001 Grams', year_id: 21)
+    Movie.create(title: 'The 11th Hour', year_id: 21)
     # Movie.create(title: '12 Golden Ducks', year_id: 21)
     # Movie.create(title: '12 Rounds 3: Lockdown', year_id: 21)
     # Movie.create(title: '1915', year_id: 21)
