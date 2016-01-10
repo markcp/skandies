@@ -31,11 +31,11 @@ class RatingsGroupsController < ApplicationController
     @ballot = @ratings_group.ballot
     @movies = Movie.by_title.where(year: @year).all
     @page = params[:page] ? params[:page].to_i : 1
-    offset = (@page - 1) * 20
-    @movies = Movie.by_title.where(year: @year).limit(20).offset(offset)
+    offset = (@page - 1) * 25
+    @movies = Movie.by_title.where(year: @year).limit(25).offset(offset)
     if @movies.length < 1
       redirect_to @ballot
-    elsif @movies.length < 20
+    elsif @movies.length < 25
       @last_page = true
     end
     # @rated_movie_ids = []
