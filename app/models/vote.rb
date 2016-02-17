@@ -133,7 +133,7 @@ class Vote < ActiveRecord::Base
           c.person_id = person.id
           c.movie_id = v.movie_id
           c.job_id = 1
-          c.year_id = 20
+          c.year_id = year.id 
           c.save
           v.credit_id = c.id
           v.save
