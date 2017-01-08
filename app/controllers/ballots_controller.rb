@@ -12,28 +12,36 @@ class BallotsController < ApplicationController
   end
 
   def create
+    @user = current_user
     @year = voting_display_year
-    @ballot = Ballot.new(ballot_params)
-    @movies = Movie.by_title.where(year: @year).all
-    if @ballot.save
-      Category.all.each do |cat|
-        @ballot.category_vote_groups.build(category: cat)
-      end
-      @ballot.save
-      r = RatingsGroup.create(ballot: @ballot)
-      r.save
-      @movies.each do |movie|
-        r.ratings.build(movie: movie, ballot: @ballot)
-      end
-      r.save
-      t = TopTenList.create(ballot: @ballot)
-      t.save
-      redirect_to @ballot
+    existing_ballot = Ballot.where(user: @user, year: @year).first
+    if existing_ballot
+      redirect_to existing_ballot
     else
-      @user = current_user
-      @year = voting_display_year
-      @voting_year = active_voting_year
-      render 'new'
+      @ballot = Ballot.new(ballot_params)
+      @movies = Movie.by_title.where(year: @year).all
+      if @ballot.save
+        Category.all.each do |cat|
+          @ballot.category_vote_groups.build(category: cat)
+        end
+        @ballot.save
+        r = RatingsGroup.create(ballot: @ballot)
+        # @movies.each do |movie|
+        #   r.ratings.build(movie: movie, ballot: @ballot)
+        # end
+        # r.save
+        # t = TopTenList.create(ballot: @ballot)
+        # 10.times do |i|
+        #   t.top_ten_entries.build(ballot: @ballot, rank: i+1)
+        # end
+        # t.save
+        redirect_to @ballot
+      else
+        @user = current_user
+        @year = voting_display_year
+        @voting_year = active_voting_year
+        render 'new'
+      end
     end
   end
 
