@@ -13,7 +13,8 @@ class Movie < ActiveRecord::Base
 
   before_validation :compute_title_index
 
-  scope :by_title, -> { order("title_index ASC") }
+  # scope :by_title, -> { order("title_index ASC") }
+  scope :by_title, -> { order("lower(title_index)") }
 
   def self.results_list(year, category)
     if category.name == "director"
