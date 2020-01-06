@@ -61,7 +61,7 @@ GEM
     debugger-linecache (1.2.0)
     erubis (2.7.0)
     execjs (2.2.2)
-    ffi (1.9.6)
+    ffi (1.11.3)
     formatador (0.2.5)
     foundation-icons-sass-rails (3.0.0)
       railties (>= 3.1.1)
