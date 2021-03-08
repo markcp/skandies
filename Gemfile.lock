@@ -259,5 +259,8 @@ DEPENDENCIES
   web-console (~> 2.0)
   wicked
 
+RUBY VERSION
+   ruby 2.5.8p224
+
 BUNDLED WITH
    1.17.3
