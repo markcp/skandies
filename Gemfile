@@ -25,8 +25,8 @@ end
 group :test do
   gem 'minitest-reporters'
   gem 'mini_backtrace'
-  gem 'guard-minitest'
-  gem 'terminal-notifier-guard'
+#  gem 'guard-minitest'
+#  gem 'terminal-notifier-guard'
 end
 
 gem 'sass-rails', '~> 5.0'
