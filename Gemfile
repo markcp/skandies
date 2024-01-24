@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '2.5.8'
 
 gem 'rails', '4.2.11.3'
-gem 'bcrypt'
+gem 'bcrypt', '3.1.16'
 gem 'pg', '0.21.0'
 # gem 'mysql'
 gem 'foundation-rails'
