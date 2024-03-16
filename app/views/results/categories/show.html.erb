@@ -1,8 +1,8 @@
 <p class="explanation">RULES: Participants divvied up 100 points among ten "nominees" in each category, with a maximum of 30 points for any given selection and a minimum of 5 points. Results are expressed as points/votes.</p>
 
 <dl class="sub-nav">
-  <dt>Category:</dt>
-  <dd><%= link_to "Winners", results_categories_path %></dd>
+   <dt>Category:</dt>
+  <dd><%= link_to "Winners", results_categories_path(year: @year.name) %></dd>
 <% @categories.each do |category| %>
   <% if category == @category %>
     <dd class="active"><%= link_to category.name.capitalize, results_category_path(category, year: @year.name) %></dd>
