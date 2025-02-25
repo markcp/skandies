@@ -32,8 +32,11 @@ class Vote < ActiveRecord::Base
     elsif category == Category.best_screenplay
       movie.screenwriter_name
     elsif category == Category.best_scene
-      value
-      # scene.title
+      if ballot.year_id < 20
+        scene.title
+      else
+        value
+      end
     else # acting categories
       value ? value : credit.person.name
     end

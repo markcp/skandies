@@ -5,8 +5,9 @@ class Results::BallotsController < ApplicationController
   end
 
   def show
-    @year = Year.get_display_year(params[:year])
+    # @year = Year.get_display_year(params[:year])
     @ballot = Ballot.find(params[:id])
+    @year = @ballot.year
     @categories = Category.all
   end
 end

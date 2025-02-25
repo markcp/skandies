@@ -558,7 +558,8 @@ class Year < ActiveRecord::Base
     Movie.create(title: "Guest From the Future", year_id: 30)
     Movie.create(title: "Gunner", year_id: 30)
     Movie.create(title: "Guntur Kaaram", year_id: 30)
-    Movie.create(title: "The Gutter Haikyuu!! The Dumpster Battle", year_id: 30)
+    Movie.create(title: "The Gutter", year_id: 30)
+    Movie.create(title: "Haikyuu!! The Dumpster Battle", year_id: 30)
     Movie.create(title: "Handling the Undead", year_id: 30)
     Movie.create(title: "Handsome Guys", year_id: 30)
     Movie.create(title: "Hanu Man", year_id: 30)
@@ -1188,7 +1189,8 @@ class Year < ActiveRecord::Base
     Movie.create(title: "Wayward", year_id: 30)
     Movie.create(title: "We Grown Now", year_id: 30)
     Movie.create(title: "We Had the Day Bonsoir", year_id: 30)
-    Movie.create(title: "We Live in Time We 12", year_id: 30)
+    Movie.create(title: "We Live in Time", year_id: 30)
+    Movie.create(title: "We 12", year_id: 30)
     Movie.create(title: "We Will Dance Again", year_id: 30)
     Movie.create(title: "Weak Layers", year_id: 30)
     Movie.create(title: "Weekend in Taipei", year_id: 30)
@@ -1202,7 +1204,8 @@ class Year < ActiveRecord::Base
     Movie.create(title: "Who Is Stan Smith?", year_id: 30)
     Movie.create(title: "Who's Afraid of Nathan Law?", year_id: 30)
     Movie.create(title: "Wicked Little Letters", year_id: 30)
-    Movie.create(title: "Wicked: Part I Widow Clicquot", year_id: 30)
+    Movie.create(title: "Wicked: Part I", year_id: 30)
+    Movie.create(title: "Widow Clicquot", year_id: 30)
     Movie.create(title: "The Wild Robot", year_id: 30)
     Movie.create(title: "Wildcat", year_id: 30)
     Movie.create(title: "Will & Harper", year_id: 30)
