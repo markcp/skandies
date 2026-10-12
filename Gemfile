@@ -1,24 +1,26 @@
 source 'https://rubygems.org'
 
-ruby '2.5.8'
+ruby '2.6.10'
 
-gem 'rails', '4.2.11.3'
+gem 'rails', '5.0.7.2'
 gem 'bcrypt', '3.1.16'
 gem 'pg', '0.21.0'
 # gem 'mysql'
-gem 'foundation-rails'
-gem 'high_voltage'
-gem 'simple_form'
+gem 'foundation-rails', '5.5.3.2'
+gem 'high_voltage', "3.1.2"
+gem 'simple_form', '3.3.1'
 gem 'wicked'
 gem 'jquery-ui-rails'
 gem 'rails4-autocomplete'
 gem 'foundation-icons-sass-rails', '~> 3.0.0'
-gem 'kaminari'
+gem 'kaminari', "~> 1.0"
 gem 'thin'
+gem 'execjs', '2.5.2'
+gem 'mini_racer', '0.6.4'
 
 group :development, :test do
   gem 'byebug'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console', '~> 2.1'
   gem 'spring'
 end
 
@@ -34,7 +36,7 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'turbolinks'
-gem 'jbuilder', '~> 2.0'
+gem 'jbuilder', '~> 2.5'
 gem 'rails-html-sanitizer', '~> 1.0'
 
 group :doc do
