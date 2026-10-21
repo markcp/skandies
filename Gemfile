@@ -4,7 +4,7 @@ ruby '2.6.10'
 
 gem 'rails', '5.0.7.2'
 gem 'bcrypt', '3.1.16'
-gem 'pg', '0.21.0'
+gem 'pg', '1.5.0'
 # gem 'mysql'
 gem 'foundation-rails', '5.5.3.2'
 gem 'high_voltage', "3.1.2"
@@ -14,13 +14,14 @@ gem 'jquery-ui-rails'
 gem 'rails4-autocomplete'
 gem 'foundation-icons-sass-rails', '~> 3.0.0'
 gem 'kaminari', "~> 1.0"
-gem 'thin'
+# gem 'thin'
+gem 'puma'
 gem 'execjs', '2.5.2'
 gem 'mini_racer', '0.6.4'
 
 group :development, :test do
-  gem 'byebug'
-  gem 'web-console', '~> 2.1'
+  gem 'byebug', '11.1.3'
+  gem 'web-console', '~> 3.7'
   gem 'spring'
 end
 
