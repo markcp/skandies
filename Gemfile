@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.6.10'
 
-gem 'rails', '5.2.8.1'
+gem 'rails', '6.0.6.1'
 gem 'bcrypt', '3.1.16'
 gem 'pg', '1.5.0'
 # gem 'mysql'
@@ -18,6 +18,7 @@ gem 'kaminari', "~> 1.0"
 gem 'puma'
 gem 'execjs', '2.5.2'
 gem 'mini_racer', '0.6.4'
+gem 'concurrent-ruby', '1.3.4'
 
 group :development do
   gem 'listen'

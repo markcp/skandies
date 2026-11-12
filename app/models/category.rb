@@ -23,35 +23,35 @@ class Category < ActiveRecord::Base
   end
 
   def self.best_picture
-    where( name: "picture").last
+    Category.where(name: "picture").last
   end
 
   def self.best_director
-    where(name: "director").last
+    Category.where(name: "director").last
   end
 
   def self.best_actress
-    where(name: "actress").last
+    Category.where(name: "actress").last
   end
 
   def self.best_actor
-    where(name: "actor").last
+    Category.where(name: "actor").last
   end
 
   def self.best_supporting_actress
-    where(name: "supporting actress").last
+    Category.where(name: "supporting actress").last
   end
 
   def self.best_supporting_actor
-    where(name: "supporting actor").last
+    Category.where(name: "supporting actor").last
   end
 
   def self.best_screenplay
-    where(name: "screenplay").last
+    Category.where(name: "screenplay").last
   end
 
   def self.best_scene
-    where(name: "scene").last
+    Category.where(name: "scene").last
   end
 
   def is_acting_category

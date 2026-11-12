@@ -2,9 +2,9 @@ class Vote < ActiveRecord::Base
 
   belongs_to :ballot
   belongs_to :category
-  belongs_to :credit
+  belongs_to :credit, optional: true
   belongs_to :movie
-  belongs_to :scene
+  belongs_to :scene, optional: true
   belongs_to :category_vote_group
 
   # validate :correct_voting_object
