@@ -18,11 +18,11 @@ class Movie < ActiveRecord::Base
 
   def self.results_list(year, category)
     if category.name == "director"
-      where("year_id = ? and director_points > 0",year.id).order(director_points: :desc, director_votes: :desc, title_index: :asc)
+      Movie.where("year_id = ? and director_points > 0",year.id).order(director_points: :desc, director_votes: :desc, title_index: :asc)
     elsif category.name == "screenplay"
-      where("year_id = ? and screenplay_points > 0",year.id).order(screenplay_points: :desc, screenplay_votes: :desc, title_index: :asc)
+      Movie.where("year_id = ? and screenplay_points > 0",year.id).order(screenplay_points: :desc, screenplay_votes: :desc, title_index: :asc)
     else # category is best picture
-      where("year_id = ? and picture_points > 0",year.id).order(picture_points: :desc, picture_votes: :desc, title_index: :asc)
+      Movie.where("year_id = ? and picture_points > 0",year.id).order(picture_points: :desc, picture_votes: :desc, title_index: :asc)
     end
   end
 
