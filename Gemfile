@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 ruby '2.6.10'
 
-gem 'rails', '6.0.6.1'
+gem 'rails', '6.1.7.10'
 gem 'bcrypt', '3.1.16'
 gem 'pg', '1.5.0'
 # gem 'mysql'
@@ -26,7 +26,7 @@ end
 
 group :development, :test do
   gem 'byebug', '11.1.3'
-  gem 'web-console', '~> 3.7'
+  gem 'web-console', '~> 4.1'
   gem 'spring'
 end
 
