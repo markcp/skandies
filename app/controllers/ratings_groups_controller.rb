@@ -1,7 +1,7 @@
 class RatingsGroupsController < ApplicationController
   before_action :get_user_and_year
   before_action :logged_in_user
-  before_action :correct_user, only: [:show, :edit]
+  before_action :correct_user, only: [:edit]
 
   def new
     @ballot = Ballot.where(user: @user, year: @year).first

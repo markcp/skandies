@@ -1,6 +1,6 @@
 class BallotsController < ApplicationController
-  before_action :logged_in_user, only: [:show, :edit, :update, :submit_ballot]
-  before_action :correct_user,   only: [:show, :edit, :update, :submit_ballot]
+  before_action :logged_in_user, only: [:show, :update, :submit_ballot]
+  before_action :correct_user,   only: [:show, :update, :submit_ballot]
 
   autocomplete :movie, :title
 
