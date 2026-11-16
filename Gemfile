@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '2.6.10'
+ruby '3.3.12'
 
-gem 'rails', '6.1.7.10'
+gem 'rails', '7.0.10'
 gem 'bcrypt', '3.1.16'
 gem 'pg', '1.5.0'
 # gem 'mysql'
@@ -19,6 +19,7 @@ gem 'puma'
 gem 'execjs', '2.5.2'
 gem 'mini_racer', '0.6.4'
 gem 'concurrent-ruby', '1.3.4'
+gem 'json', '~> 2.6'
 
 group :development do
   gem 'listen'
@@ -46,7 +47,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'rails-html-sanitizer', '~> 1.0'
 
 group :doc do
-  gem 'sdoc', '~> 0.4.0', require: false
+  gem 'sdoc', '~> 2.3', require: false
 end
 
 group :production do

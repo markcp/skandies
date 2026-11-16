@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_11_14_022314) do
-
+ActiveRecord::Schema[7.0].define(version: 2026_11_16_011649) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,8 +18,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.integer "user_id"
     t.integer "year_id"
     t.boolean "complete", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "nbr_ratings"
     t.decimal "average_rating", precision: 3, scale: 2
     t.integer "four_ratings"
@@ -39,23 +38,23 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
 
   create_table "categories", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "category_vote_groups", id: :serial, force: :cascade do |t|
     t.integer "ballot_id"
     t.integer "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "credits", id: :serial, force: :cascade do |t|
     t.integer "person_id"
     t.integer "movie_id"
     t.integer "job_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "year_id"
     t.integer "results_category_id"
     t.integer "points"
@@ -68,8 +67,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
 
   create_table "jobs", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "movies", id: :serial, force: :cascade do |t|
@@ -78,8 +77,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.integer "year_id"
     t.string "director_display", limit: 255
     t.string "screenwriter_display", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "picture_points"
     t.integer "picture_votes"
     t.integer "director_points"
@@ -109,16 +108,16 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.string "last_name", limit: 255
     t.string "gender", limit: 255
     t.boolean "last_name_first", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
     t.integer "ballot_id"
     t.integer "movie_id"
     t.decimal "value", precision: 2, scale: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "ratings_group_id"
     t.index ["ballot_id"], name: "index_ratings_on_ballot_id"
     t.index ["movie_id"], name: "index_ratings_on_movie_id"
@@ -126,15 +125,15 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
 
   create_table "ratings_groups", id: :serial, force: :cascade do |t|
     t.integer "ballot_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "scenes", id: :serial, force: :cascade do |t|
     t.string "title", limit: 255
     t.integer "movie_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "year_id"
     t.integer "points"
     t.integer "nbr_votes"
@@ -145,8 +144,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.integer "ballot_id"
     t.string "value", limit: 255
     t.integer "rank"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "top_ten_list_id"
     t.index ["ballot_id"], name: "index_top_ten_entries_on_ballot_id"
   end
@@ -154,8 +153,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
   create_table "top_ten_lists", id: :serial, force: :cascade do |t|
     t.integer "ballot_id"
     t.boolean "ranked"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -163,12 +162,12 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.string "last_name", limit: 255
     t.string "email", limit: 255
     t.boolean "admin", default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.string "password_digest"
     t.string "remember_digest"
     t.string "reset_digest"
-    t.datetime "reset_sent_at"
+    t.datetime "reset_sent_at", precision: nil
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["last_name"], name: "index_users_on_last_name"
   end
@@ -179,8 +178,8 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
     t.integer "credit_id"
     t.integer "movie_id"
     t.integer "points"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
     t.integer "scene_id"
     t.string "value"
     t.integer "category_vote_group_id"
@@ -193,11 +192,11 @@ ActiveRecord::Schema.define(version: 2026_11_14_022314) do
 
   create_table "years", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.datetime "open_voting", default: "2001-01-01 00:00:00"
-    t.datetime "close_voting", default: "2001-01-01 00:00:00"
-    t.datetime "display_results", default: "2001-01-01 00:00:00"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "open_voting", precision: nil, default: "2001-01-01 00:00:00"
+    t.datetime "close_voting", precision: nil, default: "2001-01-01 00:00:00"
+    t.datetime "display_results", precision: nil, default: "2001-01-01 00:00:00"
+    t.datetime "created_at", precision: nil
+    t.datetime "updated_at", precision: nil
   end
 
 end
