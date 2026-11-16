@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '3.3.12'
+ruby '4.0.9'
 
-gem 'rails', '7.2.4'
+gem 'rails', '8.1.4.1'
 gem 'bcrypt', '3.1.16'
 gem 'pg', '1.5.0'
 # gem 'mysql'

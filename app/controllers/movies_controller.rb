@@ -24,7 +24,7 @@ class MoviesController < ApplicationController
   def admin_update
     params['movie'].keys.each do |id|
       @movie = Movie.find(id.to_i)
-      @movie.update_attributes(movie_params(id))
+      @movie.update(movie_params(id))
     end
     redirect_to admin_edit_movies_path(cat_id: params[:cat_id])
   end
